@@ -12,7 +12,10 @@ namespace Algo
         //When a variable is first defined.
         public override object VisitStat_define([NotNull] algoParser.Stat_defineContext context)
         {
-            //
+            //Evaluate the expression on the right side of the define.
+            AlgoValue value = (AlgoValue)VisitExpr(context.expr());
+
+            return null;
         }
     }
 }

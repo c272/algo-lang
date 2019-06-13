@@ -4,11 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Antlr4.Runtime.Misc;
+using MathNet.Numerics;
 
 namespace Algo
 {
     public partial class storkVisitor : algoBaseVisitor<object>
     {
+        //Scopes collection for this instance.
+        public static AlgoScopeCollection Scopes = new AlgoScopeCollection();
+
         //When the "Statement" node is visited.
         public override object VisitCompileUnit(algoParser.CompileUnitContext context)
         {

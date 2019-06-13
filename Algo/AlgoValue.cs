@@ -1,7 +1,7 @@
 ﻿namespace Algo
 {
     //A single value in Algo.
-    public struct AlgoValue
+    public class AlgoValue
     {
         public object Value;
         public AlgoValueType Type;

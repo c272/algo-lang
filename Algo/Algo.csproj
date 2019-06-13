@@ -59,11 +59,14 @@
     <Compile Include="algo.g4.parser.cs">
       <DependentUpon>algo.g4</DependentUpon>
     </Compile>
+    <Compile Include="AlgoExpressionParser.cs" />
     <Compile Include="AlgoMainVisitor.cs" />
     <Compile Include="AlgoScopes.cs" />
     <Compile Include="AlgoValue.cs" />
     <Compile Include="AlgoVariableHandler.cs" />
     <Compile Include="ANTLRDebug.cs" />
+    <Compile Include="BigRational.cs" />
+    <Compile Include="Fraction.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
