@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Antlr4.Runtime.Misc;
@@ -99,7 +100,7 @@ namespace Algo
                 AlgoValue right = (AlgoValue)VisitSub(context.sub());
 
                 //Perform a power.
-                //...
+                return (AlgoValue)AlgoOperators.Pow(left, right);
             } else
             {
                 //No, just evaluate the sub.
@@ -134,8 +135,46 @@ namespace Algo
                 return new AlgoValue()
                 {
                     Type = AlgoValueType.Integer,
-                    Value = new BigInteger()
+                    Value = BigInteger.Parse(context.INTEGER().GetText()),
+                    IsEnumerable = false
                 };
+            }
+            else if (context.FLOAT() != null)
+            {
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Float,
+                    Value = BigFloat.Parse(context.FLOAT().GetText()),
+                    IsEnumerable = false
+                };
+            }
+            else if (context.STRING() != null)
+            {
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.String,
+                    Value = context.STRING().GetText().Substring(1, context.STRING().GetText().Length - 2),
+                    IsEnumerable = false
+                };
+            }
+            else if (context.RATIONAL() != null)
+            {
+                //Get the two integer halves from the rational.
+                string[] halves = context.RATIONAL().GetText().Split('/');
+                string numerator = halves[0];
+                string denominator = halves[1];
+
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Rational,
+                    Value = new BigRational(BigInteger.Zero, new Fraction(BigInteger.Parse(numerator), BigInteger.Parse(denominator))),
+                    IsEnumerable = false
+                };
+            } else
+            {
+                //No proper detected value type.
+                Error.Print(context, "Unknown or invalid type given for value.");
+                return null;
             }
         }
     }

@@ -48,7 +48,7 @@ sub: value | LBRACKET expr RBRACKET;
 operator: MUL_OP | DIV_OP | TAKE_OP | ADD_OP | POW_OP;
 
 //A single literal value.
-value: stat_functionCall | INTEGER | FLOAT | BOOLEAN | STRING;
+value: stat_functionCall | INTEGER | FLOAT | BOOLEAN | STRING | RATIONAL;
 
 /*
  * Lexer Rules
@@ -65,6 +65,9 @@ BOOLEAN: 'true' | 'false';
 
 //String.
 STRING: '"' (~[\"])* '"';
+
+//Rational.
+RATIONAL: INTEGER '/' INTEGER;
 
 // Commonly used and reserved symbols in Algo.
 LET_SYM: 'let';

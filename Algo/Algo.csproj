@@ -53,25 +53,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="algo.g4.lexer.cs">
+    <Compile Include="Parsing\algo.g4.lexer.cs">
       <DependentUpon>algo.g4</DependentUpon>
     </Compile>
-    <Compile Include="algo.g4.parser.cs">
+    <Compile Include="Parsing\algo.g4.parser.cs">
       <DependentUpon>algo.g4</DependentUpon>
     </Compile>
-    <Compile Include="AlgoExpressionParser.cs" />
-    <Compile Include="AlgoMainVisitor.cs" />
-    <Compile Include="AlgoScopes.cs" />
-    <Compile Include="AlgoValue.cs" />
-    <Compile Include="AlgoVariableHandler.cs" />
-    <Compile Include="ANTLRDebug.cs" />
-    <Compile Include="BigRational.cs" />
-    <Compile Include="Fraction.cs" />
+    <Compile Include="Parsing\AlgoExpressionParser.cs" />
+    <Compile Include="Parsing\AlgoMainVisitor.cs" />
+    <Compile Include="Evaluation\AlgoOperators.cs" />
+    <Compile Include="Evaluation\AlgoScopes.cs" />
+    <Compile Include="Evaluation\AlgoValue.cs" />
+    <Compile Include="Evaluation\AlgoVariableHandler.cs" />
+    <Compile Include="Parsing\ANTLRDebug.cs" />
+    <Compile Include="Maths Libraries\BigFloat.cs" />
+    <Compile Include="Maths Libraries\BigRational.cs" />
+    <Compile Include="Error.cs" />
+    <Compile Include="Maths Libraries\Fraction.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Antlr4 Include="algo.g4">
+    <Antlr4 Include="Parsing\algo.g4">
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>Algo</CustomToolNamespace>
     </Antlr4>
