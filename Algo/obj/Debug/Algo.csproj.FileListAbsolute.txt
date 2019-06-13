@@ -15,3 +15,5 @@ Z:\Algo\Algo\obj\Debug\Algo.csproj.CoreCompileInputs.cache
 Z:\Algo\Algo\obj\Debug\Algo.csproj.CopyComplete
 Z:\Algo\Algo\obj\Debug\Algo.exe
 Z:\Algo\Algo\obj\Debug\Algo.pdb
+D:\Files\Programming\GitHub\algo\Algo\obj\Debug\Algo.csprojAssemblyReference.cache
+D:\Files\Programming\GitHub\algo\Algo\obj\Debug\Algo.csproj.CoreCompileInputs.cache
