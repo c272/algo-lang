@@ -1,0 +1,6 @@
+Z:\Algo\Algo\obj\Debug\algoLexer.cs
+Z:\Algo\Algo\obj\Debug\algoParser.cs
+Z:\Algo\Algo\obj\Debug\algoListener.cs
+Z:\Algo\Algo\obj\Debug\algoBaseListener.cs
+Z:\Algo\Algo\obj\Debug\algoVisitor.cs
+Z:\Algo\Algo\obj\Debug\algoBaseVisitor.cs

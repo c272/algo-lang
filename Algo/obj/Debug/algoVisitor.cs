@@ -38,5 +38,117 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitCompileUnit([NotNull] algoParser.CompileUnitContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBlock([NotNull] algoParser.BlockContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStatement([NotNull] algoParser.StatementContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.stat_define"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStat_define([NotNull] algoParser.Stat_defineContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.stat_setvar"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStat_setvar([NotNull] algoParser.Stat_setvarContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.stat_functionCall"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStat_functionCall([NotNull] algoParser.Stat_functionCallContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.stat_functionDef"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStat_functionDef([NotNull] algoParser.Stat_functionDefContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.stat_forLoop"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStat_forLoop([NotNull] algoParser.Stat_forLoopContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.stat_if"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStat_if([NotNull] algoParser.Stat_ifContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.literal_params"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLiteral_params([NotNull] algoParser.Literal_paramsContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.abstract_params"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAbstract_params([NotNull] algoParser.Abstract_paramsContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExpr([NotNull] algoParser.ExprContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.term"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitTerm([NotNull] algoParser.TermContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.factor"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFactor([NotNull] algoParser.FactorContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.sub"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitSub([NotNull] algoParser.SubContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.operator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitOperator([NotNull] algoParser.OperatorContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.value"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitValue([NotNull] algoParser.ValueContext context);
 }
 } // namespace Algo

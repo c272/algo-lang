@@ -1,0 +1,17 @@
+Z:\Algo\Algo\obj\Debug\Algo.csprojAssemblyReference.cache
+Z:\Algo\Algo\bin\Debug\Algo.exe.config
+Z:\Algo\Algo\bin\Debug\Algo.exe
+Z:\Algo\Algo\bin\Debug\Algo.pdb
+Z:\Algo\Algo\bin\Debug\Antlr4.Runtime.dll
+Z:\Algo\Algo\bin\Debug\Antlr4.Runtime.xml
+Z:\Algo\Algo\obj\Debug\algoLexer.cs
+Z:\Algo\Algo\obj\Debug\algoParser.cs
+Z:\Algo\Algo\obj\Debug\algoListener.cs
+Z:\Algo\Algo\obj\Debug\algoBaseListener.cs
+Z:\Algo\Algo\obj\Debug\algoVisitor.cs
+Z:\Algo\Algo\obj\Debug\algoBaseVisitor.cs
+Z:\Algo\Algo\obj\Debug\Algo.csproj.Antlr4GeneratedCodeFileListAbsolute.txt
+Z:\Algo\Algo\obj\Debug\Algo.csproj.CoreCompileInputs.cache
+Z:\Algo\Algo\obj\Debug\Algo.csproj.CopyComplete
+Z:\Algo\Algo\obj\Debug\Algo.exe
+Z:\Algo\Algo\obj\Debug\Algo.pdb
