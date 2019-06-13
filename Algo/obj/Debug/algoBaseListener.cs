@@ -256,6 +256,32 @@ public partial class algoBaseListener : IalgoListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitValue([NotNull] algoParser.ValueContext context) { }
 
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.array"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterArray([NotNull] algoParser.ArrayContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.array"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitArray([NotNull] algoParser.ArrayContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.array_access"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterArray_access([NotNull] algoParser.Array_accessContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.array_access"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitArray_access([NotNull] algoParser.Array_accessContext context) { }
+
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>
 	public virtual void EnterEveryRule([NotNull] ParserRuleContext context) { }

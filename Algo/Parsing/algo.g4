@@ -48,7 +48,11 @@ sub: value | LBRACKET expr RBRACKET;
 operator: MUL_OP | DIV_OP | TAKE_OP | ADD_OP | POW_OP;
 
 //A single literal value.
-value: stat_functionCall | INTEGER | FLOAT | BOOLEAN | STRING | RATIONAL;
+value: stat_functionCall | INTEGER | FLOAT | BOOLEAN | STRING | RATIONAL | array | array_access;
+
+//An array.
+array: '[' ((value ',')* value)? ']';
+array_access: IDENTIFIER '[' value ']';
 
 /*
  * Lexer Rules
@@ -75,6 +79,7 @@ FOR_SYM: 'for';
 IN_SYM: 'in';
 IF_SYM: 'if';
 IMPORT_SYM: 'import';
+RETURN_SYM: 'return';
 ENDLINE: ';';
 EQUALS: '=';
 COMMA: ',';
@@ -89,6 +94,9 @@ BIN_OR: '||';
 BIN_AND: '&&';
 LBRACE: '{';
 RBRACE: '}';
+LSQBR: '[';
+RSQBR: ']';
+
 
 //Identifier.
 IDENTIFIER: [A-Za-z_] [0-9A-Za-z_]*;

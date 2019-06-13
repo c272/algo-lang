@@ -173,7 +173,7 @@ namespace Algo
             } else
             {
                 //No proper detected value type.
-                Error.Print(context, "Unknown or invalid type given for value.");
+                Error.Fatal(context, "Unknown or invalid type given for value.");
                 return null;
             }
         }

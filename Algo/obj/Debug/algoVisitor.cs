@@ -150,5 +150,19 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitValue([NotNull] algoParser.ValueContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.array"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitArray([NotNull] algoParser.ArrayContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.array_access"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitArray_access([NotNull] algoParser.Array_accessContext context);
 }
 } // namespace Algo
