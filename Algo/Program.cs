@@ -15,10 +15,10 @@ namespace Algo
         static void Main(string[] args)
         {
 
-            Console.WriteLine(new BigRational(new Fraction(new BigInteger(64), new BigInteger(32))).ToString());
+           // Console.WriteLine(new BigRational(new Fraction(new BigInteger(64), new BigInteger(32))).ToString());
             
             //Test input string.
-            string input = "let f() = 3;";
+            string input = "let f() = 3-4;";
             var chars = new AntlrInputStream(input);
             var lexer = new algoLexer(chars);
             var tokens = new CommonTokenStream(lexer);

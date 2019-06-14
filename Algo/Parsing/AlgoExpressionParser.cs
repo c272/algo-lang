@@ -24,7 +24,7 @@ namespace Algo
                 AlgoValue right = (AlgoValue)VisitTerm(context.term());
 
                 //Perform an add operation, based on type.
-                //...
+                return AlgoOperators.Add(context, left, right);
             }
             else if (context.TAKE_OP() != null)
             {
@@ -35,8 +35,8 @@ namespace Algo
                 //Evaluate the right hand term.
                 AlgoValue right = (AlgoValue)VisitTerm(context.term());
 
-                //Perform a take operation, based on type. Djikstra
-                //...
+                //Perform a take operation, based on type.
+                return AlgoOperators.Sub(context, left, right);
             }
             else
             {
@@ -62,7 +62,7 @@ namespace Algo
                 AlgoValue right = (AlgoValue)VisitFactor(context.factor());
 
                 //Perform multiplication.
-                //...
+                return AlgoOperators.Mul(context, left, right);
             }
             else if (context.DIV_OP() != null)
             {
@@ -74,7 +74,7 @@ namespace Algo
                 AlgoValue right = (AlgoValue)VisitFactor(context.factor());
 
                 //Perform division.
-                //...
+                return AlgoOperators.Div(context, left, right);
             }
             else
             {

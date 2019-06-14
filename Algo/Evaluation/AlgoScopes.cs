@@ -52,5 +52,14 @@ namespace Algo
         {
             return (GetVariable(varname) != null);
         }
+
+        //Add a variable to the scope.
+        public void AddVariable(string name, AlgoValue varname)
+        {
+            if (VariableExists(name))
+            {
+                //todo
+            }
+        }
     }
 }
