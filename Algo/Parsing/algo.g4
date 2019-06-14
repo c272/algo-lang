@@ -48,7 +48,7 @@ sub: value | LBRACKET expr RBRACKET;
 operator: MUL_OP | DIV_OP | TAKE_OP | ADD_OP | POW_OP;
 
 //A single literal value.
-value: stat_functionCall | INTEGER | FLOAT | BOOLEAN | STRING | RATIONAL | array | array_access;
+value: stat_functionCall | IDENTIFIER | INTEGER | FLOAT | BOOLEAN | STRING | RATIONAL | array | array_access;
 
 //An array.
 array: '[' ((value ',')* value)? ']';

@@ -226,7 +226,7 @@ namespace Algo
                     };
                 }
 
-                if (left.Type == AlgoValueType.Rational)
+                else if (left.Type == AlgoValueType.Rational)
                 {
                     return new AlgoValue()
                     {
@@ -238,53 +238,101 @@ namespace Algo
             }
 
             //Types aren't the same, see if there are any valid other combinations.
-            if (left.Type == AlgoValueType.Integer && right.Type == AlgoValueType.Float)
+
+            //Integer combinations.
+            if (left.Type == AlgoValueType.Integer)
             {
-                return new AlgoValue()
+                //Float.
+                if (right.Type == AlgoValueType.Float)
                 {
-                    Type = AlgoValueType.Float,
-                    Value = BigFloat.Multiply((BigFloat)right.Value, new BigFloat((BigInteger)left.Value)),
-                    IsEnumerable = false
-                };
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Float,
+                        Value = BigFloat.Multiply((BigFloat)right.Value, new BigFloat((BigInteger)left.Value)),
+                        IsEnumerable = false
+                    };
+                }
+
+                //Rational.
+                else if (right.Type == AlgoValueType.Rational)
+                {
+                    BigInteger numerator = BigInteger.Multiply(((BigRational)right.Value).FractionalPart.Numerator, (BigInteger)left.Value);
+                    BigInteger denominator = ((BigRational)right.Value).FractionalPart.Denominator;
+
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Rational,
+                        Value = new BigRational(BigInteger.Zero, new Fraction(numerator, denominator)),
+                        IsEnumerable = false
+                    };
+                }
             }
 
-            //Float * Integer
-            if (left.Type == AlgoValueType.Float && right.Type == AlgoValueType.Integer)
+            //Float combinations.
+            if (left.Type == AlgoValueType.Float)
             {
-                return new AlgoValue()
+                //Integer.
+                if (right.Type == AlgoValueType.Integer)
                 {
-                    Type = AlgoValueType.Float,
-                    Value = BigFloat.Multiply((BigFloat)left.Value, new BigFloat((BigInteger)right.Value)),
-                    IsEnumerable = false
-                };
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Float,
+                        Value = BigFloat.Multiply((BigFloat)left.Value, new BigFloat((BigInteger)right.Value)),
+                        IsEnumerable = false
+                    };
+                }
+
+                //Rational.
+                else if (right.Type == AlgoValueType.Rational)
+                {
+                    //Get the rational part as a float.
+                    BigInteger numerator = ((BigRational)right.Value).FractionalPart.Numerator;
+                    BigInteger denominator = ((BigRational)right.Value).FractionalPart.Denominator;
+                    BigFloat rational_as_float = BigFloat.Divide(new BigFloat(numerator), new BigFloat(denominator));
+
+                    //Returning.
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Float,
+                        Value = BigFloat.Multiply(rational_as_float, (BigFloat)left.Value),
+                        IsEnumerable = false
+                    };
+                }
             }
 
-            //Rational * Integer
-            if (left.Type == AlgoValueType.Rational && right.Type == AlgoValueType.Integer)
+            //Rational combinations.
+            if (left.Type == AlgoValueType.Rational)
             {
-                BigInteger numerator = BigInteger.Multiply(((BigRational)left.Value).FractionalPart.Numerator, (BigInteger)right.Value);
-                BigInteger denominator = ((BigRational)left.Value).FractionalPart.Denominator;
-
-                return new AlgoValue()
+                //Integer.
+                if (right.Type == AlgoValueType.Integer)
                 {
-                   Type = AlgoValueType.Rational,
-                   Value = new BigRational(BigInteger.Zero,new Fraction(numerator, denominator)),
-                   IsEnumerable = false
-                };
-            }
+                    BigInteger numerator = BigInteger.Multiply(((BigRational)left.Value).FractionalPart.Numerator, (BigInteger)right.Value);
+                    BigInteger denominator = ((BigRational)left.Value).FractionalPart.Denominator;
 
-            //Integer * Rational
-            if (right.Type == AlgoValueType.Integer && right.Type == AlgoValueType.Rational)
-            {
-                BigInteger numerator = BigInteger.Multiply(((BigRational)right.Value).FractionalPart.Numerator, (BigInteger)left.Value);
-                BigInteger denominator = ((BigRational)right.Value).FractionalPart.Denominator;
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Rational,
+                        Value = new BigRational(BigInteger.Zero, new Fraction(numerator, denominator)),
+                        IsEnumerable = false
+                    };
+                }
 
-                return new AlgoValue()
+                //Float.
+                else if (right.Type == AlgoValueType.Float)
                 {
-                    Type = AlgoValueType.Rational,
-                    Value = new BigRational(BigInteger.Zero, new Fraction(numerator, denominator)),
-                    IsEnumerable = false
-                };
+                    //Get the rational part as a float.
+                    BigInteger numerator = ((BigRational)left.Value).FractionalPart.Numerator;
+                    BigInteger denominator = ((BigRational)left.Value).FractionalPart.Denominator;
+                    BigFloat rational_as_float = BigFloat.Divide(new BigFloat(numerator), new BigFloat(denominator));
+
+                    //Returning.
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Float,
+                        Value = BigFloat.Multiply(rational_as_float, (BigFloat)right.Value),
+                        IsEnumerable = false
+                    };
+                }
             }
 
             //Could not find a valid combination, exit as fatal.
@@ -354,88 +402,461 @@ namespace Algo
 
             //Find other valid type combinations.
 
-            //Float / Integer
-            if (left.Type == AlgoValueType.Float && right.Type == AlgoValueType.Integer)
+            //Float combinations.
+            if (left.Type == AlgoValueType.Float)
             {
-                return new AlgoValue()
+                //Integer.
+                if (right.Type == AlgoValueType.Integer)
                 {
-                    Type = AlgoValueType.Float,
-                    Value = BigFloat.Divide((BigFloat)left.Value, new BigFloat((BigInteger)right.Value)),
-                    IsEnumerable = false
-                };
-            }
-            else if (left.Type == AlgoValueType.Integer && right.Type == AlgoValueType.Float)
-            {
-                return new AlgoValue()
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Float,
+                        Value = BigFloat.Divide((BigFloat)left.Value, new BigFloat((BigInteger)right.Value)),
+                        IsEnumerable = false
+                    };
+                }
+
+                //Rational.
+                else if (right.Type == AlgoValueType.Rational)
                 {
-                    Type = AlgoValueType.Float,
-                    Value = BigFloat.Divide(new BigFloat((BigInteger)left.Value), (BigFloat)right.Value),
-                    IsEnumerable = false
-                };
+                    //Get the rational part as a float.
+                    BigInteger numerator = ((BigRational)right.Value).FractionalPart.Numerator;
+                    BigInteger denominator = ((BigRational)right.Value).FractionalPart.Denominator;
+                    BigFloat rational_as_float = BigFloat.Divide(new BigFloat(numerator), new BigFloat(denominator));
+
+                    //Return.
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Float,
+                        Value = BigFloat.Divide((BigFloat)left.Value, rational_as_float),
+                        IsEnumerable = false
+                    };
+                }
             }
 
-            //Rational / Integer
-            else if (left.Type == AlgoValueType.Rational && right.Type == AlgoValueType.Integer)
+            //Integer combinations.
+            if (left.Type == AlgoValueType.Integer)
             {
-                //Getting numerator and denominator.
-                BigInteger numerator = ((BigRational)left.Value).FractionalPart.Numerator;
-                BigInteger denominator = ((BigRational)left.Value).FractionalPart.Denominator * (BigInteger)left.Value;
-
-                return new AlgoValue()
+                //Float.
+                if (right.Type == AlgoValueType.Float)
                 {
-                    Type = AlgoValueType.Rational,
-                    Value = new BigRational(new Fraction(numerator, denominator)),
-                    IsEnumerable = false
-                };
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Float,
+                        Value = BigFloat.Divide(new BigFloat((BigInteger)left.Value), (BigFloat)right.Value),
+                        IsEnumerable = false
+                    };
+                }
+
+                //Rational.
+                else if (right.Type == AlgoValueType.Rational)
+                {
+                    //Getting numerator and denominator.
+                    BigInteger numerator = (BigInteger)left.Value * ((BigRational)right.Value).FractionalPart.Denominator;
+                    BigInteger denominator = ((BigRational)right.Value).FractionalPart.Numerator;
+
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Rational,
+                        Value = new BigRational(new Fraction(numerator, denominator)),
+                        IsEnumerable = false
+                    };
+                }
             }
-            else if (left.Type == AlgoValueType.Integer && right.Type == AlgoValueType.Rational)
-            {
-                //Getting numerator and denominator.
-                BigInteger numerator = (BigInteger)left.Value * ((BigRational)right.Value).FractionalPart.Denominator;
-                BigInteger denominator = ((BigRational)right.Value).FractionalPart.Numerator;
 
-                return new AlgoValue()
-                {
-                    Type = AlgoValueType.Rational,
-                    Value = new BigRational(new Fraction(numerator, denominator)),
-                    IsEnumerable = false
-                };
-            }
-            
-            //Rational / Float
-            else if (left.Type == AlgoValueType.Rational && right.Type == AlgoValueType.Float)
+            //Rational combinations.
+            if (left.Type == AlgoValueType.Rational)
             {
-                //Get the rational part as a float.
-                BigInteger numerator = ((BigRational)left.Value).FractionalPart.Numerator;
-                BigInteger denominator = ((BigRational)left.Value).FractionalPart.Denominator;
-                BigFloat rational_as_float = BigFloat.Divide(new BigFloat(numerator), new BigFloat(denominator));
-
-                //Return.
-                return new AlgoValue()
+                //Integer.
+                if (right.Type == AlgoValueType.Integer)
                 {
-                    Type = AlgoValueType.Float,
-                    Value = BigFloat.Divide(rational_as_float, (BigFloat)right.Value),
-                    IsEnumerable = false
-                };
-            }
-            else if (left.Type == AlgoValueType.Float && right.Type == AlgoValueType.Rational)
-            {
-                //Get the rational part as a float.
-                BigInteger numerator = ((BigRational)right.Value).FractionalPart.Numerator;
-                BigInteger denominator = ((BigRational)right.Value).FractionalPart.Denominator;
-                BigFloat rational_as_float = BigFloat.Divide(new BigFloat(numerator), new BigFloat(denominator));
+                    //Getting numerator and denominator.
+                    BigInteger numerator = ((BigRational)left.Value).FractionalPart.Numerator;
+                    BigInteger denominator = ((BigRational)left.Value).FractionalPart.Denominator * (BigInteger)left.Value;
 
-                //Return.
-                return new AlgoValue()
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Rational,
+                        Value = new BigRational(new Fraction(numerator, denominator)),
+                        IsEnumerable = false
+                    };
+                }
+
+                //Float.
+                else if (right.Type == AlgoValueType.Float)
                 {
-                    Type = AlgoValueType.Float,
-                    Value = BigFloat.Divide((BigFloat)left.Value, rational_as_float),
-                    IsEnumerable = false
-                };
+                    //Get the rational part as a float.
+                    BigInteger numerator = ((BigRational)left.Value).FractionalPart.Numerator;
+                    BigInteger denominator = ((BigRational)left.Value).FractionalPart.Denominator;
+                    BigFloat rational_as_float = BigFloat.Divide(new BigFloat(numerator), new BigFloat(denominator));
+
+                    //Return.
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Float,
+                        Value = BigFloat.Divide(rational_as_float, (BigFloat)right.Value),
+                        IsEnumerable = false
+                    };
+                }
             }
             
             //Could not find a valid combination, exit as fatal.
             Error.Fatal(context, "Invalid types to divide, cannot divide type " + left.Type.ToString() + " by " + right.Type.ToString() + ".");
+            return null;
+        }
+
+        //Add one AlgoValue to another.
+        public static AlgoValue Add(ParserRuleContext context, AlgoValue left, AlgoValue right)
+        {
+            //Check neither of them are enumerable.
+            //Future roadmap, you can use [] + 3 to create an array with a 3 in it, etc.
+            if (left.IsEnumerable || right.IsEnumerable)
+            {
+                Error.Fatal(context, "Cannot add enumerable types.");
+                return null;
+            }
+
+            //Identical types.
+            if (left.Type == right.Type)
+            {
+                if (left.Type==AlgoValueType.Float)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Float,
+                        Value = BigFloat.Add((BigFloat)left.Value, (BigFloat)right.Value),
+                        IsEnumerable = false
+                    };
+                }
+                else if (left.Type == AlgoValueType.Integer)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Integer,
+                        Value = BigInteger.Add((BigInteger)left.Value, (BigInteger)right.Value),
+                        IsEnumerable = false
+                    };
+                }
+                else if (left.Type == AlgoValueType.Rational)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Rational,
+                        Value = BigRational.Add((BigRational)left.Value, (BigRational)right.Value),
+                        IsEnumerable = false
+                    };
+                }
+            }
+
+            //Not the same, so implicit casting must be used.
+
+            //Float combinations.
+            if (left.Type == AlgoValueType.Float)
+            {
+                //Integer.
+                if (right.Type == AlgoValueType.Integer)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Float,
+                        Value = BigFloat.Add((BigFloat)left.Value, new BigFloat((BigInteger)right.Value)),
+                        IsEnumerable = false
+                    };
+                }
+
+                //Rational.
+                else if (right.Type == AlgoValueType.Rational)
+                {
+                    //Getting float version of rational.
+                    BigInteger numerator = ((BigRational)right.Value).FractionalPart.Numerator;
+                    BigInteger denominator = ((BigRational)right.Value).FractionalPart.Denominator;
+                    BigFloat rational_as_float = BigFloat.Divide(new BigFloat(numerator), new BigFloat(denominator));
+
+                    //Returning.
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Float,
+                        Value = BigFloat.Add(rational_as_float, (BigFloat)left.Value),
+                        IsEnumerable = false
+                    };
+                }
+
+                //String.
+                else if (right.Type == AlgoValueType.String)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.String,
+                        Value = ((BigFloat)left.Value).ToString() + (string)right.Value,
+                        IsEnumerable = false
+                    };
+                }
+            }
+
+            //Integer combinations.
+            if (left.Type == AlgoValueType.Integer)
+            {
+                //Float.
+                if (right.Type == AlgoValueType.Float)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Float,
+                        Value = BigFloat.Add((BigFloat)right.Value, new BigFloat((BigInteger)left.Value)),
+                        IsEnumerable = false
+                    };
+                }
+
+                //Rational.
+                else if (right.Type == AlgoValueType.Rational)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Rational,
+                        Value = BigRational.Add(new BigRational((BigInteger)left.Value), (BigRational)right.Value),
+                        IsEnumerable = false
+                    };
+                }
+
+                //String.
+                else if (right.Type == AlgoValueType.String)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.String,
+                        Value = ((BigInteger)left.Value).ToString() + (string)right.Value
+                    };
+                }
+            }
+
+            //Rational combinations.
+            if (left.Type == AlgoValueType.Rational)
+            {
+                //Float.
+                if (right.Type == AlgoValueType.Float)
+                {
+                    //Getting float version of rational.
+                    BigInteger numerator = ((BigRational)left.Value).FractionalPart.Numerator;
+                    BigInteger denominator = ((BigRational)left.Value).FractionalPart.Denominator;
+                    BigFloat rational_as_float = BigFloat.Divide(new BigFloat(numerator), new BigFloat(denominator));
+
+                    //Returning.
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Float,
+                        Value = BigFloat.Add(rational_as_float, (BigFloat)right.Value),
+                        IsEnumerable = false
+                    };
+                }
+
+                //Integer.
+                else if (right.Type == AlgoValueType.Integer)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Rational,
+                        Value = BigRational.Add((BigRational)left.Value, new BigRational((BigInteger)right.Value)),
+                        IsEnumerable = false
+                    };
+                }
+
+                //String.
+                else if (right.Type == AlgoValueType.String)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.String,
+                        Value = ((BigRational)left.Value).ToString() + (string)right.Value,
+                        IsEnumerable = false
+                    };
+                }
+            }
+
+            //String combinations.
+            if (left.Type == AlgoValueType.String) {
+
+                //Float.
+                if (right.Type == AlgoValueType.Float)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.String,
+                        Value = (string)left.Value + ((BigFloat)right.Value).ToString(),
+                        IsEnumerable = false
+                    };
+                }
+                
+                //Integer.
+                else if (right.Type == AlgoValueType.Integer)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.String,
+                        Value = (string)left.Value + ((BigInteger)right.Value).ToString(),
+                        IsEnumerable = false
+                    };
+                }
+
+                //Rational.
+                else if (right.Type == AlgoValueType.Rational)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.String,
+                        Value = (string)left.Value + ((BigRational)right.Value).ToString(),
+                        IsEnumerable = false
+                    };
+                }
+            }
+
+            //Could not find a match, error.
+            Error.Fatal(context, "Invalid types to add, cannot add type " + left.Type.ToString() + " and type " + right.Type.ToString() + ".");
+            return null;
+        }
+
+        //Take one AlgoValue from another.
+        public static AlgoValue Subtract(ParserRuleContext context, AlgoValue left, AlgoValue right)
+        {
+            //Are either of them enumerable?
+            //Roadmap: Remove elements from array by doing [] - 3.
+            if (left.IsEnumerable || right.IsEnumerable)
+            {
+                Error.Fatal(context, "Cannot use a subtract operation on an enumerable.");
+                return null;
+            }
+
+            //Are either of them strings?
+            if (left.Type == AlgoValueType.String || right.Type == AlgoValueType.String)
+            {
+                Error.Fatal(context, "Cannot use a subtract operation on a string.");
+                return null;
+            }
+
+            //Float combinations.
+            if (left.Type == AlgoValueType.Float)
+            {
+                //Float.
+                if (right.Type == AlgoValueType.Float)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Float,
+                        Value = BigFloat.Subtract((BigFloat)left.Value, (BigFloat)right.Value),
+                        IsEnumerable = false
+                    };
+                }
+
+                //Integer.
+                else if (right.Type == AlgoValueType.Integer)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Float,
+                        Value = BigFloat.Subtract((BigFloat)left.Value, new BigFloat((BigInteger)right.Value)),
+                        IsEnumerable = false
+                    };
+                }
+
+                //Rational.
+                else if (right.Type == AlgoValueType.Rational)
+                {
+                    //Casting rational to a float.
+                    BigInteger numerator = ((BigRational)right.Value).FractionalPart.Numerator;
+                    BigInteger denominator = ((BigRational)right.Value).FractionalPart.Denominator;
+                    BigFloat rational_as_float = BigFloat.Divide(new BigFloat(numerator), new BigFloat(denominator));
+
+                    //Subtracting.
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Float,
+                        Value = BigFloat.Subtract((BigFloat)left.Value, rational_as_float),
+                        IsEnumerable = false
+                    };
+                }
+            }
+
+            //Integer combinations.
+            if (left.Type == AlgoValueType.Integer)
+            {
+                //Integer.
+                if (right.Type == AlgoValueType.Integer)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Integer,
+                        Value = BigInteger.Subtract((BigInteger)left.Value, (BigInteger)right.Value),
+                        IsEnumerable = false
+                    };
+                }
+
+                //Float.
+                if (right.Type == AlgoValueType.Float)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Float,
+                        Value = BigFloat.Subtract(new BigFloat((BigInteger)left.Value), (BigFloat)right.Value),
+                        IsEnumerable = false
+                    };
+                }
+
+                //Rational.
+                else if (right.Type == AlgoValueType.Rational)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Rational,
+                        Value = BigRational.Subtract(new BigRational((BigInteger)left.Value), (BigRational)right.Value),
+                        IsEnumerable = false
+                    };
+                }
+            }
+
+            //Rational combinations.
+            if (left.Type == AlgoValueType.Rational)
+            {
+                //Float.
+                if (right.Type == AlgoValueType.Float)
+                {
+                    //Casting rational to float.
+                    BigInteger numerator = ((BigRational)left.Value).FractionalPart.Numerator;
+                    BigInteger denominator = ((BigRational)left.Value).FractionalPart.Denominator;
+                    BigFloat rational_as_float = BigFloat.Divide(new BigFloat(numerator), new BigFloat(denominator));
+
+                    //Returning.
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Float,
+                        Value = BigFloat.Subtract((BigFloat)left.Value, (BigFloat)right.Value),
+                        IsEnumerable = false
+                    };
+                }
+
+                //Integer.
+                else if (right.Type == AlgoValueType.Integer)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Rational,
+                        Value = BigRational.Subtract((BigRational)left.Value, new BigRational((BigInteger)right.Value)),
+                        IsEnumerable = false
+                    };
+                }
+
+                //Rational.
+                else if (right.Type == AlgoValueType.Rational)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Rational,
+                        Value = BigRational.Subtract((BigRational)left.Value, (BigRational)right.Value),
+                        IsEnumerable = false
+                    };
+                }
+            }
+
+            //Did not find a combination, error and return.
+            Error.Fatal(context, "Invalid types to subtract, cannot subtract type " + left.Type.ToString() + " and type " + right.Type.ToString() + ".");
             return null;
         }
     }

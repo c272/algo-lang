@@ -100,7 +100,7 @@ namespace Algo
                 AlgoValue right = (AlgoValue)VisitSub(context.sub());
 
                 //Perform a power.
-                return (AlgoValue)AlgoOperators.Pow(left, right);
+                return AlgoOperators.Pow(context, left, right);
             } else
             {
                 //No, just evaluate the sub.
@@ -170,7 +170,20 @@ namespace Algo
                     Value = new BigRational(BigInteger.Zero, new Fraction(BigInteger.Parse(numerator), BigInteger.Parse(denominator))),
                     IsEnumerable = false
                 };
-            } else
+            }
+            else if (context.IDENTIFIER() != null)
+            {
+                //Check if the variable exists in scope.
+                if (!Scopes.VariableExists(context.IDENTIFIER().GetText()))
+                {
+                    Error.Fatal(context, "No variable exists named '" + context.IDENTIFIER().GetText() + "'.");
+                    return null;
+                }
+
+                //It does, return.
+                return Scopes.GetVariable(context.IDENTIFIER().GetText());
+            }
+            else
             {
                 //No proper detected value type.
                 Error.Fatal(context, "Unknown or invalid type given for value.");
