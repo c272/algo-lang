@@ -715,7 +715,7 @@ namespace Algo
         }
 
         //Take one AlgoValue from another.
-        public static AlgoValue Subtract(ParserRuleContext context, AlgoValue left, AlgoValue right)
+        public static AlgoValue Sub(ParserRuleContext context, AlgoValue left, AlgoValue right)
         {
             //Are either of them enumerable?
             //Roadmap: Remove elements from array by doing [] - 3.

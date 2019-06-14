@@ -414,56 +414,10 @@ namespace ExtendedNumerics
 
         public override string ToString()
         {
-            return this.ToString(CultureInfo.CurrentCulture);
-        }
-
-        public String ToString(String format)
-        {
-            return this.ToString(CultureInfo.CurrentCulture);
-        }
-
-        public String ToString(IFormatProvider provider)
-        {
-            return this.ToString("R", provider);
-        }
-
-        public String ToString(String format, IFormatProvider provider)
-        {
-            NumberFormatInfo numberFormatProvider = (NumberFormatInfo)provider.GetFormat(typeof(NumberFormatInfo));
-            if (numberFormatProvider == null)
-            {
-                numberFormatProvider = CultureInfo.CurrentCulture.NumberFormat;
-            }
-
-            string zeroString = numberFormatProvider.NativeDigits[0];
-
-            BigRational input = BigRational.Reduce(this);
-
-            string first = input.WholePart != 0 ? String.Format(provider, "{0}", input.WholePart.ToString(format, provider)) : string.Empty;
-            string second = input.FractionalPart.Numerator != 0 ? String.Format(provider, "{0}", input.FractionalPart.ToString(format, provider)) : string.Empty;
-            string join = string.Empty;
-
-            if (!string.IsNullOrWhiteSpace(first) && !string.IsNullOrWhiteSpace(second))
-            {
-                if (input.WholePart.Sign < 0)
-                {
-                    join = numberFormatProvider.NegativeSign;
-                }
-                else
-                {
-                    join = numberFormatProvider.PositiveSign;
-                }
-            }
-
-            if (string.IsNullOrWhiteSpace(first) && string.IsNullOrWhiteSpace(join) && string.IsNullOrWhiteSpace(second))
-            {
-                return zeroString;
-            }
-
-            return string.Concat(first, join, second);
+            Fraction improper = GetImproperFraction();
+            return improper.Numerator.ToString() + "/" + improper.Denominator.ToString();
         }
 
         #endregion
-
     }
 }

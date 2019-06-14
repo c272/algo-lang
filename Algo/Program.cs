@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ExtendedNumerics;
+using System.Numerics;
 
 namespace Algo
 {
@@ -12,8 +14,11 @@ namespace Algo
     {
         static void Main(string[] args)
         {
+
+            Console.WriteLine(new BigRational(new Fraction(new BigInteger(64), new BigInteger(32))).ToString());
+            
             //Test input string.
-            string input = "let f() = { }";
+            string input = "let f() = 3;";
             var chars = new AntlrInputStream(input);
             var lexer = new algoLexer(chars);
             var tokens = new CommonTokenStream(lexer);
