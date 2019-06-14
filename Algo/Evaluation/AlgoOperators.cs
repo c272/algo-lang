@@ -248,6 +248,7 @@ namespace Algo
                 };
             }
 
+            //Float * Integer
             if (left.Type == AlgoValueType.Float && right.Type == AlgoValueType.Integer)
             {
                 return new AlgoValue()
@@ -258,6 +259,7 @@ namespace Algo
                 };
             }
 
+            //Rational * Integer
             if (left.Type == AlgoValueType.Rational && right.Type == AlgoValueType.Integer)
             {
                 BigInteger numerator = BigInteger.Multiply(((BigRational)left.Value).FractionalPart.Numerator, (BigInteger)right.Value);
@@ -270,6 +272,171 @@ namespace Algo
                    IsEnumerable = false
                 };
             }
+
+            //Integer * Rational
+            if (right.Type == AlgoValueType.Integer && right.Type == AlgoValueType.Rational)
+            {
+                BigInteger numerator = BigInteger.Multiply(((BigRational)right.Value).FractionalPart.Numerator, (BigInteger)left.Value);
+                BigInteger denominator = ((BigRational)right.Value).FractionalPart.Denominator;
+
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Rational,
+                    Value = new BigRational(BigInteger.Zero, new Fraction(numerator, denominator)),
+                    IsEnumerable = false
+                };
+            }
+
+            //Could not find a valid combination, exit as fatal.
+            Error.Fatal(context, "Invalid types to multiply, cannot multiply type " + left.Type.ToString() + " and " + right.Type.ToString() + ".");
+            return null;
+        }
+
+        //Divide one AlgoValue by another.
+        public static AlgoValue Div(ParserRuleContext context, AlgoValue left, AlgoValue right)
+        {
+            //Check if either are strings, renders the operation invalid.
+            if (left.Type == AlgoValueType.String || right.Type == AlgoValueType.String)
+            {
+                Error.Fatal(context, "Cannot perform division on strings.");
+                return null;
+            }
+
+            //Check if either are arrays.
+            if (left.IsEnumerable || right.IsEnumerable)
+            {
+                Error.Fatal(context, "Cannot perform division on arrays.");
+                return null;
+            }
+
+            //Are the types the same? No casting required that way.
+            if (left.Type == right.Type)
+            {
+                //Little casting required.
+                if (left.Type == AlgoValueType.Float)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Float,
+                        Value = BigFloat.Divide((BigFloat)left.Value, (BigFloat)right.Value),
+                        IsEnumerable = false
+                    };
+                }
+                else if (left.Type == AlgoValueType.Integer)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Integer,
+                        Value = BigInteger.Divide((BigInteger)left.Value, (BigInteger)right.Value),
+                        IsEnumerable = false
+                    };
+                }
+                else if (left.Type == AlgoValueType.Rational)
+                {
+                    //Getting the numerator and denominator.
+                    BigInteger left_numerator = ((BigRational)left.Value).FractionalPart.Numerator;
+                    BigInteger left_denominator = ((BigRational)left.Value).FractionalPart.Denominator;
+                    BigInteger right_numerator = ((BigRational)right.Value).FractionalPart.Numerator;
+                    BigInteger right_denominator = ((BigRational)right.Value).FractionalPart.Denominator;
+
+                    //Multiply to get new numerator and denominator.
+                    BigInteger numerator = left_numerator * right_denominator;
+                    BigInteger denominator = left_denominator * right_numerator;
+
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Rational,
+                        Value = new BigRational(new Fraction(numerator, denominator)),
+                        IsEnumerable = false
+                    };
+                }
+            }
+
+            //Find other valid type combinations.
+
+            //Float / Integer
+            if (left.Type == AlgoValueType.Float && right.Type == AlgoValueType.Integer)
+            {
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Float,
+                    Value = BigFloat.Divide((BigFloat)left.Value, new BigFloat((BigInteger)right.Value)),
+                    IsEnumerable = false
+                };
+            }
+            else if (left.Type == AlgoValueType.Integer && right.Type == AlgoValueType.Float)
+            {
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Float,
+                    Value = BigFloat.Divide(new BigFloat((BigInteger)left.Value), (BigFloat)right.Value),
+                    IsEnumerable = false
+                };
+            }
+
+            //Rational / Integer
+            else if (left.Type == AlgoValueType.Rational && right.Type == AlgoValueType.Integer)
+            {
+                //Getting numerator and denominator.
+                BigInteger numerator = ((BigRational)left.Value).FractionalPart.Numerator;
+                BigInteger denominator = ((BigRational)left.Value).FractionalPart.Denominator * (BigInteger)left.Value;
+
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Rational,
+                    Value = new BigRational(new Fraction(numerator, denominator)),
+                    IsEnumerable = false
+                };
+            }
+            else if (left.Type == AlgoValueType.Integer && right.Type == AlgoValueType.Rational)
+            {
+                //Getting numerator and denominator.
+                BigInteger numerator = (BigInteger)left.Value * ((BigRational)right.Value).FractionalPart.Denominator;
+                BigInteger denominator = ((BigRational)right.Value).FractionalPart.Numerator;
+
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Rational,
+                    Value = new BigRational(new Fraction(numerator, denominator)),
+                    IsEnumerable = false
+                };
+            }
+            
+            //Rational / Float
+            else if (left.Type == AlgoValueType.Rational && right.Type == AlgoValueType.Float)
+            {
+                //Get the rational part as a float.
+                BigInteger numerator = ((BigRational)left.Value).FractionalPart.Numerator;
+                BigInteger denominator = ((BigRational)left.Value).FractionalPart.Denominator;
+                BigFloat rational_as_float = BigFloat.Divide(new BigFloat(numerator), new BigFloat(denominator));
+
+                //Return.
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Float,
+                    Value = BigFloat.Divide(rational_as_float, (BigFloat)right.Value),
+                    IsEnumerable = false
+                };
+            }
+            else if (left.Type == AlgoValueType.Float && right.Type == AlgoValueType.Rational)
+            {
+                //Get the rational part as a float.
+                BigInteger numerator = ((BigRational)right.Value).FractionalPart.Numerator;
+                BigInteger denominator = ((BigRational)right.Value).FractionalPart.Denominator;
+                BigFloat rational_as_float = BigFloat.Divide(new BigFloat(numerator), new BigFloat(denominator));
+
+                //Return.
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Float,
+                    Value = BigFloat.Divide((BigFloat)left.Value, rational_as_float),
+                    IsEnumerable = false
+                };
+            }
+            
+            //Could not find a valid combination, exit as fatal.
+            Error.Fatal(context, "Invalid types to divide, cannot divide type " + left.Type.ToString() + " by " + right.Type.ToString() + ".");
+            return null;
         }
     }
 }
