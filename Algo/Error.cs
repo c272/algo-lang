@@ -32,6 +32,7 @@ namespace Algo
             Console.BackgroundColor = ConsoleColor.Black;
 
             ANTLRDebug.PrintScopes();
+            Environment.Exit(-1);
         }
 
         //Warning.

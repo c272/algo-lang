@@ -270,6 +270,19 @@ public partial class algoBaseListener : IalgoListener {
 	public virtual void ExitExpr([NotNull] algoParser.ExprContext context) { }
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.rounding_expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterRounding_expr([NotNull] algoParser.Rounding_exprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.rounding_expr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitRounding_expr([NotNull] algoParser.Rounding_exprContext context) { }
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.term"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -307,19 +320,6 @@ public partial class algoBaseListener : IalgoListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitSub([NotNull] algoParser.SubContext context) { }
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="algoParser.scope_block"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterScope_block([NotNull] algoParser.Scope_blockContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="algoParser.scope_block"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitScope_block([NotNull] algoParser.Scope_blockContext context) { }
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.operator"/>.

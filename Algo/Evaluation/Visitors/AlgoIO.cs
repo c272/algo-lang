@@ -19,27 +19,86 @@ namespace Algo
             //Evaluate the expression.
             AlgoValue toPrint = (AlgoValue)VisitExpr(context.expr());
 
-            //Depending on the type, print accordingly via. casts.
+            //Depending on the type, set string accordingly via. casts.
+            string printString = "";
             switch (toPrint.Type)
             {
                 case AlgoValueType.Float:
-                    Console.WriteLine(((BigFloat)toPrint.Value).ToString());
+                    printString = ((BigFloat)toPrint.Value).ToString();
                     break;
                 case AlgoValueType.Integer:
-                    Console.WriteLine(((BigInteger)toPrint.Value).ToString());
+                    printString = ((BigInteger)toPrint.Value).ToString();
                     break;
                 case AlgoValueType.Rational:
-                    Console.WriteLine(((BigRational)toPrint.Value).ToString());
+                    printString = ((BigRational)toPrint.Value).ToString();
                     break;
                 case AlgoValueType.String:
-                    Console.WriteLine((string)toPrint.Value);
+                    printString = (string)toPrint.Value;
                     break;
                 default:
                     Error.Fatal(context, "Invalid type to print, cannot print a value of type '" + toPrint.Type + "'.");
                     return null;
             }
 
-            //Return.
+            //Check if a rounding expression is present.
+            if (context.rounding_expr() != null)
+            {
+                //Evaluate the rounding expression.
+                AlgoValue roundingNum = (AlgoValue)VisitExpr(context.rounding_expr().expr());
+
+                //Check it's an integer.
+                if (roundingNum.Type != AlgoValueType.Integer)
+                {
+                    Error.Warning(context, "Rounding value given wasn't an integer, so it was ignored.");
+                }
+                else if ((BigInteger)roundingNum.Value <= 0)
+                {
+                    Error.Warning(context, "Rounding value given less than one, so it was ignored.");
+                }
+                else if (toPrint.Type == AlgoValueType.String)
+                {
+                    //Cannot round strings.
+                    Error.Warning(context, "Cannot round a string, so rounding was ignored.");
+                }
+                else
+                {
+                    //Print rounded value.
+                    //todo: make this take account of rounding.
+                    int amtSF = 0;
+                    bool pointReached = false;
+                    foreach (char c in printString)
+                    {
+                        if (c != '.' && c != '0')
+                        {
+                            amtSF++;
+                        } else if (c=='.')
+                        {
+                            pointReached = true;
+                        }
+
+                        if (amtSF == (BigInteger)roundingNum.Value &&) { }
+                        Console.Write(c);
+
+                        //Reached the required SF.
+                        if (amtSF == (BigInteger)roundingNum.Value)
+                        {
+                            if (!pointReached)
+                            {
+                                Console.Write('0');
+                            } else
+                            {
+                                break;
+                            }
+                        }
+                    }
+
+                    //Return.
+                    return null;
+                }
+            }
+
+            //Print and return.
+            Console.WriteLine(printString);
             return null;
         }
     }

@@ -159,6 +159,13 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitExpr([NotNull] algoParser.ExprContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.rounding_expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitRounding_expr([NotNull] algoParser.Rounding_exprContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="algoParser.term"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -178,13 +185,6 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitSub([NotNull] algoParser.SubContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="algoParser.scope_block"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitScope_block([NotNull] algoParser.Scope_blockContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="algoParser.operator"/>.

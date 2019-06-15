@@ -153,7 +153,7 @@ namespace Algo
                 return new AlgoValue()
                 {
                     Type = AlgoValueType.String,
-                    Value = context.STRING().GetText().Substring(1, context.STRING().GetText().Length - 2),
+                    Value = context.STRING().GetText().Substring(1, context.STRING().GetText().Length - 2).Replace("\\n", "\n"),
                     IsEnumerable = false
                 };
             }

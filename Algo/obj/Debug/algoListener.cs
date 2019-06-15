@@ -230,6 +230,17 @@ public interface IalgoListener : IParseTreeListener {
 	void ExitExpr([NotNull] algoParser.ExprContext context);
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.rounding_expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterRounding_expr([NotNull] algoParser.Rounding_exprContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.rounding_expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitRounding_expr([NotNull] algoParser.Rounding_exprContext context);
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.term"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -261,17 +272,6 @@ public interface IalgoListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitSub([NotNull] algoParser.SubContext context);
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="algoParser.scope_block"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterScope_block([NotNull] algoParser.Scope_blockContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="algoParser.scope_block"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitScope_block([NotNull] algoParser.Scope_blockContext context);
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.operator"/>.

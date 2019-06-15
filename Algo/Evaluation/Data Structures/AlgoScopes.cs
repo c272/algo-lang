@@ -88,7 +88,7 @@ namespace Algo
         public void AddVariable(string name, AlgoValue value)
         {
             //Check if a variable with this name already exists.
-            if (VariableExists(name))
+            if (VariableExistsLowest(name))
             {
                 Error.FatalNoContext("A variable with this name already exists, cannot create one.");
                 return;

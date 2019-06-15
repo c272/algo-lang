@@ -2,6 +2,7 @@
 using Antlr4.Runtime;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace Algo
         static void Main(string[] args)
         {
             //Test input string.
-            string input = "let a = true; if (a) {}";
+            string input = File.ReadAllText("debugscript.txt");
             var chars = new AntlrInputStream(input);
             var lexer = new algoLexer(chars);
             var tokens = new CommonTokenStream(lexer);

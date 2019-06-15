@@ -24,17 +24,17 @@ statement: (  stat_define
 
 //Types of statement.
 stat_define: LET_SYM IDENTIFIER EQUALS expr;
-stat_setvar: IDENTIFIER EQUALS expr;
+stat_setvar: IDENTIFIER EQUALS expr (rounding_expr)?;
 stat_functionCall: IDENTIFIER LBRACKET literal_params? RBRACKET;
 stat_functionDef: LET_SYM IDENTIFIER LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
 stat_return: RETURN_SYM expr;
 stat_forLoop: FOR_SYM LBRACKET IDENTIFIER IN_SYM IDENTIFIER RBRACKET LBRACE statement* RBRACE;
-stat_if: IF_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE (stat_elif)* (stat_else)?;
-stat_print: PRINT_SYM expr;
+stat_if: IF_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE stat_elif* stat_else?;
+stat_print: PRINT_SYM expr (rounding_expr)?;
 
 //Elif and else statements, not directly available, only by proxy.
-stat_elif: ELSE_SYM IF_SYM scope_block;
-stat_else: ElSE_SYM scope_block;
+stat_elif: ELSE_SYM IF_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE;
+stat_else: ELSE_SYM LBRACE statement* RBRACE;
 
 //Checks, parameter types.
 literal_params: (expr COMMA)* expr;
@@ -51,6 +51,9 @@ expr: expr ADD_OP term
 	| expr TAKE_OP term
 	| term;
 
+//A rounding fractal.
+rounding_expr: TO_SYM expr SIG_FIG_SYM;
+
 term: term MUL_OP factor
 	| term DIV_OP factor
 	| factor;
@@ -59,9 +62,6 @@ factor: factor POW_OP sub
 	  | sub;
 
 sub: value | LBRACKET expr RBRACKET;
-
-//A scope block, which encompasses a whole single scope.
-scope_block: LBRACE statement* RBRACE;
 
 //Mathematical operators.
 operator: MUL_OP | DIV_OP | TAKE_OP | ADD_OP | POW_OP;
@@ -87,7 +87,7 @@ FLOAT: ('-')? [1-9]* [0-9] '.' [0-9]+;
 BOOLEAN: 'true' | 'false';
 
 //String.
-STRING: '"' (~[\"])* '"';
+STRING: '"' (~["])* '"';
 
 //Rational.
 RATIONAL: INTEGER '/' INTEGER;
@@ -98,6 +98,8 @@ LET_SYM: 'let';
 FOR_SYM: 'for';
 IN_SYM: 'in';
 IF_SYM: 'if';
+TO_SYM: 'to';
+SIG_FIG_SYM: 'sf';
 ELSE_SYM: 'else';
 IMPORT_SYM: 'import';
 RETURN_SYM: 'return';

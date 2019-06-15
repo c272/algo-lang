@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Antlr4.Runtime.Misc;
 
-namespace Algo.Parsing
+namespace Algo
 {
     /// <summary>
     /// Contains all visitor nodes that handle checks or binary evaluation.
@@ -19,18 +19,68 @@ namespace Algo.Parsing
             bool mainCheck = (bool)VisitCheck(context.check());
             if (mainCheck)
             {
+                //Create scope.
+                Scopes.AddScope();
+
                 //Evaluate the main statement body.
                 foreach (var statement in context.statement())
                 {
                     VisitStatement(statement);
                 }
 
+                //Delete scope.
+                Scopes.RemoveScope();
+
                 //Return.
                 return null;
             }
 
             //Maincheck failed, complete all the "else if" checks if they exist.
+            if (context.stat_elif().Length != 0)
+            {
+                foreach (var elseifblock in context.stat_elif())
+                {
+                    //Does the check pass?
+                    var checkContext = elseifblock.check();
+                    bool elseifCheck = (bool)VisitCheck(checkContext);
 
+                    if (elseifCheck)
+                    {
+                        //Create scope.
+                        Scopes.AddScope();
+
+                        //Evaluate statements.
+                        foreach (var statement in elseifblock.statement())
+                        {
+                            VisitStatement(statement);
+                        }
+
+                        //Remove scope.
+                        Scopes.RemoveScope();
+
+                        //Return.
+                        return null;
+                    }
+                }
+            }
+
+            //Is there an else?
+            if (context.stat_else() != null)
+            {
+                //Create a scope.
+                Scopes.AddScope();
+
+                //Evaluate statements.
+                foreach (var statement in context.stat_else().statement())
+                {
+                    VisitStatement(statement);
+                }
+
+                //Deleting scope.
+                Scopes.RemoveScope();
+            }
+
+            //Returning.
             return null;
         }
 
@@ -38,7 +88,7 @@ namespace Algo.Parsing
         public override object VisitCheck([NotNull] algoParser.CheckContext context)
         {
             //Is the check a single expression or multiple?
-            if (context.check() != null)
+            if (context.check().Length != 0)
             {
                 //Multiple.
                 //Evaluate left and right expressions.
@@ -85,10 +135,7 @@ namespace Algo.Parsing
             {
                 //Single.
                 //Evaluate the expression.
-                AlgoValue value = (AlgoValue)VisitExpr(context.expr());
-
-                //Cast value to boolean.
-                return AlgoComparators.GetBooleanValue(value, context);
+                return (AlgoValue)VisitExpr(context.expr());
             }
         }
     }
