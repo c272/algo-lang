@@ -24,13 +24,13 @@ statement: (  stat_define
 
 //Types of statement.
 stat_define: LET_SYM IDENTIFIER EQUALS expr;
-stat_setvar: IDENTIFIER EQUALS expr (rounding_expr)?;
+stat_setvar: IDENTIFIER EQUALS expr rounding_expr?;
 stat_functionCall: IDENTIFIER LBRACKET literal_params? RBRACKET;
 stat_functionDef: LET_SYM IDENTIFIER LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
 stat_return: RETURN_SYM expr;
 stat_forLoop: FOR_SYM LBRACKET IDENTIFIER IN_SYM IDENTIFIER RBRACKET LBRACE statement* RBRACE;
 stat_if: IF_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE stat_elif* stat_else?;
-stat_print: PRINT_SYM expr (rounding_expr)?;
+stat_print: PRINT_SYM expr rounding_expr?;
 
 //Elif and else statements, not directly available, only by proxy.
 stat_elif: ELSE_SYM IF_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE;

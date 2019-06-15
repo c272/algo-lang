@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Evaluation\Data Structures\AlgoFunction.cs" />
     <Compile Include="Evaluation\Visitors\AlgoComparators.cs" />
+    <Compile Include="Maths Libraries\SigDigitConverter.cs" />
     <Compile Include="Parsing\algo.g4.lexer.cs">
       <DependentUpon>algo.g4</DependentUpon>
     </Compile>

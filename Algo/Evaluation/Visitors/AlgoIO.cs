@@ -75,8 +75,6 @@ namespace Algo
                         {
                             pointReached = true;
                         }
-
-                        if (amtSF == (BigInteger)roundingNum.Value &&) { }
                         Console.Write(c);
 
                         //Reached the required SF.
