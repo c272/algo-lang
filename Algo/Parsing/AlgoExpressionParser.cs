@@ -213,6 +213,77 @@ namespace Algo
                     };
                 }
             }
+            else if (context.array() != null)
+            {
+                //LIST.
+
+                //Evaluate all list items as expressions.
+                List<AlgoValue> list = new List<AlgoValue>();
+                foreach (var item in context.array().value())
+                {
+                    list.Add((AlgoValue)VisitValue(item));
+                }
+
+                //Return as a single value.
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.List,
+                    Value = list,
+                    IsEnumerable = true
+                };
+            }
+            else if (context.array_access() != null)
+            {
+                //ACCESSED ARRAY VALUE
+
+                //Get the root value.
+                if (!Scopes.VariableExists(context.array_access().IDENTIFIER().GetText()))
+                {
+                    Error.Fatal(context, "An enumerable variable with name '" + context.array_access().IDENTIFIER().GetText() + "' does not exist.");
+                    return null;
+                }
+
+                var currentValue = Scopes.GetVariable(context.array_access().IDENTIFIER().GetText());
+                foreach (var accessIndexExpr in context.array_access().literal_params().expr())
+                {
+                    //Already found the end, but still going.
+                    if (currentValue.IsEnumerable == false)
+                    {
+                        Error.Fatal(context, "Attempting to index into a value that isn't enumerable.");
+                        return null;
+                    }
+
+                    //Evaluate the index expression.
+                    AlgoValue accessIndex = (AlgoValue)VisitExpr(accessIndexExpr);
+                    if (accessIndex.Type != AlgoValueType.Integer)
+                    {
+                        Error.Fatal(context, "Access index expression did not return an integer.");
+                        return null;
+                    }
+
+                    if ((BigInteger)accessIndex.Value > int.MaxValue)
+                    {
+                        Error.Fatal(context, "Cannot access index in array, the index is too large.");
+                        return null;
+                    }
+
+                    //Getting an integer representation of the index.
+                    int accessIndexInt = int.Parse(((BigInteger)accessIndex.Value).ToString());
+
+                    //Get the index of the current value.
+                    try
+                    {
+                        currentValue = ((List<AlgoValue>)currentValue.Value)[accessIndexInt];
+                    }
+                    catch
+                    {
+                        //Not a list, attempt to get a single value instead.
+                        currentValue = (AlgoValue)currentValue.Value;
+                    }
+                }
+
+                return currentValue;
+            }
             else
             {
                 //No proper detected value type.
