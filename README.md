@@ -16,19 +16,24 @@ Building in "Debug" mode is recommended for all contributions to the update bran
 ## Code Examples
 **The basic "Hello World" program in Algo:**
 
-    print "Hello World"
+    print "Hello World";
 
 **Pythonic imports and preprocessor statements.**
 
-    import somefile.ag
+    import somefile.ag;
     
 **Variable and function declaration:**
 
+    //Declare some variables and functions.
     let foo = 12.34;
     let bar = 2;
     let baz(x) = {
       return x+2;
     }
+    
+    //Delete some variables.
+    disregard foo;
+    disregard bar;
     
 **"If" and "for" statements:**
     
