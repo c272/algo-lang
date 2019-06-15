@@ -164,6 +164,28 @@ public interface IalgoListener : IParseTreeListener {
 	void ExitAbstract_params([NotNull] algoParser.Abstract_paramsContext context);
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.check"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterCheck([NotNull] algoParser.CheckContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.check"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitCheck([NotNull] algoParser.CheckContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.check_operator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterCheck_operator([NotNull] algoParser.Check_operatorContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.check_operator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitCheck_operator([NotNull] algoParser.Check_operatorContext context);
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

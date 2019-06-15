@@ -18,7 +18,7 @@ namespace Algo
            // Console.WriteLine(new BigRational(new Fraction(new BigInteger(64), new BigInteger(32))).ToString());
             
             //Test input string.
-            string input = "print \"What a gamer, number is \" + (3 + 1);";
+            string input = "let a(x) = { print \"Wow a function call! x=\" + x + \".\" }";
             var chars = new AntlrInputStream(input);
             var lexer = new algoLexer(chars);
             var tokens = new CommonTokenStream(lexer);

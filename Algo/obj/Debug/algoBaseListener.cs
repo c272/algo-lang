@@ -192,6 +192,32 @@ public partial class algoBaseListener : IalgoListener {
 	public virtual void ExitAbstract_params([NotNull] algoParser.Abstract_paramsContext context) { }
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.check"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterCheck([NotNull] algoParser.CheckContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.check"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitCheck([NotNull] algoParser.CheckContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.check_operator"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterCheck_operator([NotNull] algoParser.Check_operatorContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.check_operator"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitCheck_operator([NotNull] algoParser.Check_operatorContext context) { }
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

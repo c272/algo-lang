@@ -13,6 +13,8 @@
         String,
         Integer,
         Float,
-        Rational
+        Rational,
+        List,
+        Function
     }
 }

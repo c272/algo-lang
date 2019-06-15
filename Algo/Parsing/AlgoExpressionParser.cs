@@ -43,9 +43,6 @@ namespace Algo
                 //No, just a term, evaluate.
                 return (AlgoValue)VisitTerm(context.term());
             }
-
-            //Error.
-            throw new Exception("Invalid expression type.");
         }
 
         //When a single term is parsed in Algo.

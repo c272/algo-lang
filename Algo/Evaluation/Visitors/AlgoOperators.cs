@@ -181,7 +181,7 @@ namespace Algo
             }
 
             //Did not find value.
-            Error.Fatal(context, "Invalid power operation passed to evaluator.");
+            Error.Fatal(context, "Invalid power operation passed to evaluator, cannot power types '" + base_.Type.ToString() + "' and '" + power.Type.ToString() +"'.");
             return null;
         }
 

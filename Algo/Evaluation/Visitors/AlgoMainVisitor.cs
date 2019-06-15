@@ -41,6 +41,16 @@ namespace Algo
                 //Define statement.
                 VisitStat_define(context.stat_define());
             }
+            else if (context.stat_setvar() != null)
+            {
+                //Set a variable after its definition.
+                VisitStat_setvar(context.stat_setvar());
+            }
+            else if (context.stat_if() != null)
+            {
+                //An "if" statement.
+                //...
+            }
             else if (context.stat_forLoop() != null)
             {
                 //..
@@ -55,12 +65,12 @@ namespace Algo
             }
             else if (context.stat_print() != null)
             {
-                //Print statement.
+                //A print statement.
                 VisitStat_print(context.stat_print());
             }
             else
             {
-
+                //error here
             }
 
             return null;

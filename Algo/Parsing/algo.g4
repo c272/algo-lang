@@ -11,13 +11,15 @@ compileUnit
 block: statement*;
 
 //Statements which require endlines, and those that don't.
-statement: (stat_define
+statement: (  stat_define
 			| stat_functionCall
 			| stat_print
-		   ) ENDLINE
-
-			| (stat_forLoop
-			   | stat_functionDef);
+			| stat_setvar
+		   )  ENDLINE
+		   
+			|  ( stat_forLoop
+			   | stat_functionDef
+			   | stat_if);
 
 //Types of statement.
 stat_define: LET_SYM IDENTIFIER EQUALS expr;
@@ -31,6 +33,12 @@ stat_print: PRINT_SYM expr;
 //Checks, parameter types.
 literal_params: (expr COMMA)* expr;
 abstract_params: (IDENTIFIER COMMA)* IDENTIFIER;
+
+//A check, along with possible check operators.
+check: expr check_operator expr
+	   | expr;
+
+check_operator: BIN_OR | BIN_AND | GRTR_THAN | LESS_THAN | GRTR_THAN_ET | LESS_THAN_ET | BIN_EQUALS;
 
 //An expression, divided into layers of precedence.
 expr: expr ADD_OP term
@@ -54,7 +62,7 @@ value: stat_functionCall | IDENTIFIER | INTEGER | FLOAT | BOOLEAN | STRING | RAT
 
 //An array.
 array: '[' ((value ',')* value)? ']';
-array_access: IDENTIFIER '[' value ']';
+array_access: IDENTIFIER '[' literal_params ']';
 
 /*
  * Lexer Rules
@@ -76,6 +84,7 @@ STRING: '"' (~[\"])* '"';
 RATIONAL: INTEGER '/' INTEGER;
 
 // Commonly used and reserved symbols in Algo.
+// RESERVED WORDS
 LET_SYM: 'let';
 FOR_SYM: 'for';
 IN_SYM: 'in';
@@ -83,9 +92,17 @@ IF_SYM: 'if';
 IMPORT_SYM: 'import';
 RETURN_SYM: 'return';
 PRINT_SYM: 'print';
+
+//NON-MATHEMATICAL SYMBOLS
 ENDLINE: ';';
 EQUALS: '=';
 COMMA: ',';
+LBRACE: '{';
+RBRACE: '}';
+LSQBR: '[';
+RSQBR: ']';
+
+//MATHEMATICAL SYMBOLS
 LBRACKET: '(';
 RBRACKET: ')';
 ADD_OP: '+';
@@ -93,12 +110,15 @@ TAKE_OP: '-';
 MUL_OP: '*';
 DIV_OP: '/';
 POW_OP: '^';
-BIN_OR: '||';
-BIN_AND: '&&';
-LBRACE: '{';
-RBRACE: '}';
-LSQBR: '[';
-RSQBR: ']';
+
+//CHECK OPERATORS
+BIN_OR: '|';
+BIN_AND: '&';
+BIN_EQUALS: '==';
+GRTR_THAN: '>';
+LESS_THAN: '<';
+GRTR_THAN_ET: '>=';
+LESS_THAN_ET: '<=';
 
 
 //Identifier.

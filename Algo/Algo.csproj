@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Evaluation\Data Structures\AlgoFunction.cs" />
     <Compile Include="Parsing\algo.g4.lexer.cs">
       <DependentUpon>algo.g4</DependentUpon>
     </Compile>
@@ -60,12 +61,13 @@
       <DependentUpon>algo.g4</DependentUpon>
     </Compile>
     <Compile Include="Parsing\AlgoExpressionParser.cs" />
-    <Compile Include="Parsing\AlgoIO.cs" />
-    <Compile Include="Parsing\AlgoMainVisitor.cs" />
-    <Compile Include="Evaluation\AlgoOperators.cs" />
-    <Compile Include="Evaluation\AlgoScopes.cs" />
-    <Compile Include="Evaluation\AlgoValue.cs" />
-    <Compile Include="Evaluation\AlgoVariableHandler.cs" />
+    <Compile Include="Evaluation\Visitors\AlgoFunctionManager.cs" />
+    <Compile Include="Evaluation\Visitors\AlgoIO.cs" />
+    <Compile Include="Evaluation\Visitors\AlgoMainVisitor.cs" />
+    <Compile Include="Evaluation\Visitors\AlgoOperators.cs" />
+    <Compile Include="Evaluation\Data Structures\AlgoScopes.cs" />
+    <Compile Include="Evaluation\Data Structures\AlgoValue.cs" />
+    <Compile Include="Evaluation\Visitors\AlgoVariableHandler.cs" />
     <Compile Include="Parsing\ANTLRDebug.cs" />
     <Compile Include="Maths Libraries\BigFloat.cs" />
     <Compile Include="Maths Libraries\BigRational.cs" />

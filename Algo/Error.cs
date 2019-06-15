@@ -37,5 +37,13 @@ namespace Algo
             Console.WriteLine("Algo Warning: Line " + context.Start.Line + ":" + context.Start.StartIndex + " - " + errMessage);
             Console.ForegroundColor = ConsoleColor.White;
         }
+
+        //Warning, but where rule contexts are unavailable.
+        public static void WarningNoContext(string errMessage)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("Algo Warning: NOCONTEXT - " + errMessage);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
     }
 }

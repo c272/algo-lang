@@ -117,6 +117,20 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitAbstract_params([NotNull] algoParser.Abstract_paramsContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.check"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitCheck([NotNull] algoParser.CheckContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.check_operator"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitCheck_operator([NotNull] algoParser.Check_operatorContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="algoParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
