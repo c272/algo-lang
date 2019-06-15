@@ -17,6 +17,8 @@ namespace Algo
             Console.WriteLine("Algo Runtime Error: Line " + context.Start.Line + ":" + context.Start.StartIndex + " - " + errMessage);
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Black;
+
+            ANTLRDebug.PrintScopes();
             Environment.Exit(-1);
         }
 
@@ -28,6 +30,8 @@ namespace Algo
             Console.WriteLine("Algo Runtime Error: NOCONTEXT - " + errMessage);
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Black;
+
+            ANTLRDebug.PrintScopes();
         }
 
         //Warning.

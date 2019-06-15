@@ -29,17 +29,30 @@ namespace Algo
             lexer.Reset();
         }
 
+        //Print all scopes available in Algo.
+        public static void PrintScopes()
+        {
+            //Printing variable scopes.
+            Console.WriteLine("SCOPES:");
+            var scopes = algoVisitor.Scopes.GetScopes();
+            for (int i = 0; i < scopes.Count; i++)
+            {
+                Console.WriteLine("Scope " + (i + 1) + "\n---");
+                foreach (var variable in scopes[i])
+                {
+                    Console.WriteLine(variable.Key + " of type " + variable.Value.Type.ToString() + ", value " + variable.Value.Value.ToString() + ".");
+                }
+                Console.WriteLine("");
+            }
+        }
+
         public static void PrintParseList(algoParser.CompileUnitContext tree, algoParser parser)
         {
-            //Printing debug string.
-            Console.WriteLine("ANTLR Debug Parse:");
-            Console.WriteLine(tree.ToInfoString(parser));
-            Console.WriteLine("");
-
             //Printing parse tree.
             Console.WriteLine("ANTLR Parse Tree:");
             Console.WriteLine(tree.ToStringTree(parser));
-            Console.WriteLine(tree.block().statement().Length);
+            Console.WriteLine("-\nStatement Length: " + tree.block().statement().Length);
+            Console.WriteLine("");
         }
     }
 }

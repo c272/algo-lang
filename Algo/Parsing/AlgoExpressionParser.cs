@@ -129,6 +129,7 @@ namespace Algo
             //Check what type the value is.
             if (context.INTEGER() != null)
             {
+                //INTEGER
                 return new AlgoValue()
                 {
                     Type = AlgoValueType.Integer,
@@ -138,6 +139,7 @@ namespace Algo
             }
             else if (context.FLOAT() != null)
             {
+                //FLOAT
                 return new AlgoValue()
                 {
                     Type = AlgoValueType.Float,
@@ -147,6 +149,7 @@ namespace Algo
             }
             else if (context.STRING() != null)
             {
+                //STRING
                 return new AlgoValue()
                 {
                     Type = AlgoValueType.String,
@@ -156,6 +159,7 @@ namespace Algo
             }
             else if (context.RATIONAL() != null)
             {
+                //RATIONAL
                 //Get the two integer halves from the rational.
                 string[] halves = context.RATIONAL().GetText().Split('/');
                 string numerator = halves[0];
@@ -168,8 +172,19 @@ namespace Algo
                     IsEnumerable = false
                 };
             }
+            else if (context.BOOLEAN() != null)
+            {
+                //BOOLEAN
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Boolean,
+                    Value = (context.BOOLEAN().GetText() == "true"),
+                    IsEnumerable = false
+                };
+            }
             else if (context.IDENTIFIER() != null)
             {
+                //VARIABLE
                 //Check if the variable exists in scope.
                 if (!Scopes.VariableExists(context.IDENTIFIER().GetText()))
                 {
@@ -180,11 +195,34 @@ namespace Algo
                 //It does, return.
                 return Scopes.GetVariable(context.IDENTIFIER().GetText());
             }
+            else if (context.stat_functionCall() != null)
+            {
+                //FUNCTION CALL
+                AlgoValue value = (AlgoValue)VisitStat_functionCall(context.stat_functionCall());
+                if (value != null)
+                {
+                    return value;
+                } else
+                {
+                    //Return a null value.
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Null,
+                        Value = null,
+                        IsEnumerable = false
+                    };
+                }
+            }
             else
             {
                 //No proper detected value type.
                 Error.Fatal(context, "Unknown or invalid type given for value.");
-                return null;
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Null,
+                    Value = null,
+                    IsEnumerable = false
+                };
             }
         }
     }

@@ -546,6 +546,15 @@ namespace Algo
                         IsEnumerable = false
                     };
                 }
+                else if (left.Type == AlgoValueType.String)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.String,
+                        Value = (string)left.Value + (string)right.Value,
+                        IsEnumerable = false
+                    };
+                }
             }
 
             //Not the same, so implicit casting must be used.
@@ -858,6 +867,205 @@ namespace Algo
             //Did not find a combination, error and return.
             Error.Fatal(context, "Invalid types to subtract, cannot subtract type " + left.Type.ToString() + " and type " + right.Type.ToString() + ".");
             return null;
+        }
+
+        //Convert an AlgoValue to a specific type.
+        public static AlgoValue ConvertType(ParserRuleContext context, AlgoValue value, AlgoValueType type)
+        {
+            if (type == AlgoValueType.Boolean)
+            {
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Boolean,
+                    Value = AlgoComparators.GetBooleanValue(value, context),
+                    IsEnumerable = false
+                };
+            }
+
+            //Cast to float.
+            else if (type == AlgoValueType.Float)
+            {
+                switch (value.Type)
+                {
+                    //BOOLEAN.
+                    case AlgoValueType.Boolean:
+
+                        //Get the integer value.
+                        int newValue = -1;
+                        if ((bool)value.Value)
+                        {
+                            newValue = 1;
+                        } else
+                        {
+                            newValue = 0;
+                        }
+
+                        //Return.
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.Float,
+                            Value = new BigFloat(newValue),
+                            IsEnumerable = false
+                        };
+                    
+                    //FLOAT.
+                    case AlgoValueType.Float:
+                        return value;
+                    
+                    //INTEGER.
+                    case AlgoValueType.Integer:
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.Float,
+                            Value = new BigFloat((BigInteger)value.Value),
+                            IsEnumerable = false
+                        };
+                    
+                    //RATIONAL.
+                    case AlgoValueType.Rational:
+                        //Casting rational to a float.
+                        BigInteger numerator = ((BigRational)value.Value).FractionalPart.Numerator;
+                        BigInteger denominator = ((BigRational)value.Value).FractionalPart.Denominator;
+                        BigFloat rational_as_float = BigFloat.Divide(new BigFloat(numerator), new BigFloat(denominator));
+
+                        //Returning.
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.Float,
+                            Value = rational_as_float,
+                            IsEnumerable = false
+                        };
+
+                    default:
+                        Error.Fatal(context, "Cannot implicitly convert value of type " + value.Type.ToString() + " to a float.");
+                        return null;
+                }
+            }
+
+            //Cast to integer.
+            else if (type == AlgoValueType.Integer)
+            {
+                switch (value.Type)
+                {
+                    case AlgoValueType.Float:
+                        Error.Warning(context, "Implicitly casting from float to integer will likely cause loss of data.");
+                        if ((BigFloat)value.Value > long.MaxValue)
+                        {
+                            Error.Fatal(context, "Cannot cast this value to integer, as it has become too large.");
+                            return null;
+                        }
+
+                        BigInteger converted = new BigInteger(long.Parse(((BigFloat)value.Value).ToString()));
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.Integer,
+                            Value = converted,
+                            IsEnumerable = false
+                        };
+
+                    case AlgoValueType.Integer:
+                        return value;
+
+                    case AlgoValueType.Rational:
+                        Error.Warning(context, "Implicitly casting from rational to intger will likely cause loss of data.");
+
+                        //Casting rational to a float.
+                        BigInteger numerator = ((BigRational)value.Value).FractionalPart.Numerator;
+                        BigInteger denominator = ((BigRational)value.Value).FractionalPart.Denominator;
+                        BigFloat rational_as_float = BigFloat.Divide(new BigFloat(numerator), new BigFloat(denominator));
+
+                        if (rational_as_float > long.MaxValue)
+                        {
+                            Error.Fatal(context, "Cannot cast this value to integer, as it has become too large.");
+                            return null;
+                        }
+
+                        //Returning.
+                        BigInteger converted_rt = new BigInteger(long.Parse((rational_as_float).ToString()));
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.Integer,
+                            Value = converted_rt,
+                            IsEnumerable = false
+                        };
+                        
+                    default:
+                        Error.Fatal(context, "Cannot implicitly convert value of type " + value.Type.ToString() + " to an integer.");
+                        return null;
+                }
+            }
+
+            //Cast to rational.
+            else if (type == AlgoValueType.Rational)
+            {
+                switch (value.Type)
+                {
+                    case AlgoValueType.Integer:
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.Rational,
+                            Value = new BigRational((BigInteger)value.Value),
+                            IsEnumerable = false
+                        };
+
+                    default:
+                        Error.Fatal(context, "Cannot implicitly convert value of type " + value.Type.ToString() + " to a rational.");
+                        return null;
+                }
+            }
+
+            //Cast to string.
+            else if (type == AlgoValueType.String)
+            {
+                switch (value.Type)
+                {
+                    case AlgoValueType.Boolean:
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.String,
+                            Value = ((bool)value.Value).ToString(),
+                            IsEnumerable = false
+                        };
+
+                    case AlgoValueType.Float:
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.String,
+                            Value = ((BigFloat)value.Value).ToString(),
+                            IsEnumerable = false
+                        };
+
+                    case AlgoValueType.Integer:
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.String,
+                            Value = ((BigInteger)value.Value).ToString(),
+                            IsEnumerable = false
+                        };
+
+                    case AlgoValueType.Rational:
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.String,
+                            Value = ((BigRational)value.Value).ToString(),
+                            IsEnumerable = false
+                        };
+
+                    case AlgoValueType.String:
+                        return value;
+
+                    default:
+                        Error.Fatal(context, "Cannot implicitly convert value of type " + value.Type.ToString() + " to a string.");
+                        return null;
+                }
+            }
+
+            //Cannot implicitly cast to this type.
+            else
+            {
+                Error.Fatal(context, "Cannot implicitly cast to type " + type.ToString() + ".");
+                return null;
+            }
         }
     }
 }

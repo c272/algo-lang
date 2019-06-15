@@ -48,6 +48,12 @@ namespace Algo
             return null;
         }
 
+        //Get all scopes.
+        public List<Dictionary<string, AlgoValue>> GetScopes()
+        {
+            return Scopes;
+        }
+
         //Set a variable within the scopes.
         //Start from deepest depth.
         public void SetVariable(string varname, AlgoValue value)
@@ -70,6 +76,12 @@ namespace Algo
         public bool VariableExists(string varname)
         {
             return (GetVariable(varname) != null);
+        }
+
+        //Checks whether a variable exists at the lowest level.
+        public bool VariableExistsLowest(string name)
+        {
+            return Scopes[Scopes.Count - 1].ContainsKey(name);
         }
 
         //Add a variable to the scope.

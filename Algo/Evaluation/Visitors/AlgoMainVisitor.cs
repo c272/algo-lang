@@ -49,7 +49,7 @@ namespace Algo
             else if (context.stat_if() != null)
             {
                 //An "if" statement.
-                //...
+                VisitStat_if(context.stat_if());
             }
             else if (context.stat_forLoop() != null)
             {
@@ -57,11 +57,18 @@ namespace Algo
             }
             else if (context.stat_functionCall() != null)
             {
-                //..
+                //A function call.
+                VisitStat_functionCall(context.stat_functionCall());
             }
             else if (context.stat_functionDef() != null)
             {
-                //..
+                //A function definition.
+                VisitStat_functionDef(context.stat_functionDef());
+            }
+            else if (context.stat_return() != null)
+            {
+                //Returning a value from a function call.
+                return VisitStat_return(context.stat_return());
             }
             else if (context.stat_print() != null)
             {
@@ -70,7 +77,7 @@ namespace Algo
             }
             else
             {
-                //error here
+                Error.Fatal(context, "Invalid statement type given, not implemented in visitor but finished in parser.");
             }
 
             return null;

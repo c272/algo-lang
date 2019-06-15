@@ -14,11 +14,8 @@ namespace Algo
     {
         static void Main(string[] args)
         {
-
-           // Console.WriteLine(new BigRational(new Fraction(new BigInteger(64), new BigInteger(32))).ToString());
-            
             //Test input string.
-            string input = "let a(x) = { print \"Wow a function call! x=\" + x + \".\" }";
+            string input = "let a = true; if (a) {}";
             var chars = new AntlrInputStream(input);
             var lexer = new algoLexer(chars);
             var tokens = new CommonTokenStream(lexer);
@@ -32,9 +29,17 @@ namespace Algo
             var tree = parser.compileUnit();
             ANTLRDebug.PrintParseList(tree, parser);
 
+            //Add a gap.
+            Console.WriteLine(" --------------------\n | BEGIN EVALUATION |\n --------------------\n");
+
             //Walking the tree.
             var visitor = new algoVisitor();
             visitor.VisitCompileUnit(tree);
+
+            Console.WriteLine("\n ------------------\n | END EVALUATION |\n ------------------\n");
+
+            //Print variables.
+            ANTLRDebug.PrintScopes();
         }
     }
 }

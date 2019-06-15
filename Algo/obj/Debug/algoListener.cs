@@ -109,6 +109,17 @@ public interface IalgoListener : IParseTreeListener {
 	void ExitStat_functionDef([NotNull] algoParser.Stat_functionDefContext context);
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.stat_return"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterStat_return([NotNull] algoParser.Stat_returnContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.stat_return"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitStat_return([NotNull] algoParser.Stat_returnContext context);
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.stat_forLoop"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -140,6 +151,28 @@ public interface IalgoListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitStat_print([NotNull] algoParser.Stat_printContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.stat_elif"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterStat_elif([NotNull] algoParser.Stat_elifContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.stat_elif"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitStat_elif([NotNull] algoParser.Stat_elifContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.stat_else"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterStat_else([NotNull] algoParser.Stat_elseContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.stat_else"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitStat_else([NotNull] algoParser.Stat_elseContext context);
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.literal_params"/>.
@@ -228,6 +261,17 @@ public interface IalgoListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitSub([NotNull] algoParser.SubContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.scope_block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterScope_block([NotNull] algoParser.Scope_blockContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.scope_block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitScope_block([NotNull] algoParser.Scope_blockContext context);
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.operator"/>.

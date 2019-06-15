@@ -82,6 +82,13 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitStat_functionDef([NotNull] algoParser.Stat_functionDefContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.stat_return"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStat_return([NotNull] algoParser.Stat_returnContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="algoParser.stat_forLoop"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -101,6 +108,20 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitStat_print([NotNull] algoParser.Stat_printContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.stat_elif"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStat_elif([NotNull] algoParser.Stat_elifContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.stat_else"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStat_else([NotNull] algoParser.Stat_elseContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="algoParser.literal_params"/>.
@@ -157,6 +178,13 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitSub([NotNull] algoParser.SubContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.scope_block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitScope_block([NotNull] algoParser.Scope_blockContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="algoParser.operator"/>.

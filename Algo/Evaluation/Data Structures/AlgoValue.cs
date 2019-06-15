@@ -14,7 +14,9 @@
         Integer,
         Float,
         Rational,
+        Boolean,
         List,
-        Function
+        Function,
+        Null
     }
 }

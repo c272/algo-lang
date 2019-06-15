@@ -15,6 +15,7 @@ statement: (  stat_define
 			| stat_functionCall
 			| stat_print
 			| stat_setvar
+			| stat_return
 		   )  ENDLINE
 		   
 			|  ( stat_forLoop
@@ -26,16 +27,21 @@ stat_define: LET_SYM IDENTIFIER EQUALS expr;
 stat_setvar: IDENTIFIER EQUALS expr;
 stat_functionCall: IDENTIFIER LBRACKET literal_params? RBRACKET;
 stat_functionDef: LET_SYM IDENTIFIER LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
+stat_return: RETURN_SYM expr;
 stat_forLoop: FOR_SYM LBRACKET IDENTIFIER IN_SYM IDENTIFIER RBRACKET LBRACE statement* RBRACE;
-stat_if: IF_SYM LBRACKET expr RBRACKET LBRACE statement* RBRACE;
+stat_if: IF_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE (stat_elif)* (stat_else)?;
 stat_print: PRINT_SYM expr;
+
+//Elif and else statements, not directly available, only by proxy.
+stat_elif: ELSE_SYM IF_SYM scope_block;
+stat_else: ElSE_SYM scope_block;
 
 //Checks, parameter types.
 literal_params: (expr COMMA)* expr;
 abstract_params: (IDENTIFIER COMMA)* IDENTIFIER;
 
 //A check, along with possible check operators.
-check: expr check_operator expr
+check: check check_operator check
 	   | expr;
 
 check_operator: BIN_OR | BIN_AND | GRTR_THAN | LESS_THAN | GRTR_THAN_ET | LESS_THAN_ET | BIN_EQUALS;
@@ -53,6 +59,9 @@ factor: factor POW_OP sub
 	  | sub;
 
 sub: value | LBRACKET expr RBRACKET;
+
+//A scope block, which encompasses a whole single scope.
+scope_block: LBRACE statement* RBRACE;
 
 //Mathematical operators.
 operator: MUL_OP | DIV_OP | TAKE_OP | ADD_OP | POW_OP;
@@ -89,6 +98,7 @@ LET_SYM: 'let';
 FOR_SYM: 'for';
 IN_SYM: 'in';
 IF_SYM: 'if';
+ELSE_SYM: 'else';
 IMPORT_SYM: 'import';
 RETURN_SYM: 'return';
 PRINT_SYM: 'print';

@@ -12,8 +12,8 @@ namespace Algo
         //When a variable is first defined.
         public override object VisitStat_define([NotNull] algoParser.Stat_defineContext context)
         {
-            //Check if the variable already exists.
-            if (Scopes.VariableExists(context.IDENTIFIER().GetText()))
+            //Check if the variable already exists at the local scope.
+            if (Scopes.VariableExistsLowest(context.IDENTIFIER().GetText()))
             {
                 Error.Fatal(context, "A variable with the name '" + context.IDENTIFIER().GetText() + "' already exists, cannot create a duplicate.");
                 return null;

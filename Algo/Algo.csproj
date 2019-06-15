@@ -54,12 +54,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Evaluation\Data Structures\AlgoFunction.cs" />
+    <Compile Include="Evaluation\Visitors\AlgoComparators.cs" />
     <Compile Include="Parsing\algo.g4.lexer.cs">
       <DependentUpon>algo.g4</DependentUpon>
     </Compile>
     <Compile Include="Parsing\algo.g4.parser.cs">
       <DependentUpon>algo.g4</DependentUpon>
     </Compile>
+    <Compile Include="Evaluation\Visitors\AlgoChecks.cs" />
     <Compile Include="Parsing\AlgoExpressionParser.cs" />
     <Compile Include="Evaluation\Visitors\AlgoFunctionManager.cs" />
     <Compile Include="Evaluation\Visitors\AlgoIO.cs" />
