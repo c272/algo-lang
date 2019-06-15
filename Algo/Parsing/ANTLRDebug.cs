@@ -29,11 +29,8 @@ namespace Algo
             lexer.Reset();
         }
 
-        public static void PrintParseList(algoParser parser)
+        public static void PrintParseList(algoParser.CompileUnitContext tree, algoParser parser)
         {
-            parser.BuildParseTree = true;
-            var tree = parser.compileUnit();
-
             //Printing debug string.
             Console.WriteLine("ANTLR Debug Parse:");
             Console.WriteLine(tree.ToInfoString(parser));

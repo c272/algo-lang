@@ -18,7 +18,7 @@ namespace Algo
            // Console.WriteLine(new BigRational(new Fraction(new BigInteger(64), new BigInteger(32))).ToString());
             
             //Test input string.
-            string input = "let f() = 3-4;";
+            string input = "print \"What a gamer, number is \" + (3 + 1);";
             var chars = new AntlrInputStream(input);
             var lexer = new algoLexer(chars);
             var tokens = new CommonTokenStream(lexer);
@@ -28,11 +28,13 @@ namespace Algo
 
             //Debug print tree.
             var parser = new algoParser(tokens);
-            ANTLRDebug.PrintParseList(parser);
-
-            //Getting tree.
             parser.BuildParseTree = true;
             var tree = parser.compileUnit();
+            ANTLRDebug.PrintParseList(tree, parser);
+
+            //Walking the tree.
+            var visitor = new algoVisitor();
+            visitor.VisitCompileUnit(tree);
         }
     }
 }

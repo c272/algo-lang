@@ -9,7 +9,7 @@ using ExtendedNumerics;
 
 namespace Algo
 {
-    public partial class storkVisitor : algoBaseVisitor<object>
+    public partial class algoVisitor : algoBaseVisitor<object>
     {
         //When an expression is parsed in Algo.
         public override object VisitExpr([NotNull] algoParser.ExprContext context)

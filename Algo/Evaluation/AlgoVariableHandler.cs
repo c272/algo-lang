@@ -7,7 +7,7 @@ using Antlr4.Runtime.Misc;
 
 namespace Algo
 {
-    public partial class storkVisitor : algoBaseVisitor<object>
+    public partial class algoVisitor : algoBaseVisitor<object>
     {
         //When a variable is first defined.
         public override object VisitStat_define([NotNull] algoParser.Stat_defineContext context)

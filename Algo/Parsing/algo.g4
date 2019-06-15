@@ -13,6 +13,7 @@ block: statement*;
 //Statements which require endlines, and those that don't.
 statement: (stat_define
 			| stat_functionCall
+			| stat_print
 		   ) ENDLINE
 
 			| (stat_forLoop
@@ -25,6 +26,7 @@ stat_functionCall: IDENTIFIER LBRACKET literal_params? RBRACKET;
 stat_functionDef: LET_SYM IDENTIFIER LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
 stat_forLoop: FOR_SYM LBRACKET IDENTIFIER IN_SYM IDENTIFIER RBRACKET LBRACE statement* RBRACE;
 stat_if: IF_SYM LBRACKET expr RBRACKET LBRACE statement* RBRACE;
+stat_print: PRINT_SYM expr;
 
 //Checks, parameter types.
 literal_params: (expr COMMA)* expr;
@@ -80,6 +82,7 @@ IN_SYM: 'in';
 IF_SYM: 'if';
 IMPORT_SYM: 'import';
 RETURN_SYM: 'return';
+PRINT_SYM: 'print';
 ENDLINE: ';';
 EQUALS: '=';
 COMMA: ',';

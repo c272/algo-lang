@@ -60,6 +60,7 @@
       <DependentUpon>algo.g4</DependentUpon>
     </Compile>
     <Compile Include="Parsing\AlgoExpressionParser.cs" />
+    <Compile Include="Parsing\AlgoIO.cs" />
     <Compile Include="Parsing\AlgoMainVisitor.cs" />
     <Compile Include="Evaluation\AlgoOperators.cs" />
     <Compile Include="Evaluation\AlgoScopes.cs" />

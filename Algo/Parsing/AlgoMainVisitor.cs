@@ -8,7 +8,7 @@ using MathNet.Numerics;
 
 namespace Algo
 {
-    public partial class storkVisitor : algoBaseVisitor<object>
+    public partial class algoVisitor : algoBaseVisitor<object>
     {
         //Scopes collection for this instance.
         public static AlgoScopeCollection Scopes = new AlgoScopeCollection();
@@ -43,15 +43,20 @@ namespace Algo
             }
             else if (context.stat_forLoop() != null)
             {
-
+                //..
             }
             else if (context.stat_functionCall() != null)
             {
-
+                //..
             }
             else if (context.stat_functionDef() != null)
             {
-
+                //..
+            }
+            else if (context.stat_print() != null)
+            {
+                //Print statement.
+                VisitStat_print(context.stat_print());
             }
             else
             {
