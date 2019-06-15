@@ -68,6 +68,13 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitStat_setvar([NotNull] algoParser.Stat_setvarContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.stat_deletevar"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStat_deletevar([NotNull] algoParser.Stat_deletevarContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="algoParser.stat_functionCall"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

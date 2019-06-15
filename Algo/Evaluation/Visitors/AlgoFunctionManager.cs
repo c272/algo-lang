@@ -64,10 +64,17 @@ namespace Algo
             //It is, get the function.
             AlgoFunction funcToCall = (AlgoFunction)value.Value;
 
-            //Check the parameter length is the same.
-            if (context.literal_params().expr().Length != funcToCall.Parameters.Count)
+            //Getting parameter length.
+            int paramLength = 0;
+            if (context.literal_params() != null)
             {
-                Error.Fatal(context, context.literal_params().expr().Length + " parameters passed to function " + funcToCall.Name + ", which expects " + funcToCall.Parameters.Count);
+                paramLength = context.literal_params().expr().Length;
+            }
+
+            //Check the parameter length is the same.
+            if (paramLength != funcToCall.Parameters.Count)
+            {
+                Error.Fatal(context, paramLength + " parameters passed to function " + funcToCall.Name + ", which expects " + funcToCall.Parameters.Count);
                 return null;
             }
 

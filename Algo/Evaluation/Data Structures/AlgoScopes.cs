@@ -33,6 +33,13 @@ namespace Algo
             Scopes.Remove(Scopes.Last());
         }
 
+        //Reset all scopes.
+        public void Reset()
+        {
+            Scopes = new List<Dictionary<string, AlgoValue>>();
+            Scopes.Add(new Dictionary<string, AlgoValue>());
+        }
+
         //Get a variable within the scopes.
         //Start from the deepest depth, to ensure local scope is evaluated first.
         public AlgoValue GetVariable(string varname)

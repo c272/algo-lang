@@ -16,6 +16,7 @@ statement: (  stat_define
 			| stat_print
 			| stat_setvar
 			| stat_return
+			| stat_deletevar
 		   )  ENDLINE
 		   
 			|  ( stat_forLoop
@@ -25,6 +26,7 @@ statement: (  stat_define
 //Types of statement.
 stat_define: LET_SYM IDENTIFIER EQUALS expr;
 stat_setvar: IDENTIFIER EQUALS expr rounding_expr?;
+stat_deletevar: DISREGARD_SYM (IDENTIFIER | MUL_OP);
 stat_functionCall: IDENTIFIER LBRACKET literal_params? RBRACKET;
 stat_functionDef: LET_SYM IDENTIFIER LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
 stat_return: RETURN_SYM expr;
@@ -104,6 +106,7 @@ ELSE_SYM: 'else';
 IMPORT_SYM: 'import';
 RETURN_SYM: 'return';
 PRINT_SYM: 'print';
+DISREGARD_SYM: 'disregard';
 
 //NON-MATHEMATICAL SYMBOLS
 ENDLINE: ';';

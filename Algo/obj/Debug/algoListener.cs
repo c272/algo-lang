@@ -87,6 +87,17 @@ public interface IalgoListener : IParseTreeListener {
 	void ExitStat_setvar([NotNull] algoParser.Stat_setvarContext context);
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.stat_deletevar"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterStat_deletevar([NotNull] algoParser.Stat_deletevarContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.stat_deletevar"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitStat_deletevar([NotNull] algoParser.Stat_deletevarContext context);
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.stat_functionCall"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

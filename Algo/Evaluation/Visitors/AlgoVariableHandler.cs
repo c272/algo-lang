@@ -75,8 +75,6 @@ namespace Algo
                     }
 
                     //Can convert, go for it.
-                    Console.WriteLine(((BigFloat)value.Value).ToString());
-
                     double toRound = double.Parse(((BigFloat)value.Value).ToString());
                     bool toBeFlipped = false;
                     if (toRound < 0)
@@ -106,6 +104,31 @@ namespace Algo
 
             //Set variable.
             Scopes.SetVariable(context.IDENTIFIER().GetText(), value);
+            return null;
+        }
+
+        //When a variable is deleted.
+        public override object VisitStat_deletevar([NotNull] algoParser.Stat_deletevarContext context)
+        {
+            //Checking if the disregard wants to delete all variables or only one.
+            if (context.IDENTIFIER() != null)
+            {
+                //Check if variable exists.
+                if (!Scopes.VariableExists(context.IDENTIFIER().GetText()))
+                {
+                    Error.Fatal(context, "Invalid variable name given to disregard.");
+                    return null;
+                }
+
+                //Remove variable.
+                Scopes.RemoveVariable(context.IDENTIFIER().GetText());
+            }
+            else
+            {
+                //Reset all scopes.
+                Scopes.Reset();
+            }
+
             return null;
         }
     }
