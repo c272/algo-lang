@@ -24,6 +24,7 @@ namespace Algo
         //Visit each statement in turn.
         public override object VisitBlock([NotNull] algoParser.BlockContext context)
         {
+            //Enumerate over all statements.
             foreach (var statement in context.statement())
             {
                 VisitStatement(statement);
@@ -79,6 +80,11 @@ namespace Algo
             {
                 //A print statement.
                 VisitStat_print(context.stat_print());
+            }
+            else if (context.stat_library() != null)
+            {
+                //Defining a library.
+                VisitStat_library(context.stat_library());
             }
             else
             {

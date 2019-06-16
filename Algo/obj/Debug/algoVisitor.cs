@@ -117,6 +117,13 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitStat_print([NotNull] algoParser.Stat_printContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.stat_library"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStat_library([NotNull] algoParser.Stat_libraryContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="algoParser.stat_elif"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -206,6 +213,13 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitValue([NotNull] algoParser.ValueContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.lib_access"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLib_access([NotNull] algoParser.Lib_accessContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="algoParser.array"/>.

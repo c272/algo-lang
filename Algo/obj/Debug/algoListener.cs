@@ -164,6 +164,17 @@ public interface IalgoListener : IParseTreeListener {
 	void ExitStat_print([NotNull] algoParser.Stat_printContext context);
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.stat_library"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterStat_library([NotNull] algoParser.Stat_libraryContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.stat_library"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitStat_library([NotNull] algoParser.Stat_libraryContext context);
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.stat_elif"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -305,6 +316,17 @@ public interface IalgoListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitValue([NotNull] algoParser.ValueContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.lib_access"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterLib_access([NotNull] algoParser.Lib_accessContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.lib_access"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitLib_access([NotNull] algoParser.Lib_accessContext context);
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.array"/>.

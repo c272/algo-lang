@@ -21,18 +21,21 @@ statement: (  stat_define
 		   
 			|  ( stat_forLoop
 			   | stat_functionDef
-			   | stat_if);
+			   | stat_if
+			   | stat_library
+			   );
 
 //Types of statement.
 stat_define: LET_SYM IDENTIFIER EQUALS expr;
 stat_setvar: IDENTIFIER EQUALS expr rounding_expr?;
 stat_deletevar: DISREGARD_SYM (IDENTIFIER | MUL_OP);
-stat_functionCall: IDENTIFIER LBRACKET literal_params? RBRACKET;
+stat_functionCall: (IDENTIFIER | lib_access) LBRACKET literal_params? RBRACKET;
 stat_functionDef: LET_SYM IDENTIFIER LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
 stat_return: RETURN_SYM expr;
 stat_forLoop: FOR_SYM LBRACKET IDENTIFIER IN_SYM IDENTIFIER RBRACKET LBRACE statement* RBRACE;
 stat_if: IF_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE stat_elif* stat_else?;
 stat_print: PRINT_SYM expr rounding_expr?;
+stat_library: LIB_SYM IDENTIFIER LBRACE statement* RBRACE;
 
 //Elif and else statements, not directly available, only by proxy.
 stat_elif: ELSE_SYM IF_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE;
@@ -69,7 +72,10 @@ sub: value | LBRACKET expr RBRACKET;
 operator: MUL_OP | DIV_OP | TAKE_OP | ADD_OP | POW_OP;
 
 //A single literal value.
-value: stat_functionCall | IDENTIFIER | INTEGER | FLOAT | BOOLEAN | STRING | RATIONAL | array | array_access;
+value: stat_functionCall | lib_access | IDENTIFIER | INTEGER | FLOAT | BOOLEAN | STRING | RATIONAL | array | array_access;
+
+//Accessing a library.
+lib_access: (IDENTIFIER POINT)+ IDENTIFIER;
 
 //An array.
 array: '[' ((value ',')* value)? ']';
@@ -125,6 +131,7 @@ TAKE_OP: '-';
 MUL_OP: '*';
 DIV_OP: '/';
 POW_OP: '^';
+POINT: '.';
 
 //CHECK OPERATORS
 BIN_OR: '|';

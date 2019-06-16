@@ -14,7 +14,7 @@ namespace Algo
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Red;
-            Console.WriteLine("Algo Runtime Error: Line " + context.Start.Line + ":" + context.Start.StartIndex + " - " + errMessage);
+            Console.WriteLine("Algo Runtime Error: " + Program.FileLoaded + ", Line " + context.Start.Line + ":" + context.Start.StartIndex + " - " + errMessage);
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Black;
 
@@ -27,7 +27,7 @@ namespace Algo
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Red;
-            Console.WriteLine("Algo Runtime Error: NOCONTEXT - " + errMessage);
+            Console.WriteLine("Algo Runtime Error: " + Program.FileLoaded + ", NOCONTEXT - " + errMessage);
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Black;
 

@@ -10,6 +10,7 @@ namespace Algo
     {
         //The list of scopes.
         public List<Dictionary<string, AlgoValue>> Scopes = new List<Dictionary<string, AlgoValue>>();
+        public static Dictionary<string, AlgoScopeCollection> Libraries = new Dictionary<string, AlgoScopeCollection>();
 
         public AlgoScopeCollection()
         {
@@ -38,6 +39,51 @@ namespace Algo
         {
             Scopes = new List<Dictionary<string, AlgoValue>>();
             Scopes.Add(new Dictionary<string, AlgoValue>());
+        }
+
+        //Add a library.
+        public void AddLibrary(string name, AlgoScopeCollection library)
+        {
+            //Checking if library is a dupe.
+            if (Libraries.ContainsKey(name))
+            {
+                Error.FatalNoContext("A library with the name '" + name + "' already exists in this scope, can't define it again.");
+                return;
+            }
+
+            //Not a dupe, add it.
+            Libraries.Add(name, library);
+        }
+
+        //Get a library.
+        public AlgoScopeCollection GetLibrary(string name)
+        {
+            if (!LibraryExists(name))
+            {
+                Error.FatalNoContext("A library with the name '" + name + "' does not exist.");
+                return null;
+            }
+
+            //Does exist, return it.
+            return Libraries[name];
+        }
+
+        //Check if a library exists.
+        public bool LibraryExists(string name)
+        {
+            return Libraries.ContainsKey(name);
+        }
+
+        //Gets the correct scope from library access.
+        public AlgoScopeCollection GetScopeFromLibAccess(algoParser.Lib_accessContext lib_accessContext)
+        {
+            AlgoScopeCollection toReturn = this;
+            for (int i=0; i<lib_accessContext.IDENTIFIER().Length-1; i++)
+            {
+                toReturn = toReturn.GetLibrary(lib_accessContext.IDENTIFIER()[i].GetText());
+            }
+
+            return toReturn;
         }
 
         //Get a variable within the scopes.

@@ -46,15 +46,28 @@ namespace Algo
         //When a function is called.
         public override object VisitStat_functionCall([NotNull] algoParser.Stat_functionCallContext context)
         {
+            //Getting the correct scope to grab the function from.
+            //Is it just the current one?
+            AlgoScopeCollection scopes_local = null;
+            if (context.IDENTIFIER() != null)
+            {
+                scopes_local = Scopes;
+            }
+            else
+            {
+                //Getting the correct scope.
+                scopes_local = Scopes.GetScopeFromLibAccess(context.lib_access());
+            }
+
             //Check if a function variable exists with this name.
-            if (!Scopes.VariableExists(context.IDENTIFIER().GetText()))
+            if (!scopes_local.VariableExists(context.IDENTIFIER().GetText()))
             {
                 Error.Fatal(context, "No function with name '" + context.IDENTIFIER().GetText() + "' exists.");
                 return null;
             }
 
             //Get the variable, check if it's a function.
-            AlgoValue value = Scopes.GetVariable(context.IDENTIFIER().GetText());
+            AlgoValue value = scopes_local.GetVariable(context.IDENTIFIER().GetText());
             if (value.Type != AlgoValueType.Function)
             {
                 Error.Fatal(context, "The variable with name '" + context.IDENTIFIER().GetText() + "' is not a function, so can't be called like one.");
@@ -99,6 +112,8 @@ namespace Algo
                 AlgoValue returned = (AlgoValue)VisitStatement(statement);
                 if (returned != null)
                 {
+                    //Remove the function's scope, return.
+                    Scopes.RemoveScope();
                     return returned;
                 }
             }

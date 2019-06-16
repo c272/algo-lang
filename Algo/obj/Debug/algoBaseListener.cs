@@ -192,6 +192,19 @@ public partial class algoBaseListener : IalgoListener {
 	public virtual void ExitStat_print([NotNull] algoParser.Stat_printContext context) { }
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.stat_library"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterStat_library([NotNull] algoParser.Stat_libraryContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.stat_library"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitStat_library([NotNull] algoParser.Stat_libraryContext context) { }
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.stat_elif"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -359,6 +372,19 @@ public partial class algoBaseListener : IalgoListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitValue([NotNull] algoParser.ValueContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.lib_access"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterLib_access([NotNull] algoParser.Lib_accessContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.lib_access"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitLib_access([NotNull] algoParser.Lib_accessContext context) { }
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.array"/>.

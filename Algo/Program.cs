@@ -13,10 +13,13 @@ namespace Algo
 {
     class Program
     {
+        //The currently loaded file.
+        public static string FileLoaded = "debugscript.txt";
+
         static void Main(string[] args)
         {
             //Test input string.
-            string input = File.ReadAllText("debugscript.txt");
+            string input = File.ReadAllText(FileLoaded);
             var chars = new AntlrInputStream(input);
             var lexer = new algoLexer(chars);
             var tokens = new CommonTokenStream(lexer);

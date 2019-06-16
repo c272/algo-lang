@@ -284,6 +284,11 @@ namespace Algo
 
                 return currentValue;
             }
+            else if (context.lib_access() != null)
+            {
+                //LIBRARY VALUE ACCESS
+
+            }
             else
             {
                 //No proper detected value type.
