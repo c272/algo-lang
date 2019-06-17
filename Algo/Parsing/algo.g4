@@ -107,6 +107,7 @@ FOR_SYM: 'for';
 IN_SYM: 'in';
 IF_SYM: 'if';
 TO_SYM: 'to';
+LIB_SYM: 'library';
 SIG_FIG_SYM: 'sf';
 ELSE_SYM: 'else';
 IMPORT_SYM: 'import';

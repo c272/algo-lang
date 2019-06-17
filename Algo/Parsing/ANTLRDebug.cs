@@ -33,6 +33,7 @@ namespace Algo
         public static void PrintScopes()
         {
             //Printing variable scopes.
+            Console.WriteLine("\nGlobal Namespace");
             Console.WriteLine("SCOPES:");
             var scopes = algoVisitor.Scopes.GetScopes();
             for (int i = 0; i < scopes.Count; i++)
@@ -43,6 +44,23 @@ namespace Algo
                     Console.WriteLine(variable.Key + " of type " + variable.Value.Type.ToString() + ", value " + variable.Value.Value.ToString() + ".");
                 }
                 Console.WriteLine("");
+            }
+
+            //Printing library scopes.
+            var libs = algoVisitor.Scopes.GetLibraries();
+            foreach (var lib in libs)
+            {
+                Console.WriteLine("LIBRARY '" + lib.Key + "'");
+                var libscopes = lib.Value.GetScopes();
+                for (int i = 0; i < libscopes.Count; i++)
+                {
+                    Console.WriteLine("Scope " + (i + 1) + "\n---");
+                    foreach (var variable in libscopes[i])
+                    {
+                        Console.WriteLine(variable.Key + " of type " + variable.Value.Type.ToString() + ", value " + variable.Value.Value.ToString() + ".");
+                    }
+                    Console.WriteLine("");
+                }
             }
         }
 

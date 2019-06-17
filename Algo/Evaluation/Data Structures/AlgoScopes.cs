@@ -55,6 +55,12 @@ namespace Algo
             Libraries.Add(name, library);
         }
 
+        //Returns the libraries in this collection.
+        public Dictionary<string, AlgoScopeCollection> GetLibraries()
+        {
+            return Libraries;
+        }
+
         //Get a library.
         public AlgoScopeCollection GetLibrary(string name)
         {

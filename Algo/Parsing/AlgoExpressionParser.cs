@@ -293,7 +293,7 @@ namespace Algo
 
                 //Check if the value is in this scope.
                 var identifiers = context.lib_access().IDENTIFIER();
-                if (scope.VariableExists(identifiers[identifiers.Length-1].GetText()))
+                if (!scope.VariableExists(identifiers[identifiers.Length-1].GetText()))
                 {
                     Error.Fatal(context, "A variable with the name '" + identifiers[identifiers.Length - 1].GetText() + "' does not exist in this library.");
                     return null;

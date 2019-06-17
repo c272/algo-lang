@@ -88,7 +88,7 @@ namespace Algo
             }
             else
             {
-                Error.Fatal(context, "Invalid statement type given, not implemented in visitor but finished in parser.");
+                Error.Fatal(context, "Syntax error, unrecognized statement.");
             }
 
             return null;
