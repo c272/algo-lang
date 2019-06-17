@@ -56,36 +56,100 @@ namespace Algo
         //When a function is called.
         public override object VisitStat_functionCall([NotNull] algoParser.Stat_functionCallContext context)
         {
-            //Getting the correct scope to grab the function from.
-            //Is it just the current one?
-            AlgoScopeCollection scopes_local = null;
-            if (context.IDENTIFIER() != null)
+            //The function to call.
+            AlgoFunction funcToCall = null;
+
+            //Check if it's a nested variable.
+            if (context.obj_access() != null && Scopes.VariableExists(context.obj_access().IDENTIFIER()[0].GetText()))
             {
-                scopes_local = Scopes;
-            }
-            else
-            {
-                //Getting the correct scope.
-                scopes_local = Scopes.GetScopeFromLibAccess(context.obj_access());
+                //Yes, it's a variable.
+
+                //Get the starting variable.
+                AlgoValue objValue = Scopes.GetVariable(context.obj_access().IDENTIFIER()[0].GetText());
+                if (objValue.Type != AlgoValueType.Object)
+                {
+                    Error.Fatal(context, "The variable you tried to reference as an object is not an object.");
+                    return null;
+                }
+
+                //Get the final object.
+                AlgoObject currentObj = (AlgoObject)objValue.Value;
+                for (int i = 1; i < context.obj_access().IDENTIFIER().Length - 1; i++) {
+
+                    //Check if the next variable exists.
+                    var cvarname = context.obj_access().IDENTIFIER()[i].GetText();
+                    if (!currentObj.ObjectScopes.VariableExists(cvarname))
+                    {
+                        Error.Fatal(context, "A nested variable with the name '" + cvarname + "' does not exist.");
+                        return null;
+                    }
+
+                    //Getting the next object.
+                    AlgoValue newObjValue = currentObj.ObjectScopes.GetVariable(cvarname);
+                    if (newObjValue.Type != AlgoValueType.Object)
+                    {
+                        Error.Fatal(context, "The variable '" + cvarname + "' is not an object, can't access child.");
+                        return null;
+                    }
+
+                    //Setting current object.
+                    currentObj = (AlgoObject)newObjValue.Value;
+                }
+
+                //Get the final value.
+                var finalValueName = context.obj_access().IDENTIFIER()[context.obj_access().IDENTIFIER().Length - 1].GetText();
+                if (!currentObj.ObjectScopes.VariableExists(finalValueName))
+                {
+                    Error.Fatal(context, "The value with name '" + finalValueName + "' does not exist inside the given object.");
+                    return null;
+                }
+
+                //Checking if it's a function.
+                AlgoValue value = currentObj.ObjectScopes.GetVariable(finalValueName);
+                if (value.Type != AlgoValueType.Function)
+                {
+                    Error.Fatal(context, "The variable you referenced is not a function, so cannot be called.");
+                    return null;
+                }
+
+                //Setting function to call.
+                funcToCall = (AlgoFunction)value.Value;
             }
 
-            //Check if a function variable exists with this name.
-            if (!scopes_local.VariableExists(context.IDENTIFIER().GetText()))
-            {
-                Error.Fatal(context, "No function with name '" + context.IDENTIFIER().GetText() + "' exists.");
-                return null;
-            }
+            //No, it's a library.
+            else {
 
-            //Get the variable, check if it's a function.
-            AlgoValue value = scopes_local.GetVariable(context.IDENTIFIER().GetText());
-            if (value.Type != AlgoValueType.Function)
-            {
-                Error.Fatal(context, "The variable with name '" + context.IDENTIFIER().GetText() + "' is not a function, so can't be called like one.");
-                return null;
-            }
+                //Getting the correct scope to grab the function from.
+                //Is it just the current one?
+                AlgoScopeCollection scopes_local = null;
+                if (context.IDENTIFIER() != null)
+                {
+                    scopes_local = Scopes;
+                }
+                else
+                {
+                    //Getting the correct scope.
+                    scopes_local = Scopes.GetScopeFromLibAccess(context.obj_access());
+                }
 
-            //It is, get the function.
-            AlgoFunction funcToCall = (AlgoFunction)value.Value;
+                //Check if a function variable exists with this name.
+                if (!scopes_local.VariableExists(context.IDENTIFIER().GetText()))
+                {
+                    Error.Fatal(context, "No function with name '" + context.IDENTIFIER().GetText() + "' exists.");
+                    return null;
+                }
+
+                //Get the variable, check if it's a function.
+                AlgoValue value = scopes_local.GetVariable(context.IDENTIFIER().GetText());
+                if (value.Type != AlgoValueType.Function)
+                {
+                    Error.Fatal(context, "The variable with name '" + context.IDENTIFIER().GetText() + "' is not a function, so can't be called like one.");
+                    return null;
+                }
+
+                //Set function to call.
+                funcToCall = (AlgoFunction)value.Value;
+            }
 
             //Getting parameter length.
             int paramLength = 0;
@@ -103,15 +167,18 @@ namespace Algo
 
             //Parse all the parameters.
             List<AlgoValue> paramvalues = new List<AlgoValue>();
-            foreach (var param in context.literal_params().expr())
+            if (context.literal_params() != null)
             {
-                AlgoValue evaluated = (AlgoValue)VisitExpr(param);
-                paramvalues.Add(evaluated);
+                foreach (var param in context.literal_params().expr())
+                {
+                    AlgoValue evaluated = (AlgoValue)VisitExpr(param);
+                    paramvalues.Add(evaluated);
+                }
             }
 
             //Adding a scope, and creating the parameters inside it.
             Scopes.AddScope();
-            for (int i=0; i<paramvalues.Count; i++)
+            for (int i = 0; i < paramvalues.Count; i++)
             {
                 Scopes.AddVariable(funcToCall.Parameters[i], paramvalues[i]);
             }

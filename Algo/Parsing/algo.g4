@@ -83,9 +83,9 @@ array_access: IDENTIFIER '[' literal_params ']';
 
 //A single Algo object represented in text.
 object: OBJ_SYM LBRACE obj_child_definitions? RBRACE;
-obj_child_definitions: ((obj_vardefine | obj_funcdefine) COMMA)* (obj_vardefine | obj_funcdefine);
-obj_vardefine: IDENTIFIER EQUALS expr;
-obj_funcdefine: IDENTIFIER LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
+obj_child_definitions: (obj_vardefine | obj_funcdefine)*;
+obj_vardefine: LET_SYM IDENTIFIER EQUALS expr ENDLINE;
+obj_funcdefine: LET_SYM IDENTIFIER LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
 
 /*
  * Lexer Rules

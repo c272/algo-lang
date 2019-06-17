@@ -322,6 +322,8 @@ namespace Algo
                             Error.Fatal(context, "You attempted to get a child from value '" + ids[0].GetText() + ", but it's not an object.");
                             return null;
                         }
+
+                        currentObj = (AlgoObject)childValue.Value;
                     }
 
                     //Get the value from this final object scope.
@@ -369,7 +371,12 @@ namespace Algo
                 if (context.@object().obj_child_definitions() == null)
                 {
                     //Nope.
-                    return toReturn;
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Object,
+                        Value = toReturn,
+                        IsEnumerable = false
+                    };
                 }
 
                 //Enumerate through all the define statements and evaluate their values.
