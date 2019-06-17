@@ -215,11 +215,11 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitValue([NotNull] algoParser.ValueContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="algoParser.lib_access"/>.
+	/// Visit a parse tree produced by <see cref="algoParser.obj_access"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitLib_access([NotNull] algoParser.Lib_accessContext context);
+	Result VisitObj_access([NotNull] algoParser.Obj_accessContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="algoParser.array"/>.
@@ -234,5 +234,33 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitArray_access([NotNull] algoParser.Array_accessContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.object"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitObject([NotNull] algoParser.ObjectContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.obj_child_definitions"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitObj_child_definitions([NotNull] algoParser.Obj_child_definitionsContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.obj_vardefine"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitObj_vardefine([NotNull] algoParser.Obj_vardefineContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.obj_funcdefine"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitObj_funcdefine([NotNull] algoParser.Obj_funcdefineContext context);
 }
 } // namespace Algo

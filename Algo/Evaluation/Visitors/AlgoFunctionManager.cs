@@ -24,9 +24,19 @@ namespace Algo
 
             //Getting parameters.
             List<string> params_ = new List<string>();
-            foreach (var param in context.abstract_params().IDENTIFIER())
+            if (context.abstract_params() != null)
             {
-                params_.Add(param.GetText());
+                foreach (var param in context.abstract_params().IDENTIFIER())
+                {
+                    //Check if param already exists.
+                    if (params_.Contains(param.GetText()))
+                    {
+                        Error.Fatal(context, "The parameter with name '" + param.GetText() + "' is already defined in the function.");
+                        return null;
+                    }
+
+                    params_.Add(param.GetText());
+                }
             }
 
             //No, it doesn't exist. Define it.
@@ -56,7 +66,7 @@ namespace Algo
             else
             {
                 //Getting the correct scope.
-                scopes_local = Scopes.GetScopeFromLibAccess(context.lib_access());
+                scopes_local = Scopes.GetScopeFromLibAccess(context.obj_access());
             }
 
             //Check if a function variable exists with this name.

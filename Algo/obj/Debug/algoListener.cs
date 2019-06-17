@@ -318,15 +318,15 @@ public interface IalgoListener : IParseTreeListener {
 	void ExitValue([NotNull] algoParser.ValueContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="algoParser.lib_access"/>.
+	/// Enter a parse tree produced by <see cref="algoParser.obj_access"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterLib_access([NotNull] algoParser.Lib_accessContext context);
+	void EnterObj_access([NotNull] algoParser.Obj_accessContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="algoParser.lib_access"/>.
+	/// Exit a parse tree produced by <see cref="algoParser.obj_access"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitLib_access([NotNull] algoParser.Lib_accessContext context);
+	void ExitObj_access([NotNull] algoParser.Obj_accessContext context);
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.array"/>.
@@ -349,5 +349,49 @@ public interface IalgoListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitArray_access([NotNull] algoParser.Array_accessContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.object"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterObject([NotNull] algoParser.ObjectContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.object"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitObject([NotNull] algoParser.ObjectContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.obj_child_definitions"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterObj_child_definitions([NotNull] algoParser.Obj_child_definitionsContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.obj_child_definitions"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitObj_child_definitions([NotNull] algoParser.Obj_child_definitionsContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.obj_vardefine"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterObj_vardefine([NotNull] algoParser.Obj_vardefineContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.obj_vardefine"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitObj_vardefine([NotNull] algoParser.Obj_vardefineContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.obj_funcdefine"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterObj_funcdefine([NotNull] algoParser.Obj_funcdefineContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.obj_funcdefine"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitObj_funcdefine([NotNull] algoParser.Obj_funcdefineContext context);
 }
 } // namespace Algo

@@ -81,7 +81,7 @@ namespace Algo
         }
 
         //Gets the correct scope from library access.
-        public AlgoScopeCollection GetScopeFromLibAccess(algoParser.Lib_accessContext lib_accessContext)
+        public AlgoScopeCollection GetScopeFromLibAccess(algoParser.Obj_accessContext lib_accessContext)
         {
             AlgoScopeCollection toReturn = this;
             for (int i=0; i<lib_accessContext.IDENTIFIER().Length-1; i++)

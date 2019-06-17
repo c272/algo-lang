@@ -374,17 +374,17 @@ public partial class algoBaseListener : IalgoListener {
 	public virtual void ExitValue([NotNull] algoParser.ValueContext context) { }
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="algoParser.lib_access"/>.
+	/// Enter a parse tree produced by <see cref="algoParser.obj_access"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterLib_access([NotNull] algoParser.Lib_accessContext context) { }
+	public virtual void EnterObj_access([NotNull] algoParser.Obj_accessContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="algoParser.lib_access"/>.
+	/// Exit a parse tree produced by <see cref="algoParser.obj_access"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitLib_access([NotNull] algoParser.Lib_accessContext context) { }
+	public virtual void ExitObj_access([NotNull] algoParser.Obj_accessContext context) { }
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.array"/>.
@@ -411,6 +411,58 @@ public partial class algoBaseListener : IalgoListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitArray_access([NotNull] algoParser.Array_accessContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.object"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterObject([NotNull] algoParser.ObjectContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.object"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitObject([NotNull] algoParser.ObjectContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.obj_child_definitions"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterObj_child_definitions([NotNull] algoParser.Obj_child_definitionsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.obj_child_definitions"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitObj_child_definitions([NotNull] algoParser.Obj_child_definitionsContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.obj_vardefine"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterObj_vardefine([NotNull] algoParser.Obj_vardefineContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.obj_vardefine"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitObj_vardefine([NotNull] algoParser.Obj_vardefineContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.obj_funcdefine"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterObj_funcdefine([NotNull] algoParser.Obj_funcdefineContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.obj_funcdefine"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitObj_funcdefine([NotNull] algoParser.Obj_funcdefineContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>

@@ -17,6 +17,7 @@
         Boolean,
         List,
         Function,
+        Object,
         Null
     }
 }

@@ -284,23 +284,157 @@ namespace Algo
 
                 return currentValue;
             }
-            else if (context.lib_access() != null)
+            else if (context.obj_access() != null)
             {
-                //LIBRARY VALUE ACCESS
+                //OBJECT VALUE ACCESS
+                //Could be a user-defined object or a library.
 
-                //Attempt to get the correct scope.
-                AlgoScopeCollection scope = Scopes.GetScopeFromLibAccess(context.lib_access());
-
-                //Check if the value is in this scope.
-                var identifiers = context.lib_access().IDENTIFIER();
-                if (!scope.VariableExists(identifiers[identifiers.Length-1].GetText()))
+                //Check for user defined object first.
+                var ids = context.obj_access().IDENTIFIER();
+                if (Scopes.VariableExists(ids[0].GetText()))
                 {
-                    Error.Fatal(context, "A variable with the name '" + identifiers[identifiers.Length - 1].GetText() + "' does not exist in this library.");
+                    //USER DEFINED OBJECT!
+
+                    //Get the parent object, check that the type is actually an object.
+                    var objValue = Scopes.GetVariable(ids[0].GetText());
+                    if (objValue.Type != AlgoValueType.Object)
+                    {
+                        Error.Fatal(context, "You attempted to get a child from value '" + ids[0].GetText() + ", but it's not an object.");
+                        return null;
+                    }
+
+                    //Getting the object.
+                    AlgoObject currentObj = (AlgoObject)objValue.Value;
+
+                    //Step through object children until scope found.
+                    for (var i=1; i<ids.Length-1; i++)
+                    {
+                        if (!currentObj.ObjectScopes.VariableExists(ids[i].GetText())) {
+                            Error.Fatal(context, "You attempted to get child '" + ids[i].GetText() + " from an object, but it was not found.");
+                            return null;
+                        }
+
+                        //Get the variable.
+                        var childValue = currentObj.ObjectScopes.GetVariable(ids[i].GetText());
+                        //Check it's an object.
+                        if (childValue.Type != AlgoValueType.Object)
+                        {
+                            Error.Fatal(context, "You attempted to get a child from value '" + ids[0].GetText() + ", but it's not an object.");
+                            return null;
+                        }
+                    }
+
+                    //Get the value from this final object scope.
+                    if (!currentObj.ObjectScopes.VariableExists(ids[ids.Length-1].GetText()))
+                    {
+                        //Value doesn't exist.
+                        Error.Fatal(context, "No value with the name '" + ids[ids.Length - 1].GetText() + "' exists in the given object.");
+                        return null;
+                    }
+
+                    //Return.
+                    return currentObj.ObjectScopes.GetVariable(ids[ids.Length - 1].GetText());
+                }
+                else if (Scopes.LibraryExists(context.obj_access().IDENTIFIER()[0].GetText()))
+                {
+                    //LIBRARY
+
+                    //Attempt to get the correct scope.
+                    AlgoScopeCollection scope = Scopes.GetScopeFromLibAccess(context.obj_access());
+
+                    //Check if the value is in this scope.
+                    var identifiers = context.obj_access().IDENTIFIER();
+                    if (!scope.VariableExists(identifiers[identifiers.Length - 1].GetText()))
+                    {
+                        Error.Fatal(context, "A variable with the name '" + identifiers[identifiers.Length - 1].GetText() + "' does not exist in this library.");
+                        return null;
+                    }
+
+                    //Yes, it is. Returning.
+                    return scope.GetVariable(identifiers[identifiers.Length - 1].GetText());
+                } else
+                {
+                    Error.Fatal(context, "No library or object with name '" + context.obj_access().IDENTIFIER()[0].GetText() + "' exists.");
                     return null;
                 }
+            }
+            else if (context.@object() != null)
+            {
+                //OBJECT DEFINITION
 
-                //Yes, it is. Returning.
-                return scope.GetVariable(identifiers[identifiers.Length - 1].GetText());
+                //Create a new object.
+                AlgoObject toReturn = new AlgoObject();
+
+                //Anything to enumerate?
+                if (context.@object().obj_child_definitions() == null)
+                {
+                    //Nope.
+                    return toReturn;
+                }
+
+                //Enumerate through all the define statements and evaluate their values.
+                foreach (var value in context.@object().obj_child_definitions().obj_vardefine())
+                {
+                    //Check if the variable already exists.
+                    if (toReturn.ObjectScopes.VariableExists(value.IDENTIFIER().GetText()))
+                    {
+                        Error.Fatal(context, "The variable with name '" + value.IDENTIFIER().GetText() + "' is defined twice or more in an object.");
+                        return null;
+                    }
+
+                    //Evaluate the value on the right.
+                    AlgoValue evaluated = (AlgoValue)VisitExpr(value.expr());
+
+                    //Add the variable to scope.
+                    toReturn.ObjectScopes.AddVariable(value.IDENTIFIER().GetText(), evaluated);
+                }
+
+                //Enumerate through all functions and define them.
+                foreach (var value in context.@object().obj_child_definitions().obj_funcdefine())
+                {
+                    //Check if the variable already exists.
+                    if (toReturn.ObjectScopes.VariableExists(value.IDENTIFIER().GetText()))
+                    {
+                        Error.Fatal(context, "The variable with name '" + value.IDENTIFIER().GetText() + "' is defined twice or more in an object.");
+                        return null;
+                    }
+
+                    //Create a list of parameters.
+                    List<string> params_ = new List<string>();
+                    if (value.abstract_params() != null)
+                    {
+                        foreach (var param in value.abstract_params().IDENTIFIER())
+                        {
+                            //Check if param already exists.
+                            if (params_.Contains(param.GetText()))
+                            {
+                                Error.Fatal(context, "The parameter with name '" + param.GetText() + "' is already defined in the function.");
+                                return null;
+                            }
+
+                            params_.Add(param.GetText());
+                        }
+                    }
+
+                    //Create a function, push.
+                    AlgoFunction func = new AlgoFunction(value.statement().ToList(), params_, value.IDENTIFIER().GetText());
+                    AlgoValue funcValue = new AlgoValue()
+                    {
+                        Type = AlgoValueType.Function,
+                        Value = func,
+                        IsEnumerable = false
+                    };
+
+                    toReturn.ObjectScopes.AddVariable(value.IDENTIFIER().GetText(), funcValue);
+                }
+
+                //Return the object.
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Object,
+                    Value = toReturn,
+                    IsEnumerable = false
+                };
             }
             else
             {
