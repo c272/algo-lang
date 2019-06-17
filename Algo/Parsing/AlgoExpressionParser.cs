@@ -288,6 +288,19 @@ namespace Algo
             {
                 //LIBRARY VALUE ACCESS
 
+                //Attempt to get the correct scope.
+                AlgoScopeCollection scope = Scopes.GetScopeFromLibAccess(context.lib_access());
+
+                //Check if the value is in this scope.
+                var identifiers = context.lib_access().IDENTIFIER();
+                if (scope.VariableExists(identifiers[identifiers.Length-1].GetText()))
+                {
+                    Error.Fatal(context, "A variable with the name '" + identifiers[identifiers.Length - 1].GetText() + "' does not exist in this library.");
+                    return null;
+                }
+
+                //Yes, it is. Returning.
+                return scope.GetVariable(identifiers[identifiers.Length - 1].GetText());
             }
             else
             {

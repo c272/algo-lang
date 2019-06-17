@@ -86,7 +86,7 @@ array_access: IDENTIFIER '[' literal_params ']';
  */
 
 //Integer.
-INTEGER: ('-')? [1-9]* [0-9];
+INTEGER: ('-')? [1-9] [0-9]*;
 
 //Float.
 FLOAT: ('-')? [1-9]* [0-9] '.' [0-9]+;
