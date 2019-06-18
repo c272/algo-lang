@@ -32,7 +32,7 @@ stat_deletevar: DISREGARD_SYM (IDENTIFIER | MUL_OP);
 stat_functionCall: (IDENTIFIER | obj_access) LBRACKET literal_params? RBRACKET;
 stat_functionDef: LET_SYM IDENTIFIER LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
 stat_return: RETURN_SYM expr;
-stat_forLoop: FOR_SYM LBRACKET IDENTIFIER IN_SYM IDENTIFIER RBRACKET LBRACE statement* RBRACE;
+stat_forLoop: FOR_SYM LBRACKET IDENTIFIER IN_SYM value RBRACKET LBRACE statement* RBRACE;
 stat_if: IF_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE stat_elif* stat_else?;
 stat_print: PRINT_SYM expr rounding_expr?;
 stat_library: LIB_SYM IDENTIFIER LBRACE statement* RBRACE;

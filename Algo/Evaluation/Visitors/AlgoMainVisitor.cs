@@ -59,7 +59,8 @@ namespace Algo
             }
             else if (context.stat_forLoop() != null)
             {
-                //..
+                //A for loop.
+                VisitStat_forLoop(context.stat_forLoop());
             }
             else if (context.stat_functionCall() != null)
             {
