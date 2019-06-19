@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Antlr4.Runtime;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -90,6 +91,41 @@ namespace Algo
             }
 
             return toReturn;
+        }
+
+        public AlgoValue GetValueFromObjectString(ParserRuleContext context, string objString)
+        {
+            string[] objParts = objString.Split('.');
+            if (objParts.Length == 1)
+            {
+                if (!VariableExists(objString))
+                {
+                    Error.Fatal(context, "No variable with name '" + objParts[0] + "' exists.");
+                    return null;
+                }
+
+                return GetVariable(objString);
+            }
+
+            //Loop and get value.
+            if (!VariableExists(objParts[0]))
+            {
+                Error.FatalNoContext("No parent variable '" + objParts[0] + "' exists.");
+                return null;
+            }
+
+            AlgoValue currentValue = GetVariable(objParts[0]);
+            for (int i=1; i<objParts.Length-1; i++)
+            {
+                //Check if the current value is an object.
+                if (currentValue.Type != AlgoValueType.Object)
+                {
+                    Error.Fatal(context, "The parent value to get children of is not an object, so does not have children.");
+                    return null;
+                }
+
+                //todo
+            }
         }
 
         //Get a variable within the scopes.

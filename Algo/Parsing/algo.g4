@@ -15,6 +15,7 @@ statement: (  stat_define
 			| stat_functionCall
 			| stat_print
 			| stat_setvar
+			| stat_setvar_op
 			| stat_return
 			| stat_deletevar
 		   )  ENDLINE
@@ -28,6 +29,7 @@ statement: (  stat_define
 //Types of statement.
 stat_define: LET_SYM IDENTIFIER EQUALS expr;
 stat_setvar: (IDENTIFIER | obj_access) EQUALS expr rounding_expr?;
+stat_setvar_op: (IDENTIFIER | obj_access) selfmod_op expr;
 stat_deletevar: DISREGARD_SYM (IDENTIFIER | MUL_OP);
 stat_functionCall: (IDENTIFIER | obj_access) LBRACKET literal_params? RBRACKET;
 stat_functionDef: LET_SYM IDENTIFIER LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
@@ -70,6 +72,8 @@ sub: value | LBRACKET expr RBRACKET;
 
 //Mathematical operators.
 operator: MUL_OP | DIV_OP | TAKE_OP | ADD_OP | POW_OP;
+//Self modifying operators.
+selfmod_op: ADDFROM_OP | TAKEFROM_OP | MULFROM_OP | DIVFROM_OP;
 
 //A single literal value.
 value: stat_functionCall | obj_access | IDENTIFIER | INTEGER | FLOAT | BOOLEAN | STRING | RATIONAL | array | array_access | object;
@@ -92,7 +96,7 @@ obj_funcdefine: LET_SYM IDENTIFIER LBRACKET abstract_params? RBRACKET EQUALS LBR
  */
 
 //Integer.
-INTEGER: ('-')? [1-9] [0-9]*;
+INTEGER: ('-')? [1-9] [0-9]* | '0';
 
 //Float.
 FLOAT: ('-')? [1-9]* [0-9] '.' [0-9]+;
@@ -140,6 +144,10 @@ MUL_OP: '*';
 DIV_OP: '/';
 POW_OP: '^';
 POINT: '.';
+ADDFROM_OP: '+=';
+TAKEFROM_OP: '-=';
+DIVFROM_OP: '/=';
+MULFROM_OP: '*=';
 
 //CHECK OPERATORS
 BIN_OR: '|';

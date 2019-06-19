@@ -47,6 +47,11 @@ namespace Algo
                 //Set a variable after its definition.
                 VisitStat_setvar(context.stat_setvar());
             }
+            else if (context.stat_setvar_op() != null)
+            {
+                //Set a variable using a self modifying operator.
+                VisitStat_setvar_op(context.stat_setvar_op());
+            }
             else if (context.stat_deletevar() != null)
             {
                 //Delete a variable from scope.

@@ -32,6 +32,11 @@ namespace Algo
         //When a variable's value is changed.
         public override object VisitStat_setvar([NotNull] algoParser.Stat_setvarContext context)
         {
+            //Get the variable/object reference.
+            if (context.IDENTIFIER() != null)
+            {
+
+            }
             //Check if the variable already exists.
             if (!Scopes.VariableExists(context.IDENTIFIER().GetText()))
             {
@@ -105,6 +110,25 @@ namespace Algo
             //Set variable.
             Scopes.SetVariable(context.IDENTIFIER().GetText(), value);
             return null;
+        }
+
+        //When a variable value is changed by a self modifying operator.
+        public override object VisitStat_setvar_op([NotNull] algoParser.Stat_setvar_opContext context)
+        {
+            //Check if the variable already exists.
+            if (!Scopes.VariableExists(context.IDENTIFIER().GetText()))
+            {
+                Error.Fatal(context, "A variable with the name '" + context.IDENTIFIER().GetText() + "' does not exist, cannot set value.");
+                return null;
+            }
+
+            //It does, get the variable.
+            AlgoValue oldValue = Scopes.GetVariable(context.IDENTIFIER().GetText());
+
+            //Does, evaluate the expression to set the value.
+            AlgoValue value = (AlgoValue)VisitExpr(context.expr());
+
+            //Check the infix operator.
         }
 
         //When a variable is deleted.

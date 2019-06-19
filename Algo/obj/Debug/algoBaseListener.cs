@@ -101,6 +101,19 @@ public partial class algoBaseListener : IalgoListener {
 	public virtual void ExitStat_setvar([NotNull] algoParser.Stat_setvarContext context) { }
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.stat_setvar_op"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterStat_setvar_op([NotNull] algoParser.Stat_setvar_opContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.stat_setvar_op"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitStat_setvar_op([NotNull] algoParser.Stat_setvar_opContext context) { }
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.stat_deletevar"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -359,6 +372,19 @@ public partial class algoBaseListener : IalgoListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitOperator([NotNull] algoParser.OperatorContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.selfmod_op"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterSelfmod_op([NotNull] algoParser.Selfmod_opContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.selfmod_op"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitSelfmod_op([NotNull] algoParser.Selfmod_opContext context) { }
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.value"/>.

@@ -87,6 +87,17 @@ public interface IalgoListener : IParseTreeListener {
 	void ExitStat_setvar([NotNull] algoParser.Stat_setvarContext context);
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.stat_setvar_op"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterStat_setvar_op([NotNull] algoParser.Stat_setvar_opContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.stat_setvar_op"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitStat_setvar_op([NotNull] algoParser.Stat_setvar_opContext context);
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.stat_deletevar"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -305,6 +316,17 @@ public interface IalgoListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitOperator([NotNull] algoParser.OperatorContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.selfmod_op"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterSelfmod_op([NotNull] algoParser.Selfmod_opContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.selfmod_op"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitSelfmod_op([NotNull] algoParser.Selfmod_opContext context);
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.value"/>.
