@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Evaluation\Data Structures\AlgoConversion.cs" />
     <Compile Include="Evaluation\Data Structures\AlgoFunction.cs" />
     <Compile Include="Evaluation\Data Structures\AlgoObject.cs" />
     <Compile Include="Evaluation\Visitors\AlgoComparators.cs" />

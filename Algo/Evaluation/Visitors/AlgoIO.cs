@@ -21,24 +21,7 @@ namespace Algo
 
             //Depending on the type, set string accordingly via. casts.
             string printString = "";
-            switch (toPrint.Type)
-            {
-                case AlgoValueType.Float:
-                    printString = ((BigFloat)toPrint.Value).ToString();
-                    break;
-                case AlgoValueType.Integer:
-                    printString = ((BigInteger)toPrint.Value).ToString();
-                    break;
-                case AlgoValueType.Rational:
-                    printString = ((BigRational)toPrint.Value).ToString();
-                    break;
-                case AlgoValueType.String:
-                    printString = (string)toPrint.Value;
-                    break;
-                default:
-                    Error.Fatal(context, "Invalid type to print, cannot print a value of type '" + toPrint.Type + "'.");
-                    return null;
-            }
+            printString = AlgoConversion.GetStringRepresentation(context, toPrint);
 
             //Check if a rounding expression is present.
             if (context.rounding_expr() != null)

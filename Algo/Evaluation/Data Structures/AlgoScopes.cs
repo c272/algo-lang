@@ -96,6 +96,7 @@ namespace Algo
         //Returns the value of a referenced object within an object string.
         public AlgoValue GetValueFromObjectString(ParserRuleContext context, string objString)
         {
+            //Splitting the string by "." to get individual variable parts.
             string[] objParts = objString.Split('.');
             if (objParts.Length == 1)
             {
@@ -115,6 +116,7 @@ namespace Algo
                 return null;
             }
 
+            //Get the first parent object.
             AlgoValue currentObjValue = GetVariable(objParts[0]);
             if (currentObjValue.Type != AlgoValueType.Object)
             {
