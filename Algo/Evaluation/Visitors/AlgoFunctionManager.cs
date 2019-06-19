@@ -59,10 +59,15 @@ namespace Algo
             //The function to call.
             AlgoFunction funcToCall = null;
 
+            //The library scope (if applicable).
+            AlgoScopeCollection scopes_local = null;
+
             //Check if it's a nested variable.
+            bool isVariable = false;
             if (context.obj_access() != null && Scopes.VariableExists(context.obj_access().IDENTIFIER()[0].GetText()))
             {
                 //Yes, it's a variable.
+                isVariable = true;
 
                 //Get the starting variable.
                 AlgoValue objValue = Scopes.GetVariable(context.obj_access().IDENTIFIER()[0].GetText());
@@ -121,34 +126,52 @@ namespace Algo
 
                 //Getting the correct scope to grab the function from.
                 //Is it just the current one?
-                AlgoScopeCollection scopes_local = null;
                 if (context.IDENTIFIER() != null)
                 {
                     scopes_local = Scopes;
+
+                    //Check if a function variable exists with this name.
+                    if (!scopes_local.VariableExists(context.IDENTIFIER().GetText()))
+                    {
+                        Error.Fatal(context, "No function with name '" + context.IDENTIFIER().GetText() + "' exists.");
+                        return null;
+                    }
+
+                    //Get the variable, check if it's a function.
+                    AlgoValue value = scopes_local.GetVariable(context.IDENTIFIER().GetText());
+                    if (value.Type != AlgoValueType.Function)
+                    {
+                        Error.Fatal(context, "The variable with name '" + context.IDENTIFIER().GetText() + "' is not a function, so can't be called like one.");
+                        return null;
+                    }
+
+                    //Set function to call.
+                    funcToCall = (AlgoFunction)value.Value;
                 }
                 else
                 {
                     //Getting the correct scope.
                     scopes_local = Scopes.GetScopeFromLibAccess(context.obj_access());
-                }
 
-                //Check if a function variable exists with this name.
-                if (!scopes_local.VariableExists(context.IDENTIFIER().GetText()))
-                {
-                    Error.Fatal(context, "No function with name '" + context.IDENTIFIER().GetText() + "' exists.");
-                    return null;
-                }
+                    //Checking if a function variable exists in this scope with the right name.
+                    string varname = context.obj_access().IDENTIFIER().Last().GetText();
+                    if (!scopes_local.VariableExists(varname))
+                    {
+                        Error.Fatal(context, "No variable exists with the name '" + varname + "'.");
+                        return null;
+                    }
 
-                //Get the variable, check if it's a function.
-                AlgoValue value = scopes_local.GetVariable(context.IDENTIFIER().GetText());
-                if (value.Type != AlgoValueType.Function)
-                {
-                    Error.Fatal(context, "The variable with name '" + context.IDENTIFIER().GetText() + "' is not a function, so can't be called like one.");
-                    return null;
-                }
+                    //Get the variable, check it's a function.
+                    AlgoValue funcValue = scopes_local.GetVariable(varname);
+                    if (funcValue.Type != AlgoValueType.Function)
+                    {
+                        Error.Fatal(context, "The variable with name '" + varname + "' is not a function, so can't be called like one.");
+                        return null;
+                    }
 
-                //Set function to call.
-                funcToCall = (AlgoFunction)value.Value;
+                    //Set the function to call.
+                    funcToCall = (AlgoFunction)funcValue.Value;
+                }
             }
 
             //Getting parameter length.
@@ -176,6 +199,14 @@ namespace Algo
                 }
             }
 
+            //If the function is a library, swap out the current scope for the library's scope
+            AlgoScopeCollection oldScope = null;
+            if (!isVariable)
+            {
+                oldScope = Scopes;
+                Scopes = scopes_local;
+            }
+
             //Adding a scope, and creating the parameters inside it.
             Scopes.AddScope();
             for (int i = 0; i < paramvalues.Count; i++)
@@ -197,6 +228,13 @@ namespace Algo
 
             //Remove the function's scope, we're done!
             Scopes.RemoveScope();
+
+            //If it was a library, return to old scope.
+            if (!isVariable)
+            {
+                Scopes = oldScope;
+            }
+
             return null;
         }
 

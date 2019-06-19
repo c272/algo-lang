@@ -93,6 +93,7 @@ namespace Algo
             return toReturn;
         }
 
+        //Returns the value of a referenced object within an object string.
         public AlgoValue GetValueFromObjectString(ParserRuleContext context, string objString)
         {
             string[] objParts = objString.Split('.');
@@ -110,22 +111,50 @@ namespace Algo
             //Loop and get value.
             if (!VariableExists(objParts[0]))
             {
-                Error.FatalNoContext("No parent variable '" + objParts[0] + "' exists.");
+                Error.FatalNoContext("No parent variable '" + objParts[0] + "' exists. (Reminder: Library variables cannot be accessed from outside their own scope.)");
                 return null;
             }
 
-            AlgoValue currentValue = GetVariable(objParts[0]);
+            AlgoValue currentObjValue = GetVariable(objParts[0]);
+            if (currentObjValue.Type != AlgoValueType.Object)
+            {
+                Error.Fatal(context, "Parent variable is not an object, so cannot access children.");
+                return null;
+            }
+
+            //Getting the deepest scope.
+            AlgoObject currentObj = (AlgoObject)currentObjValue.Value;
+
             for (int i=1; i<objParts.Length-1; i++)
             {
-                //Check if the current value is an object.
-                if (currentValue.Type != AlgoValueType.Object)
+                //Attempt to get the child.
+                if (!currentObj.ObjectScopes.VariableExists(objParts[i]))
                 {
-                    Error.Fatal(context, "The parent value to get children of is not an object, so does not have children.");
+                    Error.Fatal(context, "A child property '" + objParts[i] + "' does not exist.");
+                    return null;
+                }
+                currentObjValue = currentObj.ObjectScopes.GetVariable(objParts[i]);
+
+                //Check if it's an object.
+                if (currentObjValue.Type != AlgoValueType.Object)
+                {
+                    Error.Fatal(context, "A child property '" + objParts[i] + "' is not an object, so can't access further children.");
                     return null;
                 }
 
-                //todo
+                //Set current object.
+                currentObj = (AlgoObject)currentObjValue.Value;
             }
+
+            //Getting the variable referenced at the deepest scope.
+            if (!currentObj.ObjectScopes.VariableExists(objParts[objParts.Length-1]))
+            {
+                Error.Fatal(context, "No variable exists at the deepest scope with name '" + objParts[objParts.Length-1] + "'.");
+                return null;
+            }
+
+            //Returning it.
+            return currentObj.ObjectScopes.GetVariable(objParts[objParts.Length - 1]);
         }
 
         //Get a variable within the scopes.
@@ -153,18 +182,67 @@ namespace Algo
         //Start from deepest depth.
         public void SetVariable(string varname, AlgoValue value)
         {
-            //Finding and setting.
-            for (int i=Scopes.Count-1; i>=0; i--)
+            //Is it a normal variable or an object?
+            if (!varname.Contains('.'))
             {
-                if (Scopes[i].Keys.Contains(varname))
+                //Finding and setting.
+                for (int i = Scopes.Count - 1; i >= 0; i--)
                 {
-                    Scopes[i][varname] = value;
-                    return;
+                    if (Scopes[i].Keys.Contains(varname))
+                    {
+                        Scopes[i][varname] = value;
+                        return;
+                    }
                 }
-            }
 
-            //Uncaught missing variable.
-            Error.FatalNoContext("No variable found with name '" + varname + "' to set.");
+                //Uncaught missing variable.
+                Error.FatalNoContext("No variable found with name '" + varname + "' to set.");
+            } else
+            {
+                string[] objParts = varname.Split('.');
+
+                //Loop and get value.
+                if (!VariableExists(objParts[0]))
+                {
+                    Error.FatalNoContext("No parent variable '" + objParts[0] + "' exists.");
+                }
+
+                AlgoValue currentObjValue = GetVariable(objParts[0]);
+                if (currentObjValue.Type != AlgoValueType.Object)
+                {
+                    Error.FatalNoContext("Parent variable is not an object, so cannot access children.");
+                }
+
+                //Getting the deepest scope.
+                AlgoObject currentObj = (AlgoObject)currentObjValue.Value;
+                for (int i = 1; i < objParts.Length - 1; i++)
+                {
+                    //Attempt to get the child.
+                    if (!currentObj.ObjectScopes.VariableExists(objParts[i]))
+                    {
+                        Error.FatalNoContext("A child property '" + objParts[i] + "' does not exist.");
+                    }
+                    currentObjValue = currentObj.ObjectScopes.GetVariable(objParts[i]);
+
+                    //Check if it's an object.
+                    if (currentObjValue.Type != AlgoValueType.Object)
+                    {
+                        Error.FatalNoContext("A child property '" + objParts[i] + "' is not an object, so can't access further children.");
+                    }
+
+                    //Set current object.
+                    currentObj = (AlgoObject)currentObjValue.Value;
+                }
+
+                //Getting the variable referenced at the deepest scope.
+                if (!currentObj.ObjectScopes.VariableExists(objParts[objParts.Length - 1]))
+                {
+                    Error.FatalNoContext("No variable exists at the deepest scope with name '" + objParts[objParts.Length - 1] + "'.");
+                }
+
+                //Set value of variable.
+                currentObj.ObjectScopes.SetVariable(objParts[objParts.Length - 1], value);
+            }
         }
         
         //Checks whether a variable exists.

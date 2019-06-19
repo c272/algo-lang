@@ -33,15 +33,28 @@ namespace Algo
         public override object VisitStat_setvar([NotNull] algoParser.Stat_setvarContext context)
         {
             //Get the variable/object reference.
+            string objString = "";
             if (context.IDENTIFIER() != null)
             {
+                //Check the variable exists.
+                if (!Scopes.VariableExists(context.IDENTIFIER().GetText()))
+                {
+                    Error.Fatal(context, "Variable with the name '" + context.IDENTIFIER().GetText() + "' does not exist.");
+                    return null;
+                }
 
-            }
-            //Check if the variable already exists.
-            if (!Scopes.VariableExists(context.IDENTIFIER().GetText()))
+                objString = context.IDENTIFIER().GetText();
+            } else
             {
-                Error.Fatal(context, "A variable with the name '" + context.IDENTIFIER().GetText() + "' does not exist, cannot set value.");
-                return null;
+                //Getting the object string.
+                foreach (var part in context.obj_access().IDENTIFIER())
+                {
+                    objString += part.GetText() + '.';
+                }
+                objString = objString.Substring(0, objString.Length - 1);
+
+                //Validate it by fake value grabbing.
+                Scopes.GetValueFromObjectString(context, objString);
             }
 
             //Does, evaluate the expression to set the value.
@@ -108,7 +121,7 @@ namespace Algo
             }
 
             //Set variable.
-            Scopes.SetVariable(context.IDENTIFIER().GetText(), value);
+            Scopes.SetVariable(objString, value);
             return null;
         }
 
@@ -129,6 +142,7 @@ namespace Algo
             AlgoValue value = (AlgoValue)VisitExpr(context.expr());
 
             //Check the infix operator.
+            return null;
         }
 
         //When a variable is deleted.
