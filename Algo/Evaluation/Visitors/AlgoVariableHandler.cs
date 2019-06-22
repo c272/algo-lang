@@ -37,25 +37,17 @@ namespace Algo
             string objString = "";
             if (context.IDENTIFIER() != null)
             {
-                //Check the variable exists.
-                if (!Scopes.VariableExists(context.IDENTIFIER().GetText()))
-                {
-                    Error.Fatal(context, "Variable with the name '" + context.IDENTIFIER().GetText() + "' does not exist.");
-                    return null;
-                }
-
                 objString = context.IDENTIFIER().GetText();
             } else
             {
-                //Getting the object string.
-                foreach (var part in context.obj_access().IDENTIFIER())
-                {
-                    objString += part.GetText() + '.';
-                }
-                objString = objString.Substring(0, objString.Length - 1);
+                objString = context.obj_access().GetText();
+            }
 
-                //Validate it by fake value grabbing.
-                Scopes.GetValueFromObjectString(context, objString);
+            //Validate it.
+            if (!Scopes.VariableExists(objString))
+            {
+                Error.Fatal(context, "An object reference named '" + objString + "' does not exist.");
+                return null;
             }
 
             //Does, evaluate the expression to set the value.
@@ -129,20 +121,68 @@ namespace Algo
         //When a variable value is changed by a self modifying operator.
         public override object VisitStat_setvar_op([NotNull] algoParser.Stat_setvar_opContext context)
         {
-            //Check if the variable already exists.
-            if (!Scopes.VariableExists(context.IDENTIFIER().GetText()))
+            //Get variable name.
+            string varname = "";
+            if (context.IDENTIFIER() != null)
             {
-                Error.Fatal(context, "A variable with the name '" + context.IDENTIFIER().GetText() + "' does not exist, cannot set value.");
+                varname = context.IDENTIFIER().GetText();
+            }
+            else
+            {
+                varname = context.obj_access().GetText();
+            }
+
+            //Validate it.
+            if (!Scopes.VariableExists(varname))
+            {
+                Error.Fatal(context, "A variable named '" + varname + "' does not exist.");
+                return null;
+            }
+
+            //Check if the variable already exists.
+            if (!Scopes.VariableExists(varname))
+            {
+                Error.Fatal(context, "A variable with the name '" + varname + "' does not exist, cannot set value.");
                 return null;
             }
 
             //It does, get the variable.
-            AlgoValue oldValue = Scopes.GetVariable(context.IDENTIFIER().GetText());
+            AlgoValue oldValue = Scopes.GetVariable(varname);
 
             //Does, evaluate the expression to set the value.
             AlgoValue value = (AlgoValue)VisitExpr(context.expr());
 
-            //Check the infix operator.
+            //Switching on selfmod value.
+            AlgoValue newValue;
+            if (context.selfmod_op().ADDFROM_OP() != null)
+            {
+                //Attempt to add.
+                newValue = AlgoOperators.Add(context, oldValue, value);
+            }
+            else if (context.selfmod_op().DIVFROM_OP() != null)
+            {
+                //Attempt to divide.
+                newValue = AlgoOperators.Div(context, oldValue, value);
+            }
+            else if (context.selfmod_op().MULFROM_OP() != null)
+            {
+                //Attempt to multiply.
+                newValue = AlgoOperators.Mul(context, oldValue, value);
+            }
+            else if (context.selfmod_op().TAKEFROM_OP() != null)
+            {
+                //Attempt to subtract.
+                newValue = AlgoOperators.Sub(context, oldValue, value);
+            }
+            else
+            {
+                //Invalid operator type, oopsie! Implemented in parser but not here.
+                Error.Fatal(context, "Invalid operator given for self modifying variable, implemented in parser but not in interpreter.");
+                return null;
+            }
+
+            //Set the value of the variable.
+            Scopes.SetVariable(varname, newValue);
             return null;
         }
 
@@ -150,17 +190,28 @@ namespace Algo
         public override object VisitStat_deletevar([NotNull] algoParser.Stat_deletevarContext context)
         {
             //Checking if the disregard wants to delete all variables or only one.
-            if (context.IDENTIFIER() != null)
+            if (context.IDENTIFIER() != null && context.obj_access() != null)
             {
+                //Get variable name.
+                string varname = "";
+                if (context.IDENTIFIER() != null)
+                {
+                    varname = context.IDENTIFIER().GetText();
+                }
+                else
+                {
+                    varname = context.obj_access().GetText();
+                }
+
                 //Check if variable exists.
-                if (!Scopes.VariableExists(context.IDENTIFIER().GetText()))
+                if (!Scopes.VariableExists(varname))
                 {
                     Error.Fatal(context, "Invalid variable name given to disregard.");
                     return null;
                 }
 
                 //Remove variable.
-                Scopes.RemoveVariable(context.IDENTIFIER().GetText());
+                Scopes.RemoveVariable(varname);
             }
             else
             {

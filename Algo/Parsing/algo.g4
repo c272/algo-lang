@@ -30,7 +30,7 @@ statement: (  stat_define
 stat_define: LET_SYM IDENTIFIER EQUALS expr;
 stat_setvar: (IDENTIFIER | obj_access) EQUALS expr rounding_expr?;
 stat_setvar_op: (IDENTIFIER | obj_access) selfmod_op expr;
-stat_deletevar: DISREGARD_SYM (IDENTIFIER | MUL_OP);
+stat_deletevar: DISREGARD_SYM (IDENTIFIER | obj_access | MUL_OP);
 stat_functionCall: (IDENTIFIER | obj_access) LBRACKET literal_params? RBRACKET;
 stat_functionDef: LET_SYM IDENTIFIER LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
 stat_return: RETURN_SYM expr;

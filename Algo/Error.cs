@@ -12,6 +12,9 @@ namespace Algo
         //Fatal error, with token context.
         public static void Fatal(ParserRuleContext context, string errMessage)
         {
+            //Check context isn't broken before attempting to use it, don't want the error message throwing an error.
+            if (context == null) { FatalNoContext(errMessage); return; }
+
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Red;
             Console.WriteLine("Algo Runtime Error: " + Program.FileLoaded + ", Line " + context.Start.Line + ":" + context.Start.StartIndex + " - " + errMessage);
@@ -38,6 +41,9 @@ namespace Algo
         //Warning.
         public static void Warning(ParserRuleContext context, string errMessage)
         {
+            //Check context isn't broken before attempting to use it, don't want the error message throwing an error.
+            if (context == null) { FatalNoContext(errMessage); return; }
+
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Algo Warning: Line " + context.Start.Line + ":" + context.Start.StartIndex + " - " + errMessage);
             Console.ForegroundColor = ConsoleColor.White;

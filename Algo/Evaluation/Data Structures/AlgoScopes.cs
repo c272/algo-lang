@@ -250,6 +250,27 @@ namespace Algo
         //Checks whether a variable exists.
         public bool VariableExists(string varname)
         {
+            if (varname.Contains('.'))
+            {
+                //Validate it by fake value grabbing.
+                List<string> parts = varname.Split('.').ToList();
+                AlgoValue partParent = GetVariable(parts[0]);
+                if (partParent == null || (partParent.Type != AlgoValueType.Object && parts.Count>1))
+                {
+                    return false;
+                }
+
+                //If the variable is known to exist and no points, this is just a sanity check to make sure nothing slips through.
+                if (parts.Count==1) { return true; }
+
+                //Iterate through children recursively to check they all exist.
+                AlgoObject currentObj = (AlgoObject)partParent.Value;
+                parts.RemoveAt(0);
+                string childString = string.Join(".", parts.ToArray());
+
+                //Recursive return.
+                return currentObj.ObjectScopes.VariableExists(childString);
+            }
             return (GetVariable(varname) != null);
         }
 
@@ -283,13 +304,36 @@ namespace Algo
                 return;
             }
 
-            //Yes, so check through all scopes (from deepest) and delete.
-            for (int i=Scopes.Count-1; i>=0; i--)
+            //If the name contains a '.', got to go to deepest scope recursively.
+            if (name.Contains('.'))
             {
-                if (Scopes[i].ContainsKey(name))
+                //Get the parent.
+                List<string> parts = name.Split('.').ToList();
+                AlgoValue partParent = GetVariable(parts[0]);
+
+                //Checking if it's an object.
+                if (partParent.Type != AlgoValueType.Object)
                 {
-                    Scopes[i].Remove(name);
+                    Error.FatalNoContext("The value given is not an object, so cannot remove children.");
                     return;
+                }
+
+                //Remove variable from this scope recursively.
+                parts.RemoveAt(0);
+                string newPartString = string.Join(".", parts.ToList());
+                AlgoObject partObj = (AlgoObject)partParent.Value;
+                partObj.ObjectScopes.RemoveVariable(newPartString);
+            }
+            else
+            {
+                //Literal variable in this scope, check through all scopes (from deepest) and delete.
+                for (int i = Scopes.Count - 1; i >= 0; i--)
+                {
+                    if (Scopes[i].ContainsKey(name))
+                    {
+                        Scopes[i].Remove(name);
+                        return;
+                    }
                 }
             }
 
