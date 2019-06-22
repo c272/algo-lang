@@ -38,10 +38,17 @@ namespace Algo
             var scopes = algoVisitor.Scopes.GetScopes();
             for (int i = 0; i < scopes.Count; i++)
             {
+                //Check variable isn't null.
                 Console.WriteLine("Scope " + (i + 1) + "\n---");
                 foreach (var variable in scopes[i])
                 {
-                    Console.WriteLine(variable.Key + " of type " + variable.Value.Type.ToString() + ", value " + variable.Value.Value.ToString() + ".");
+                    string varValue = "Null";
+                    if (variable.Value.Type != AlgoValueType.Null)
+                    {
+                        varValue = variable.Value.Value.ToString();
+                    }
+
+                    Console.WriteLine(variable.Key + " of type " + variable.Value.Type.ToString() + ", value " + varValue + ".");
                 }
                 Console.WriteLine("");
             }

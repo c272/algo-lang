@@ -19,9 +19,15 @@ namespace Algo
         }
 
         //Add a scope.
-        public void AddScope()
+        public void AddScope(Dictionary<string, AlgoValue> scope=null)
         {
-            Scopes.Add(new Dictionary<string, AlgoValue>());
+            if (scope == null)
+            {
+                Scopes.Add(new Dictionary<string, AlgoValue>());
+            } else
+            {
+                Scopes.Add(scope);
+            }
         }
 
         //Remove a scope.

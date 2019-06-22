@@ -76,7 +76,7 @@ operator: MUL_OP | DIV_OP | TAKE_OP | ADD_OP | POW_OP;
 selfmod_op: ADDFROM_OP | TAKEFROM_OP | MULFROM_OP | DIVFROM_OP;
 
 //A single literal value.
-value: stat_functionCall | obj_access | IDENTIFIER | INTEGER | FLOAT | BOOLEAN | STRING | RATIONAL | array | array_access | object;
+value: stat_functionCall | obj_access | IDENTIFIER | INTEGER | FLOAT | BOOLEAN | STRING | RATIONAL | NULL | array | array_access | object;
 
 //Accessing a library or object.
 obj_access: (IDENTIFIER POINT)+ IDENTIFIER;
@@ -109,6 +109,9 @@ STRING: '"' (~["])* '"';
 
 //Rational.
 RATIONAL: INTEGER '/' INTEGER;
+
+//Null.
+NULL: 'null';
 
 // Commonly used and reserved symbols in Algo.
 // RESERVED WORDS

@@ -64,6 +64,7 @@ namespace Algo
 
             //Check if it's a nested variable.
             bool isVariable = false;
+            AlgoScopeCollection objScope = null;
             if (context.obj_access() != null && Scopes.VariableExists(context.obj_access().IDENTIFIER()[0].GetText()))
             {
                 //Yes, it's a variable.
@@ -76,6 +77,7 @@ namespace Algo
                     Error.Fatal(context, "The variable you tried to reference as an object is not an object.");
                     return null;
                 }
+                objScope = ((AlgoObject)objValue.Value).ObjectScopes;
 
                 //Get the final object.
                 AlgoObject currentObj = (AlgoObject)objValue.Value;
@@ -206,6 +208,10 @@ namespace Algo
                 oldScope = Scopes;
                 Scopes = scopes_local;
             }
+            if (objScope != null)
+            {
+                Scopes.AddScope(objScope.Scopes.First());
+            }
 
             //Adding a scope, and creating the parameters inside it.
             Scopes.AddScope();
@@ -228,6 +234,10 @@ namespace Algo
 
             //Remove the function's scope, we're done!
             Scopes.RemoveScope();
+            if (objScope != null)
+            {
+                Scopes.RemoveScope();
+            }
 
             //If it was a library, return to old scope.
             if (!isVariable)

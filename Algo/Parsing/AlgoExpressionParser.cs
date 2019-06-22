@@ -182,6 +182,16 @@ namespace Algo
                     IsEnumerable = false
                 };
             }
+            else if (context.NULL() != null)
+            {
+                //NULL VALUE
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Null,
+                    Value = null,
+                    IsEnumerable = false
+                };
+            }
             else if (context.IDENTIFIER() != null)
             {
                 //VARIABLE
