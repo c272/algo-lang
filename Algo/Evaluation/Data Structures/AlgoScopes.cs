@@ -94,7 +94,7 @@ namespace Algo
         }
 
         //Returns the value of a referenced object within an object string.
-        public AlgoValue GetValueFromObjectString(ParserRuleContext context, string objString)
+        private AlgoValue GetValueFromObjectString(string objString)
         {
             //Splitting the string by "." to get individual variable parts.
             string[] objParts = objString.Split('.');
@@ -102,7 +102,6 @@ namespace Algo
             {
                 if (!VariableExists(objString))
                 {
-                    Error.Fatal(context, "No variable with name '" + objParts[0] + "' exists.");
                     return null;
                 }
 
@@ -112,7 +111,6 @@ namespace Algo
             //Loop and get value.
             if (!VariableExists(objParts[0]))
             {
-                Error.FatalNoContext("No parent variable '" + objParts[0] + "' exists. (Reminder: Library variables cannot be accessed from outside their own scope.)");
                 return null;
             }
 
@@ -120,7 +118,6 @@ namespace Algo
             AlgoValue currentObjValue = GetVariable(objParts[0]);
             if (currentObjValue.Type != AlgoValueType.Object)
             {
-                Error.Fatal(context, "Parent variable is not an object, so cannot access children.");
                 return null;
             }
 
@@ -132,7 +129,6 @@ namespace Algo
                 //Attempt to get the child.
                 if (!currentObj.ObjectScopes.VariableExists(objParts[i]))
                 {
-                    Error.Fatal(context, "A child property '" + objParts[i] + "' does not exist.");
                     return null;
                 }
                 currentObjValue = currentObj.ObjectScopes.GetVariable(objParts[i]);
@@ -140,7 +136,6 @@ namespace Algo
                 //Check if it's an object.
                 if (currentObjValue.Type != AlgoValueType.Object)
                 {
-                    Error.Fatal(context, "A child property '" + objParts[i] + "' is not an object, so can't access further children.");
                     return null;
                 }
 
@@ -151,7 +146,6 @@ namespace Algo
             //Getting the variable referenced at the deepest scope.
             if (!currentObj.ObjectScopes.VariableExists(objParts[objParts.Length-1]))
             {
-                Error.Fatal(context, "No variable exists at the deepest scope with name '" + objParts[objParts.Length-1] + "'.");
                 return null;
             }
 
@@ -163,11 +157,19 @@ namespace Algo
         //Start from the deepest depth, to ensure local scope is evaluated first.
         public AlgoValue GetVariable(string varname)
         {
-            for (int i=Scopes.Count-1; i>=0; i--)
+            if (varname.Contains("."))
             {
-                if (Scopes[i].Keys.Contains(varname))
+                //Contains object reference, return object grabbed.
+                return GetValueFromObjectString(varname);
+            }
+            else
+            {
+                for (int i = Scopes.Count - 1; i >= 0; i--)
                 {
-                    return Scopes[i][varname];
+                    if (Scopes[i].Keys.Contains(varname))
+                    {
+                        return Scopes[i][varname];
+                    }
                 }
             }
 

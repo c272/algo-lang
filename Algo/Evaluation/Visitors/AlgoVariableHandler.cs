@@ -132,13 +132,6 @@ namespace Algo
                 varname = context.obj_access().GetText();
             }
 
-            //Validate it.
-            if (!Scopes.VariableExists(varname))
-            {
-                Error.Fatal(context, "A variable named '" + varname + "' does not exist.");
-                return null;
-            }
-
             //Check if the variable already exists.
             if (!Scopes.VariableExists(varname))
             {
