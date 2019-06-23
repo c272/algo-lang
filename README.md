@@ -35,7 +35,7 @@ Building in "Debug" mode is recommended for all contributions to the update bran
     disregard foo;
     disregard bar;
     
-**"If" and "for" statements:**
+**"If", "for" and "while" statements:**
     
     if (a == 1.232) {
       ...
@@ -44,4 +44,10 @@ Building in "Debug" mode is recommended for all contributions to the update bran
     b = [3, 2, 4, 6, "foo"];
     for (i in b) {
       ...
+    }
+    
+    c = 3;
+    while (c < 5) {
+        print c;
+        c += 1;
     }
