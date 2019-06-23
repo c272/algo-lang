@@ -51,3 +51,21 @@ Building in "Debug" mode is recommended for all contributions to the update bran
         print c;
         c += 1;
     }
+
+**Libraries and Objects**
+    
+    //Define a basic library.
+    library SomeLib {
+        let b = 3;
+    }
+    
+    //Call from the library.
+    print SomeLib.b;
+    
+    //Define a basic object.
+    let someObj = object {
+        let x = SomeLib.b;
+    };
+    
+    //Call from the object.
+    print someObj.x;
