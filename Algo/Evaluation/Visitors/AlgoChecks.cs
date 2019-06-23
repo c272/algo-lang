@@ -15,11 +15,11 @@ namespace Algo
         //An "if" statement.
         public override object VisitStat_if([NotNull] algoParser.Stat_ifContext context)
         {
-            bool mainCheck = false;
-            //Get the resulting check value.
-
-
-            //Evaluate the main if check.
+            //Evaluate the check.
+            AlgoValue checkReturned = (AlgoValue)VisitCheck(context.check());
+            bool mainCheck = AlgoComparators.GetBooleanValue(checkReturned, context);
+            
+            //Did it pass? If so, eval the if.
             if (mainCheck)
             {
                 //Create scope.
@@ -45,7 +45,8 @@ namespace Algo
                 {
                     //Does the check pass?
                     var checkContext = elseifblock.check();
-                    bool elseifCheck = (bool)VisitCheck(checkContext);
+                    AlgoValue elifCheckReturned = (AlgoValue)VisitCheck(checkContext);
+                    bool elseifCheck = AlgoComparators.GetBooleanValue(elifCheckReturned, context);
 
                     if (elseifCheck)
                     {
@@ -106,42 +107,25 @@ namespace Algo
                     IsEnumerable = false
                 };
             }
-            else if (context.BIN_EQUALS() != null)
-            {
-                //Binary EQUALS.
-                //Evaluate the left and right values.
-                AlgoValue left = (AlgoValue)VisitCheck(context.check());
-                AlgoValue right = (AlgoValue)VisitCheckfrag(context.checkfrag());
-
-                //Return whether these two are equal, as AlgoValue.
-                return new AlgoValue()
-                {
-                    Type = AlgoValueType.Boolean,
-                    Value = AlgoComparators._Equals(context, left, right),
-                    IsEnumerable = false
-                };
-            }
-            else if (context.BIN_NET() != null)
-            {
-                //Binary not equal to.
-                //Evaluate the left and right values.
-                AlgoValue left = (AlgoValue)VisitCheck(context.check());
-                AlgoValue right = (AlgoValue)VisitCheckfrag(context.checkfrag());
-
-                //Return whether these two are equal, as AlgoValue.
-                return new AlgoValue()
-                {
-                    Type = AlgoValueType.Boolean,
-                    Value = !AlgoComparators._Equals(context, left, right),
-                    IsEnumerable = false
-                };
-            }
             else if (context.BIN_OR() != null)
             {
                 //Binary OR.
                 //Evaluate the left and right values.
                 AlgoValue left = (AlgoValue)VisitCheck(context.check());
                 AlgoValue right = (AlgoValue)VisitCheckfrag(context.checkfrag());
+
+                //Return an OR on these values.
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Boolean,
+                    Value = AlgoComparators.OR(context, left, right),
+                    IsEnumerable = false
+                };
+            }
+            else if (context.LBRACKET() != null)
+            {
+                //Bracketed check.
+                return (AlgoValue)VisitCheck(context.check());
             }
             else
             {
@@ -207,6 +191,36 @@ namespace Algo
                 {
                     Type = AlgoValueType.Boolean,
                     Value = AlgoComparators.LessThan(context, left, right, true),
+                    IsEnumerable = false
+                };
+            }
+            else if (context.BIN_EQUALS() != null)
+            {
+                //Binary EQUALS.
+                //Evaluate the left and right values.
+                AlgoValue left = (AlgoValue)VisitExpr(context.expr()[0]);
+                AlgoValue right = (AlgoValue)VisitExpr(context.expr()[1]);
+
+                //Return whether these two are equal, as AlgoValue.
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Boolean,
+                    Value = AlgoComparators._Equals(context, left, right),
+                    IsEnumerable = false
+                };
+            }
+            else if (context.BIN_NET() != null)
+            {
+                //Binary not equal to.
+                //Evaluate the left and right values.
+                AlgoValue left = (AlgoValue)VisitExpr(context.expr()[0]);
+                AlgoValue right = (AlgoValue)VisitExpr(context.expr()[1]);
+
+                //Return whether these two are equal, as AlgoValue.
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Boolean,
+                    Value = !AlgoComparators._Equals(context, left, right),
                     IsEnumerable = false
                 };
             }

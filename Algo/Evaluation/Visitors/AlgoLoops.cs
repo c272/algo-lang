@@ -65,15 +65,8 @@ namespace Algo
             while (true)
             {
                 //Evaluate check, see if it's true. If not, break out the loop.
-                bool checkPassed = false;
-                if (VisitCheck(context.check()).GetType() == typeof(bool))
-                {
-                    checkPassed = (bool)VisitCheck(context.check());
-                } else
-                {
-                    //Raw value.
-                    checkPassed = (bool)((AlgoValue)VisitCheck(context.check())).Value;
-                }
+                AlgoValue whileCheckRes = (AlgoValue)VisitCheck(context.check());
+                bool checkPassed = AlgoComparators.GetBooleanValue(whileCheckRes, context);
 
                 //Did it pass? If not, break.
                 if (!checkPassed)

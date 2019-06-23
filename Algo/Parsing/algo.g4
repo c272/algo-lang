@@ -52,8 +52,6 @@ abstract_params: (IDENTIFIER COMMA)* IDENTIFIER;
 //A check, along with possible check operators.
 check:   check BIN_OR checkfrag
 	   | check BIN_AND checkfrag
-	   | check BIN_EQUALS checkfrag
-	   | check BIN_NET checkfrag
 	   | LBRACKET check RBRACKET
 	   | checkfrag;
 
@@ -61,6 +59,8 @@ checkfrag:   expr GRTR_THAN expr
 		   | expr LESS_THAN expr
 		   | expr GRTR_THAN_ET expr
 		   | expr LESS_THAN_ET expr
+		   | expr BIN_EQUALS expr
+	       | expr BIN_NET expr
 		   | expr;
 
 check_operator: BIN_OR | BIN_AND | GRTR_THAN | LESS_THAN | GRTR_THAN_ET | LESS_THAN_ET | BIN_EQUALS;
