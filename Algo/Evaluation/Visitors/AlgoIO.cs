@@ -29,52 +29,26 @@ namespace Algo
                 //Evaluate the rounding expression.
                 AlgoValue roundingNum = (AlgoValue)VisitExpr(context.rounding_expr().expr());
 
-                //Check it's an integer.
+                //Check if it's an integer.
                 if (roundingNum.Type != AlgoValueType.Integer)
                 {
-                    Error.Warning(context, "Rounding value given wasn't an integer, so it was ignored.");
-                }
-                else if ((BigInteger)roundingNum.Value <= 0)
+                    Error.Warning(context, "Given rounding expression is not an integer, so can't round. Rounding was ignored.");
+                } else
                 {
-                    Error.Warning(context, "Rounding value given less than one, so it was ignored.");
-                }
-                else if (toPrint.Type == AlgoValueType.String)
-                {
-                    //Cannot round strings.
-                    Error.Warning(context, "Cannot round a string, so rounding was ignored.");
-                }
-                else
-                {
-                    //Print rounded value.
-                    //todo: make this take account of rounding.
-                    int amtSF = 0;
-                    bool pointReached = false;
-                    foreach (char c in printString)
+                    //Check if the rounding value is too large.
+                    if ((BigInteger)roundingNum.Value > int.MaxValue)
                     {
-                        if (c != '.' && c != '0' && c != '-')
-                        {
-                            amtSF++;
-                        } else if (c=='.')
-                        {
-                            pointReached = true;
-                        }
-                        Console.Write(c);
-
-                        //Reached the required SF.
-                        if (amtSF == (BigInteger)roundingNum.Value)
-                        {
-                            if (!pointReached)
-                            {
-                                Console.Write('0');
-                            } else
-                            {
-                                break;
-                            }
-                        }
+                        Error.Warning(context, "Given rounding number is too large to process, so rounding was ignored.");
                     }
+                    else
+                    {
+                        //Round the actual value.
+                        int roundingInt = int.Parse(((BigInteger)roundingNum.Value).ToString());
+                        toPrint = AlgoOperators.Round(context, toPrint, roundingInt);
 
-                    //Return.
-                    return null;
+                        //Set print string.
+                        printString = AlgoConversion.GetStringRepresentation(context, toPrint);
+                    }
                 }
             }
 
