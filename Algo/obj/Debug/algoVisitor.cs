@@ -110,6 +110,13 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitStat_forLoop([NotNull] algoParser.Stat_forLoopContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.stat_whileLoop"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStat_whileLoop([NotNull] algoParser.Stat_whileLoopContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="algoParser.stat_if"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -164,6 +171,13 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitCheck([NotNull] algoParser.CheckContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.checkfrag"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitCheckfrag([NotNull] algoParser.CheckfragContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="algoParser.check_operator"/>.

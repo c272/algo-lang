@@ -57,5 +57,38 @@ namespace Algo
             //Done evaluating.
             return null;
         }
+
+        //A single "while" loop in Algo.
+        public override object VisitStat_whileLoop([NotNull] algoParser.Stat_whileLoopContext context)
+        {
+            //Forever!
+            while (true)
+            {
+                //Evaluate check, see if it's true. If not, break out the loop.
+                bool checkPassed = false;
+                if (VisitCheck(context.check()).GetType() == typeof(bool))
+                {
+                    checkPassed = (bool)VisitCheck(context.check());
+                } else
+                {
+                    //Raw value.
+                    checkPassed = (bool)((AlgoValue)VisitCheck(context.check())).Value;
+                }
+
+                //Did it pass? If not, break.
+                if (!checkPassed)
+                {
+                    break;
+                }
+
+                //Loop over all the statements.
+                foreach (var statement in context.statement())
+                {
+                    VisitStatement(statement);
+                }
+            }
+
+            return null;
+        }
     }
 }

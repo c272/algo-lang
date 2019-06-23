@@ -67,6 +67,11 @@ namespace Algo
                 //A for loop.
                 VisitStat_forLoop(context.stat_forLoop());
             }
+            else if (context.stat_whileLoop() != null)
+            {
+                //A while loop.
+                VisitStat_whileLoop(context.stat_whileLoop());
+            }
             else if (context.stat_functionCall() != null)
             {
                 //A function call.

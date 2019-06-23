@@ -179,6 +179,19 @@ public partial class algoBaseListener : IalgoListener {
 	public virtual void ExitStat_forLoop([NotNull] algoParser.Stat_forLoopContext context) { }
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.stat_whileLoop"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterStat_whileLoop([NotNull] algoParser.Stat_whileLoopContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.stat_whileLoop"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitStat_whileLoop([NotNull] algoParser.Stat_whileLoopContext context) { }
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.stat_if"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -281,6 +294,19 @@ public partial class algoBaseListener : IalgoListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitCheck([NotNull] algoParser.CheckContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.checkfrag"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterCheckfrag([NotNull] algoParser.CheckfragContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.checkfrag"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitCheckfrag([NotNull] algoParser.CheckfragContext context) { }
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.check_operator"/>.

@@ -15,8 +15,11 @@ namespace Algo
         //An "if" statement.
         public override object VisitStat_if([NotNull] algoParser.Stat_ifContext context)
         {
+            bool mainCheck = false;
+            //Get the resulting check value.
+
+
             //Evaluate the main if check.
-            bool mainCheck = (bool)VisitCheck(context.check());
             if (mainCheck)
             {
                 //Create scope.
@@ -87,55 +90,130 @@ namespace Algo
         //Evaluate a check into a raw boolean (no value wrapper).
         public override object VisitCheck([NotNull] algoParser.CheckContext context)
         {
-            //Is the check a single expression or multiple?
-            if (context.check().Length != 0)
+            //Switch for the type of check.
+            if (context.BIN_AND() != null)
             {
-                //Multiple.
-                //Evaluate left and right expressions.
-                AlgoValue left = (AlgoValue)VisitCheck(context.check()[0]);
-                AlgoValue right = (AlgoValue)VisitCheck(context.check()[1]);
+                //Binary AND.
+                //Evaluate the left and right values.
+                AlgoValue left = (AlgoValue)VisitCheck(context.check());
+                AlgoValue right = (AlgoValue)VisitCheckfrag(context.checkfrag());
 
-                //Switch on the operator, and evaluate.
-                var op = context.check_operator();
-                if (op.BIN_AND() != null)
+                //Return the comparison result of these two (as AlgoValue).
+                return new AlgoValue()
                 {
-                    return AlgoComparators.AND(context, left, right);
-                }
-                else if (op.BIN_EQUALS() != null)
+                    Type = AlgoValueType.Boolean,
+                    Value = AlgoComparators.AND(context, left, right),
+                    IsEnumerable = false
+                };
+            }
+            else if (context.BIN_EQUALS() != null)
+            {
+                //Binary EQUALS.
+                //Evaluate the left and right values.
+                AlgoValue left = (AlgoValue)VisitCheck(context.check());
+                AlgoValue right = (AlgoValue)VisitCheckfrag(context.checkfrag());
+
+                //Return whether these two are equal, as AlgoValue.
+                return new AlgoValue()
                 {
-                    return AlgoComparators._Equals(context, left, right);
-                }
-                else if (op.BIN_OR() != null)
+                    Type = AlgoValueType.Boolean,
+                    Value = AlgoComparators._Equals(context, left, right),
+                    IsEnumerable = false
+                };
+            }
+            else if (context.BIN_NET() != null)
+            {
+                //Binary not equal to.
+                //Evaluate the left and right values.
+                AlgoValue left = (AlgoValue)VisitCheck(context.check());
+                AlgoValue right = (AlgoValue)VisitCheckfrag(context.checkfrag());
+
+                //Return whether these two are equal, as AlgoValue.
+                return new AlgoValue()
                 {
-                    return AlgoComparators.OR(context, left, right);
-                }
-                else if (op.GRTR_THAN() != null)
-                {
-                    return AlgoComparators.GreaterThan(context, left, right, false);
-                }
-                else if (op.GRTR_THAN_ET() != null)
-                {
-                    return AlgoComparators.GreaterThan(context, left, right, true);
-                }
-                else if (op.LESS_THAN() != null)
-                {
-                    return AlgoComparators.LessThan(context, left, right, false);
-                }
-                else if (op.LESS_THAN_ET() != null)
-                {
-                    return AlgoComparators.LessThan(context, left, right, true);
-                }
-                else
-                {
-                    Error.Fatal(context, "Invalid comparison operator used, implemented in parser but not in visitor.");
-                    return null;
-                }
+                    Type = AlgoValueType.Boolean,
+                    Value = !AlgoComparators._Equals(context, left, right),
+                    IsEnumerable = false
+                };
+            }
+            else if (context.BIN_OR() != null)
+            {
+                //Binary OR.
+                //Evaluate the left and right values.
+                AlgoValue left = (AlgoValue)VisitCheck(context.check());
+                AlgoValue right = (AlgoValue)VisitCheckfrag(context.checkfrag());
             }
             else
             {
-                //Single.
-                //Evaluate the expression.
-                return (AlgoValue)VisitExpr(context.expr());
+                //Just a checkfrag. Evaluate and return.
+                return (AlgoValue)VisitCheckfrag(context.checkfrag());
+            }
+        }
+
+        //Evaluate the check fragment for the full check.
+        public override object VisitCheckfrag([NotNull] algoParser.CheckfragContext context)
+        {
+            //Evaluate the expressions on the left and right, depending on the operator.
+            if (context.GRTR_THAN() != null)
+            {
+                // Binary greater than.
+                //Evaluate both the expressions.
+                AlgoValue left = (AlgoValue)VisitExpr(context.expr()[0]);
+                AlgoValue right = (AlgoValue)VisitExpr(context.expr()[1]);
+
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Boolean,
+                    Value = AlgoComparators.GreaterThan(context, left, right, false),
+                    IsEnumerable = false
+                };
+            }
+            else if (context.GRTR_THAN_ET() != null)
+            {
+                // Binary greater than or equal to.
+                //Evaluate both the expressions.
+                AlgoValue left = (AlgoValue)VisitExpr(context.expr()[0]);
+                AlgoValue right = (AlgoValue)VisitExpr(context.expr()[1]);
+
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Boolean,
+                    Value = AlgoComparators.GreaterThan(context, left, right, true),
+                    IsEnumerable = false
+                };
+            }
+            else if (context.LESS_THAN() != null)
+            {
+                // Binary less than.
+                //Evaluate both the expressions.
+                AlgoValue left = (AlgoValue)VisitExpr(context.expr()[0]);
+                AlgoValue right = (AlgoValue)VisitExpr(context.expr()[1]);
+
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Boolean,
+                    Value = AlgoComparators.LessThan(context, left, right, false),
+                    IsEnumerable = false
+                };
+            }
+            else if (context.LESS_THAN_ET() != null)
+            {
+                // Binary less than or equal to.
+                //Evaluate both the expressions.
+                AlgoValue left = (AlgoValue)VisitExpr(context.expr()[0]);
+                AlgoValue right = (AlgoValue)VisitExpr(context.expr()[1]);
+
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Boolean,
+                    Value = AlgoComparators.LessThan(context, left, right, true),
+                    IsEnumerable = false
+                };
+            }
+            else
+            {
+                //Only a single value, so evaluate and return.
+                return (AlgoValue)VisitExpr(context.expr()[0]);
             }
         }
     }

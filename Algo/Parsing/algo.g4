@@ -24,6 +24,7 @@ statement: (  stat_define
 			   | stat_functionDef
 			   | stat_if
 			   | stat_library
+			   | stat_whileLoop
 			   );
 
 //Types of statement.
@@ -35,6 +36,7 @@ stat_functionCall: (IDENTIFIER | obj_access) LBRACKET literal_params? RBRACKET;
 stat_functionDef: LET_SYM IDENTIFIER LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
 stat_return: RETURN_SYM expr;
 stat_forLoop: FOR_SYM LBRACKET IDENTIFIER IN_SYM value RBRACKET LBRACE statement* RBRACE;
+stat_whileLoop: WHILE_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE;
 stat_if: IF_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE stat_elif* stat_else?;
 stat_print: PRINT_SYM expr rounding_expr?;
 stat_library: LIB_SYM IDENTIFIER LBRACE statement* RBRACE;
@@ -48,8 +50,18 @@ literal_params: (expr COMMA)* expr;
 abstract_params: (IDENTIFIER COMMA)* IDENTIFIER;
 
 //A check, along with possible check operators.
-check: check check_operator check
-	   | expr;
+check:   check BIN_OR checkfrag
+	   | check BIN_AND checkfrag
+	   | check BIN_EQUALS checkfrag
+	   | check BIN_NET checkfrag
+	   | LBRACKET check RBRACKET
+	   | checkfrag;
+
+checkfrag:   expr GRTR_THAN expr
+		   | expr LESS_THAN expr
+		   | expr GRTR_THAN_ET expr
+		   | expr LESS_THAN_ET expr
+		   | expr;
 
 check_operator: BIN_OR | BIN_AND | GRTR_THAN | LESS_THAN | GRTR_THAN_ET | LESS_THAN_ET | BIN_EQUALS;
 
@@ -87,7 +99,7 @@ array_access: IDENTIFIER '[' literal_params ']';
 
 //A single Algo object represented in text.
 object: OBJ_SYM LBRACE obj_child_definitions? RBRACE;
-obj_child_definitions: (obj_vardefine | obj_funcdefine)*;
+obj_child_definitions: (obj_vardefine | obj_funcdefine)+;
 obj_vardefine: LET_SYM IDENTIFIER EQUALS expr ENDLINE;
 obj_funcdefine: LET_SYM IDENTIFIER LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
 
@@ -117,6 +129,7 @@ NULL: 'null';
 // RESERVED WORDS
 LET_SYM: 'let';
 FOR_SYM: 'for';
+WHILE_SYM: 'while';
 IN_SYM: 'in';
 IF_SYM: 'if';
 TO_SYM: 'to';
@@ -155,6 +168,7 @@ MULFROM_OP: '*=';
 //CHECK OPERATORS
 BIN_OR: '|';
 BIN_AND: '&';
+BIN_NET: '!=';
 BIN_EQUALS: '==';
 GRTR_THAN: '>';
 LESS_THAN: '<';
