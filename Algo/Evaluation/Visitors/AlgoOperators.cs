@@ -372,12 +372,28 @@ namespace Algo
                 }
                 else if (left.Type == AlgoValueType.Integer)
                 {
-                    return new AlgoValue()
+                    //Special case for integers, since this can return both an integer and a float.
+
+                    //Check whether the numerator is a multiple of the denominator.
+                    if (BigInteger.Remainder((BigInteger)left.Value, (BigInteger)right.Value) == new BigInteger(0))
                     {
-                        Type = AlgoValueType.Integer,
-                        Value = BigInteger.Divide((BigInteger)left.Value, (BigInteger)right.Value),
-                        IsEnumerable = false
-                    };
+                        //It is, so can just be returned as an integer.
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.Integer,
+                            Value = BigInteger.Divide((BigInteger)left.Value, (BigInteger)right.Value),
+                            IsEnumerable = false
+                        };
+                    } else
+                    {
+                        //Nope, has to be divided as a float.
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.Float,
+                            Value = BigFloat.Divide((BigInteger)left.Value, (BigInteger)right.Value),
+                            IsEnumerable = false
+                        };
+                    }
                 }
                 else if (left.Type == AlgoValueType.Rational)
                 {
@@ -869,6 +885,49 @@ namespace Algo
             return null;
         }
         
+        //Round an AlgoValue to a given number of significant figures.
+        public static AlgoValue Round(ParserRuleContext context, AlgoValue value, int significant_figures)
+        {
+            //Is the value to round a float?
+            if (value.Type != AlgoValueType.Float)
+            {
+                //Convert it to a float then.
+                value = ConvertType(context, value, AlgoValueType.Float);
+            }
+
+            //Attempt to convert that value to a double.
+            if ((BigFloat)value.Value > double.MaxValue)
+            {
+                Error.Fatal(context, "Cannot round this value, it has become too large to process.");
+                return null;
+            }
+
+            //Can convert, go for it.
+            double toRound = double.Parse(((BigFloat)value.Value).ToString());
+
+            //For some reason, significant figure rounding with doubles doesn't work on negatives (go figure).
+            //Flip it beforehand, then flip it back. Bit hacky, but okay.
+            bool toBeFlipped = false;
+            if (toRound < 0)
+            {
+                toBeFlipped = true;
+                toRound = -toRound;
+            }
+            string rounded = toRound.Trim(significant_figures);
+            if (toBeFlipped)
+            {
+                rounded = "-" + rounded;
+            }
+
+            //Return the rounded value.
+            return new AlgoValue()
+            {
+                Type = AlgoValueType.Float,
+                Value = BigFloat.Parse(rounded),
+                IsEnumerable = false
+            };
+        }
+
         //Convert an AlgoValue to a specific type.
         public static AlgoValue ConvertType(ParserRuleContext context, AlgoValue value, AlgoValueType type)
         {

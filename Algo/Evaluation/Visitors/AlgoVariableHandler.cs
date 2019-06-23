@@ -71,43 +71,8 @@ namespace Algo
                     //Getting rounding integer.
                     int roundingInt = int.Parse(((BigInteger)roundingNum.Value).ToString());
 
-                    //Is the value to round a float?
-                    if (value.Type != AlgoValueType.Float)
-                    {
-                        //Convert it to a float then.
-                        value = AlgoOperators.ConvertType(context, value, AlgoValueType.Float);
-                    }
-
-                    //Attempt to convert that value to a double.
-                    if ((BigFloat)value.Value > double.MaxValue)
-                    {
-                        Error.Fatal(context, "Cannot round this value, it has become too large to process.");
-                        return null;
-                    }
-
-                    //Can convert, go for it.
-                    double toRound = double.Parse(((BigFloat)value.Value).ToString());
-                    bool toBeFlipped = false;
-                    if (toRound < 0)
-                    {
-                        toBeFlipped = true;
-                        toRound = -toRound;
-                    }
-                    string rounded = toRound.Trim(roundingInt);
-                    if (toBeFlipped)
-                    {
-                        rounded = "-" + rounded;
-                    }
-                    BigFloat roundedBigFloat = BigFloat.Parse(rounded);
-
-                    //Setting value.
-                    Scopes.SetVariable(context.IDENTIFIER().GetText(),
-                        new AlgoValue()
-                        {
-                            Type = AlgoValueType.Float,
-                            Value = roundedBigFloat,
-                            IsEnumerable = false
-                        });
+                    //Rounding the value, setting.
+                    Scopes.SetVariable(context.IDENTIFIER().GetText(), AlgoOperators.Round(context, value, roundingInt));
 
                     return null;
                 }

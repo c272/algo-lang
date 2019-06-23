@@ -51,7 +51,7 @@ namespace Algo
                     bool pointReached = false;
                     foreach (char c in printString)
                     {
-                        if (c != '.' && c != '0')
+                        if (c != '.' && c != '0' && c != '-')
                         {
                             amtSF++;
                         } else if (c=='.')
