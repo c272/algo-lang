@@ -75,6 +75,13 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitStat_setvar_op([NotNull] algoParser.Stat_setvar_opContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.stat_setvar_postfix"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStat_setvar_postfix([NotNull] algoParser.Stat_setvar_postfixContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="algoParser.stat_deletevar"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -180,13 +187,6 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitCheckfrag([NotNull] algoParser.CheckfragContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="algoParser.check_operator"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitCheck_operator([NotNull] algoParser.Check_operatorContext context);
-
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="algoParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -234,6 +234,13 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitSelfmod_op([NotNull] algoParser.Selfmod_opContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.postfix_op"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitPostfix_op([NotNull] algoParser.Postfix_opContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="algoParser.value"/>.

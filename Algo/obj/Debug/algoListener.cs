@@ -98,6 +98,17 @@ public interface IalgoListener : IParseTreeListener {
 	void ExitStat_setvar_op([NotNull] algoParser.Stat_setvar_opContext context);
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.stat_setvar_postfix"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterStat_setvar_postfix([NotNull] algoParser.Stat_setvar_postfixContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.stat_setvar_postfix"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitStat_setvar_postfix([NotNull] algoParser.Stat_setvar_postfixContext context);
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.stat_deletevar"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -263,17 +274,6 @@ public interface IalgoListener : IParseTreeListener {
 	void ExitCheckfrag([NotNull] algoParser.CheckfragContext context);
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="algoParser.check_operator"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterCheck_operator([NotNull] algoParser.Check_operatorContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="algoParser.check_operator"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitCheck_operator([NotNull] algoParser.Check_operatorContext context);
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -349,6 +349,17 @@ public interface IalgoListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitSelfmod_op([NotNull] algoParser.Selfmod_opContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.postfix_op"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterPostfix_op([NotNull] algoParser.Postfix_opContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.postfix_op"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitPostfix_op([NotNull] algoParser.Postfix_opContext context);
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.value"/>.

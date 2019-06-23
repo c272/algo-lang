@@ -52,6 +52,11 @@ namespace Algo
                 //Set a variable using a self modifying operator.
                 VisitStat_setvar_op(context.stat_setvar_op());
             }
+            else if (context.stat_setvar_postfix() != null)
+            {
+                //Set a variable using a postfix operator.
+                VisitStat_setvar_postfix(context.stat_setvar_postfix());
+            }
             else if (context.stat_deletevar() != null)
             {
                 //Delete a variable from scope.

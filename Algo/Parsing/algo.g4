@@ -16,6 +16,7 @@ statement: (  stat_define
 			| stat_print
 			| stat_setvar
 			| stat_setvar_op
+			| stat_setvar_postfix
 			| stat_return
 			| stat_deletevar
 		   )  ENDLINE
@@ -31,6 +32,7 @@ statement: (  stat_define
 stat_define: LET_SYM IDENTIFIER EQUALS expr;
 stat_setvar: (IDENTIFIER | obj_access) EQUALS expr rounding_expr?;
 stat_setvar_op: (IDENTIFIER | obj_access) selfmod_op expr;
+stat_setvar_postfix: (IDENTIFIER | obj_access) postfix_op;
 stat_deletevar: DISREGARD_SYM (IDENTIFIER | obj_access | MUL_OP);
 stat_functionCall: (IDENTIFIER | obj_access) LBRACKET literal_params? RBRACKET;
 stat_functionDef: LET_SYM IDENTIFIER LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
@@ -53,6 +55,7 @@ abstract_params: (IDENTIFIER COMMA)* IDENTIFIER;
 check:   check BIN_OR checkfrag
 	   | check BIN_AND checkfrag
 	   | LBRACKET check RBRACKET
+	   | INVERT_SYM check
 	   | checkfrag;
 
 checkfrag:   expr GRTR_THAN expr
@@ -62,8 +65,6 @@ checkfrag:   expr GRTR_THAN expr
 		   | expr BIN_EQUALS expr
 	       | expr BIN_NET expr
 		   | expr;
-
-check_operator: BIN_OR | BIN_AND | GRTR_THAN | LESS_THAN | GRTR_THAN_ET | LESS_THAN_ET | BIN_EQUALS;
 
 //An expression, divided into layers of precedence.
 expr: expr ADD_OP term
@@ -86,6 +87,8 @@ sub: value | LBRACKET expr RBRACKET;
 operator: MUL_OP | DIV_OP | TAKE_OP | ADD_OP | POW_OP;
 //Self modifying operators.
 selfmod_op: ADDFROM_OP | TAKEFROM_OP | MULFROM_OP | DIVFROM_OP;
+//Postfix operators.
+postfix_op: ADD_PFOP | TAKE_PFOP;
 
 //A single literal value.
 value: stat_functionCall | obj_access | IDENTIFIER | INTEGER | FLOAT | BOOLEAN | STRING | RATIONAL | NULL | array | array_access | object;
@@ -150,6 +153,7 @@ LBRACE: '{';
 RBRACE: '}';
 LSQBR: '[';
 RSQBR: ']';
+INVERT_SYM: '!';
 
 //MATHEMATICAL SYMBOLS
 LBRACKET: '(';
@@ -164,6 +168,8 @@ ADDFROM_OP: '+=';
 TAKEFROM_OP: '-=';
 DIVFROM_OP: '/=';
 MULFROM_OP: '*=';
+ADD_PFOP: '++';
+TAKE_PFOP: '--';
 
 //CHECK OPERATORS
 BIN_OR: '|';

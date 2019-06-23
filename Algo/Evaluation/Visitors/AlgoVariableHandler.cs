@@ -179,6 +179,69 @@ namespace Algo
             return null;
         }
 
+        //When a variable is modified using a postfix operator.
+        public override object VisitStat_setvar_postfix([NotNull] algoParser.Stat_setvar_postfixContext context)
+        {
+            //Get variable name.
+            string varname = "";
+            if (context.IDENTIFIER() != null)
+            {
+                varname = context.IDENTIFIER().GetText();
+            }
+            else
+            {
+                varname = context.obj_access().GetText();
+            }
+
+            //Check if the variable already exists.
+            if (!Scopes.VariableExists(varname))
+            {
+                Error.Fatal(context, "A variable with the name '" + varname + "' does not exist, cannot set value.");
+                return null;
+            }
+
+            //It does, get the variable.
+            AlgoValue oldValue = Scopes.GetVariable(varname);
+
+            //Switch on the operator type.
+            int toAdd = 0;
+            if (context.postfix_op().ADD_PFOP() != null)
+            {
+                //Increment.
+                toAdd = 1;
+            }
+            else
+            {
+                //Decrement.
+                toAdd = -1;
+            }
+
+            //Apply the operator.
+            AlgoValue newValue = null;
+            switch (oldValue.Type)
+            {
+                case AlgoValueType.Integer:
+                case AlgoValueType.Float:
+                case AlgoValueType.Rational:
+                    newValue = AlgoOperators.Add(context, oldValue, new AlgoValue()
+                    {
+                        Type = AlgoValueType.Integer,
+                        Value = new BigInteger(toAdd),
+                        IsEnumerable = false
+                    });
+
+                    break;
+
+                default:
+                    Error.Fatal(context, "Cannot increment a variable of type " + oldValue.Type.ToString() + ".");
+                    return null;
+            }
+
+            //Set the variable value.
+            Scopes.SetVariable(varname, newValue);
+            return null;
+        }
+
         //When a variable is deleted.
         public override object VisitStat_deletevar([NotNull] algoParser.Stat_deletevarContext context)
         {

@@ -114,6 +114,19 @@ public partial class algoBaseListener : IalgoListener {
 	public virtual void ExitStat_setvar_op([NotNull] algoParser.Stat_setvar_opContext context) { }
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.stat_setvar_postfix"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterStat_setvar_postfix([NotNull] algoParser.Stat_setvar_postfixContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.stat_setvar_postfix"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitStat_setvar_postfix([NotNull] algoParser.Stat_setvar_postfixContext context) { }
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.stat_deletevar"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -309,19 +322,6 @@ public partial class algoBaseListener : IalgoListener {
 	public virtual void ExitCheckfrag([NotNull] algoParser.CheckfragContext context) { }
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="algoParser.check_operator"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterCheck_operator([NotNull] algoParser.Check_operatorContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="algoParser.check_operator"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitCheck_operator([NotNull] algoParser.Check_operatorContext context) { }
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.expr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -411,6 +411,19 @@ public partial class algoBaseListener : IalgoListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitSelfmod_op([NotNull] algoParser.Selfmod_opContext context) { }
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.postfix_op"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterPostfix_op([NotNull] algoParser.Postfix_opContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.postfix_op"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitPostfix_op([NotNull] algoParser.Postfix_opContext context) { }
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.value"/>.

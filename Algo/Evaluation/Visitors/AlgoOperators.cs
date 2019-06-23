@@ -868,7 +868,7 @@ namespace Algo
             Error.Fatal(context, "Invalid types to subtract, cannot subtract type " + left.Type.ToString() + " and type " + right.Type.ToString() + ".");
             return null;
         }
-
+        
         //Convert an AlgoValue to a specific type.
         public static AlgoValue ConvertType(ParserRuleContext context, AlgoValue value, AlgoValueType type)
         {

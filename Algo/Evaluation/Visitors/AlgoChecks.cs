@@ -127,6 +127,22 @@ namespace Algo
                 //Bracketed check.
                 return (AlgoValue)VisitCheck(context.check());
             }
+            else if (context.INVERT_SYM() != null)
+            {
+                //Boolean invert.
+                AlgoValue evaled = (AlgoValue)VisitCheck(context.check());
+
+                //Get the boolean value for the evaluated value.
+                bool evaledBool = AlgoComparators.GetBooleanValue(evaled, context);
+
+                //Return the inverted bool.
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Boolean,
+                    Value = !evaledBool,
+                    IsEnumerable = false
+                };
+            }
             else
             {
                 //Just a checkfrag. Evaluate and return.
