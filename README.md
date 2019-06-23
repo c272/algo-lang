@@ -20,7 +20,7 @@ Building in "Debug" mode is recommended for all contributions to the update bran
 
 **Pythonic imports and preprocessor statements.**
 
-    import somefile.ag;
+    import somefile;
     
 **Variable and function declaration:**
 
