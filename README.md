@@ -14,25 +14,24 @@ To build the interpreter for Algo, you need at least Visual Studio 2015 (Update 
 Building in "Debug" mode is recommended for all contributions to the update branch, but if you are using it for a personal modification, using "Release" is a better option, for size and compute efficiency.
 
 ## Code Example
-'''
-//Import the input library and string library.
-import std/input
-import std/strings
 
-//Define a function to enumerate over the string characters.
-let printCharacters(x) = {
+    //Import the input library and string library.
+    import std/input
+    import std/strings
 
-    //Print all the characters individually.
-    let charList = strings.getChars(x);
-    for (i in charList) {
-        print charList[i];
-    }
-    
-    print "Your string is " + strings.length(x) + " characters long.";
-};
+    //Define a function to enumerate over the string characters.
+    let printCharacters(x) = {
 
-//Make some cool stuff happen.
-print "What's your name?"
-let name = input.get();
-printCharacters(name);
-'''
+        //Print all the characters individually.
+        let charList = strings.getChars(x);
+        for (i in charList) {
+            print charList[i];
+        }
+
+        print "Your string is " + strings.length(x) + " characters long.";
+    };
+
+    //Make some cool stuff happen.
+    print "What's your name?"
+    let name = input.get();
+    printCharacters(name);
