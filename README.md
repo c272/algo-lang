@@ -13,59 +13,26 @@ To build the interpreter for Algo, you need at least Visual Studio 2015 (Update 
 
 Building in "Debug" mode is recommended for all contributions to the update branch, but if you are using it for a personal modification, using "Release" is a better option, for size and compute efficiency.
 
-## Code Examples
-**The basic "Hello World" program in Algo:**
+## Code Example
+'''
+//Import the input library and string library.
+import std/input
+import std/strings
 
-    print "Hello World";
+//Define a function to enumerate over the string characters.
+let printCharacters(x) = {
 
-**Pythonic imports and preprocessor statements.**
-
-    import somefile;
-    
-**Variable and function declaration:**
-
-    //Declare some variables and functions.
-    let foo = 12.34;
-    let bar = 2;
-    let baz(x) = {
-      return x+2;
+    //Print all the characters individually.
+    let charList = strings.getChars(x);
+    for (i in charList) {
+        print charList[i];
     }
     
-    //Delete some variables.
-    disregard foo;
-    disregard bar;
-    
-**"If", "for" and "while" statements:**
-    
-    if (a == 1.232) {
-      ...
-    }
-    
-    b = [3, 2, 4, 6, "foo"];
-    for (i in b) {
-      ...
-    }
-    
-    c = 3;
-    while (c < 5) {
-        print c;
-        c += 1;
-    }
+    print "Your string is " + strings.length(x) + " characters long.";
+};
 
-**Libraries and Objects**
-    
-    //Define a basic library.
-    library SomeLib {
-        let b = 3;
-    }
-    
-    //Call from the library.
-    print SomeLib.b;
-    
-    //Define a basic object.
-    let someObj = object {
-        let x = SomeLib.b;
-    };
-    
-    //Call from the object.
-    print someObj.x;
+//Make some cool stuff happen.
+print "What's your name?"
+let name = input.get();
+printCharacters(name);
+'''
