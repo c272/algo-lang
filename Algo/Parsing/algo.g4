@@ -125,7 +125,7 @@ BOOLEAN: 'true' | 'false';
 STRING: '"' (~["])* '"';
 
 //Rational.
-RATIONAL: INTEGER '/' INTEGER;
+RATIONAL: INTEGER [ ]* DIV_OP [ ]* INTEGER;
 
 //Null.
 NULL: 'null';
