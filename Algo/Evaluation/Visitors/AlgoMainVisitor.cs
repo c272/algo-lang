@@ -107,6 +107,11 @@ namespace Algo
                 //Importing an Algo script.
                 VisitStat_import(context.stat_import());
             }
+            else if (context.stat_loadFuncExt() != null)
+            {
+                //Load an external or internal plugin function.
+                VisitStat_loadFuncExt(context.stat_loadFuncExt());
+            }
             else
             {
                 Error.Fatal(context, "Syntax error, unrecognized statement.");

@@ -103,6 +103,13 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitStat_functionDef([NotNull] algoParser.Stat_functionDefContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.stat_loadFuncExt"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStat_loadFuncExt([NotNull] algoParser.Stat_loadFuncExtContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="algoParser.stat_return"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

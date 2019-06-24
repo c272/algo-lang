@@ -20,6 +20,7 @@ statement: (  stat_define
 			| stat_return
 			| stat_deletevar
 			| stat_import
+			| stat_loadFuncExt
 		   )  ENDLINE
 		   
 			|  ( stat_forLoop
@@ -37,8 +38,9 @@ stat_setvar_postfix: (IDENTIFIER | obj_access) postfix_op;
 stat_deletevar: DISREGARD_SYM (IDENTIFIER | obj_access | MUL_OP);
 stat_functionCall: (IDENTIFIER | obj_access) LBRACKET literal_params? RBRACKET;
 stat_functionDef: LET_SYM IDENTIFIER LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
+stat_loadFuncExt: (INTERNAL_SYM | EXTERNAL_SYM) IDENTIFIER obj_access;
 stat_return: RETURN_SYM expr;
-stat_forLoop: FOR_SYM LBRACKET IDENTIFIER IN_SYM value RBRACKET LBRACE statement* RBRACE;
+stat_forLoop: FOR_SYM LBRACKET IDENTIFIER ((IN_SYM value) | UP_SYM TO_SYM value) RBRACKET LBRACE statement* RBRACE;
 stat_whileLoop: WHILE_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE;
 stat_if: IF_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE stat_elif* stat_else?;
 stat_print: PRINT_SYM expr rounding_expr?;
@@ -137,6 +139,7 @@ FOR_SYM: 'for';
 WHILE_SYM: 'while';
 IN_SYM: 'in';
 IF_SYM: 'if';
+UP_SYM: 'up';
 TO_SYM: 'to';
 AS_SYM: 'as';
 LIB_SYM: 'library';
@@ -147,6 +150,8 @@ IMPORT_SYM: 'import';
 RETURN_SYM: 'return';
 PRINT_SYM: 'print';
 DISREGARD_SYM: 'disregard';
+INTERNAL_SYM: 'internal';
+EXTERNAL_SYM: 'external';
 
 //NON-MATHEMATICAL SYMBOLS
 ENDLINE: ';';

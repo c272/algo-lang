@@ -19,6 +19,55 @@ namespace Algo
             //Getting the name of the variable to declare in scope as the index.
             string indexName = context.IDENTIFIER().GetText();
 
+            //Is it a literal list being looped over, or just a range?
+            if (context.UP_SYM() != null)
+            {
+                //Just a range. Evaluate the value to be stretched to.
+                AlgoValue limit = (AlgoValue)VisitValue(context.value());
+                if (limit.Type != AlgoValueType.Integer)
+                {
+                    Error.Fatal(context, "Range limit must be an integer, cannot be type" + limit.Type.ToString() + ".");
+                    return null;
+                }
+                if ((BigInteger)limit.Value < 0)
+                {
+                    Error.Fatal(context, "Range cannot be below 0.");
+                    return null;
+                }
+
+                //Evaluate all statements for an initial value up to the given value.
+                BigInteger curIndex = 0;
+                BigInteger maxIndex = (BigInteger)limit.Value;
+                while (curIndex <= maxIndex)
+                {
+                    //Create a scope.
+                    Scopes.AddScope();
+
+                    //Add the index to the scope.
+                    Scopes.AddVariable(indexName, new AlgoValue()
+                    {
+                        Type = AlgoValueType.Integer,
+                        Value = curIndex,
+                        IsEnumerable = false
+                    });
+
+                    //Enumerate all statements.
+                    foreach (var statement in context.statement())
+                    {
+                        VisitStatement(statement);
+                    }
+
+                    //Remove the scope.
+                    Scopes.RemoveScope();
+
+                    //Increment index.
+                    curIndex++;
+                }
+
+                return null;
+            }
+
+            //It's a loop, not a range.
             //Evaluating the value for the for loop body.
             AlgoValue toLoopOver = (AlgoValue)VisitValue(context.value());
             if (!toLoopOver.IsEnumerable)

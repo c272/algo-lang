@@ -166,6 +166,19 @@ public partial class algoBaseListener : IalgoListener {
 	public virtual void ExitStat_functionDef([NotNull] algoParser.Stat_functionDefContext context) { }
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.stat_loadFuncExt"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterStat_loadFuncExt([NotNull] algoParser.Stat_loadFuncExtContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.stat_loadFuncExt"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitStat_loadFuncExt([NotNull] algoParser.Stat_loadFuncExtContext context) { }
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.stat_return"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
