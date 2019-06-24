@@ -36,3 +36,4 @@ D:\Files\Programming\GitHub\algo\Algo\obj\Debug\Algo.csproj.Antlr4GeneratedCodeF
 D:\Files\Programming\GitHub\algo\Algo\obj\Debug\Algo.csproj.CopyComplete
 D:\Files\Programming\GitHub\algo\Algo\obj\Debug\Algo.exe
 D:\Files\Programming\GitHub\algo\Algo\obj\Debug\Algo.pdb
+Z:\Algo\Algo\bin\Debug\System.Runtime.InteropServices.RuntimeInformation.dll

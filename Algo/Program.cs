@@ -14,12 +14,31 @@ namespace Algo
     class Program
     {
         //The currently loaded file.
-        public static string FileLoaded = "debugscript.txt";
+        public static string FileLoaded = "";
 
         static void Main(string[] args)
         {
+            //Check that all the necessary directories exist.
+            CPFilePath.CreateDefaultDirectories();
+
+            //Check the command line arguments are valid.
+            if (args.Length < 1)
+            {
+                //Nah, just print the version number.
+                //...
+
+                return;
+            }
+            else if (args[0] == "pkg")
+            {
+                //Package management.
+                //...
+                return;
+            }
+
             //Test input string.
-            string input = File.ReadAllText(FileLoaded);
+            FileLoaded = args[0];
+            string input = File.ReadAllText(CPFilePath.GetPlatformFilePath(new string[] { Environment.CurrentDirectory, args[0] }));
             var chars = new AntlrInputStream(input);
             var lexer = new algoLexer(chars);
             var tokens = new CommonTokenStream(lexer);
