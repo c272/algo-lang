@@ -102,6 +102,11 @@ namespace Algo
                 //Defining a library.
                 VisitStat_library(context.stat_library());
             }
+            else if (context.stat_import() != null)
+            {
+                //Importing an Algo script.
+                VisitStat_import(context.stat_import());
+            }
             else
             {
                 Error.Fatal(context, "Syntax error, unrecognized statement.");

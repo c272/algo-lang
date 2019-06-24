@@ -48,7 +48,14 @@ namespace Algo
             //3. Standard libraries.
 
             //Getting directory tree text.
-            string importLoc = context.FILEPATH().GetText();
+            string importLoc = "";
+            if (context.FILEPATH() != null)
+            {
+                importLoc = context.FILEPATH().GetText();
+            } else
+            {
+                importLoc = context.IDENTIFIER()[0].GetText();
+            }
             List<string> fileParts = importLoc.Split('/').ToList();
 
             //Append the extension to the end (imports don't require an extension).
