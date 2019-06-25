@@ -89,6 +89,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Standard Library\FunctionPluginCore.cs" />
     <Compile Include="Standard Library\FunctionPluginInterface.cs" />
+    <Compile Include="Standard Library\Libraries\AlgoStd_String.cs" />
   </ItemGroup>
   <ItemGroup>
     <Antlr4 Include="Parsing\algo.g4">

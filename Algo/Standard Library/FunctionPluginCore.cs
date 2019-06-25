@@ -16,7 +16,8 @@ namespace Algo
         //Also, load in all plugins in the "/packages/" directory (and all subdirectories).
         public AlgoFunctionPlugins()
         {
-            //todo
+            //Add standard libraries.
+            Plugins.Add(new StandardLibrary.AlgoStd_String());
         }
 
         //Load a plugin from an assembly path.
