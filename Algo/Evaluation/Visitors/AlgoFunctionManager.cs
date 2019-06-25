@@ -56,7 +56,7 @@ namespace Algo
         public override object VisitStat_functionCall([NotNull] algoParser.Stat_functionCallContext context)
         {
             //The function to call.
-            AlgoFunction funcToCall = null;
+            AlgoValue funcToCall = null;
 
             //The library scope (if applicable).
             AlgoScopeCollection scopes_local = null;
@@ -71,17 +71,10 @@ namespace Algo
 
                 //Stitch the access string together, and get value.
                 string objStr = context.obj_access().GetText();
-
-                //Checking if it's a function.
                 AlgoValue value = Scopes.GetVariable(objStr);
-                if (value.Type != AlgoValueType.Function)
-                {
-                    Error.Fatal(context, "The variable you referenced is not a function, so cannot be called.");
-                    return null;
-                }
 
                 //Setting function to call.
-                funcToCall = (AlgoFunction)value.Value;
+                funcToCall = value;
             }
 
             //No, it's a library.
@@ -100,16 +93,12 @@ namespace Algo
                         return null;
                     }
 
-                    //Get the variable, check if it's a function.
+                    //Get the variable.
                     AlgoValue value = scopes_local.GetVariable(context.IDENTIFIER().GetText());
-                    if (value.Type != AlgoValueType.Function)
-                    {
-                        Error.Fatal(context, "The variable with name '" + context.IDENTIFIER().GetText() + "' is not a function, so can't be called like one.");
-                        return null;
-                    }
+
 
                     //Set function to call.
-                    funcToCall = (AlgoFunction)value.Value;
+                    funcToCall = value;
                 }
                 else
                 {
@@ -124,86 +113,130 @@ namespace Algo
                         return null;
                     }
 
-                    //Get the variable, check it's a function.
+                    //Get the variable.
                     AlgoValue funcValue = scopes_local.GetVariable(varname);
-                    if (funcValue.Type != AlgoValueType.Function)
-                    {
-                        Error.Fatal(context, "The variable with name '" + varname + "' is not a function, so can't be called like one.");
-                        return null;
-                    }
 
                     //Set the function to call.
-                    funcToCall = (AlgoFunction)funcValue.Value;
+                    funcToCall = funcValue;
                 }
             }
 
-            //Getting parameter length.
-            int paramLength = 0;
-            if (context.literal_params() != null)
+            //Check if the value is a normal function or an emulated function.
+            if (funcToCall.Type == AlgoValueType.Function)
             {
-                paramLength = context.literal_params().expr().Length;
-            }
+                //Get the function.
+                AlgoFunction func = (AlgoFunction)funcToCall.Value;
 
-            //Check the parameter length is the same.
-            if (paramLength != funcToCall.Parameters.Count)
-            {
-                Error.Fatal(context, paramLength + " parameters passed to function " + funcToCall.Name + ", which expects " + funcToCall.Parameters.Count);
-                return null;
-            }
-
-            //Parse all the parameters.
-            List<AlgoValue> paramvalues = new List<AlgoValue>();
-            if (context.literal_params() != null)
-            {
-                foreach (var param in context.literal_params().expr())
+                //Getting parameter length.
+                int paramLength = 0;
+                if (context.literal_params() != null)
                 {
-                    AlgoValue evaluated = (AlgoValue)VisitExpr(param);
-                    paramvalues.Add(evaluated);
+                    paramLength = context.literal_params().expr().Length;
                 }
-            }
 
-            //If the function is a library, swap out the current scope for the library's scope
-            AlgoScopeCollection oldScope = null;
-            if (!isVariable)
-            {
-                oldScope = Scopes;
-                Scopes = scopes_local;
-            }
-            if (objScope != null)
-            {
-                Scopes.AddScope(objScope.Scopes.First());
-            }
-
-            //Adding a scope, and creating the parameters inside it.
-            Scopes.AddScope();
-            for (int i = 0; i < paramvalues.Count; i++)
-            {
-                Scopes.AddVariable(funcToCall.Parameters[i], paramvalues[i]);
-            }
-
-            //Running the function's body.
-            foreach (var statement in funcToCall.Body)
-            {
-                AlgoValue returned = (AlgoValue)VisitStatement(statement);
-                if (returned != null)
+                //Check the parameter length is the same.
+                if (paramLength != func.Parameters.Count)
                 {
-                    //Remove the function's scope, return.
-                    Scopes.RemoveScope();
-                    return returned;
+                    Error.Fatal(context, paramLength + " parameters passed to function " + func.Name + ", which expects " + func.Parameters.Count + ".");
+                    return null;
                 }
-            }
 
-            //Remove the function's scope, we're done!
-            Scopes.RemoveScope();
-            if (objScope != null)
-            {
+                //Parse all the parameters.
+                List<AlgoValue> paramvalues = new List<AlgoValue>();
+                if (context.literal_params() != null)
+                {
+                    foreach (var param in context.literal_params().expr())
+                    {
+                        AlgoValue evaluated = (AlgoValue)VisitExpr(param);
+                        paramvalues.Add(evaluated);
+                    }
+                }
+
+                //If the function is a library, swap out the current scope for the library's scope
+                AlgoScopeCollection oldScope = null;
+                if (!isVariable)
+                {
+                    oldScope = Scopes;
+                    Scopes = scopes_local;
+                }
+                if (objScope != null)
+                {
+                    Scopes.AddScope(objScope.Scopes.First());
+                }
+
+                //Adding a scope, and creating the parameters inside it.
+                Scopes.AddScope();
+                for (int i = 0; i < paramvalues.Count; i++)
+                {
+                    Scopes.AddVariable(func.Parameters[i], paramvalues[i]);
+                }
+
+                //Running the function's body.
+                foreach (var statement in func.Body)
+                {
+                    AlgoValue returned = (AlgoValue)VisitStatement(statement);
+                    if (returned != null)
+                    {
+                        //Remove the function's scope, return.
+                        Scopes.RemoveScope();
+                        return returned;
+                    }
+                }
+
+                //Remove the function's scope, we're done!
                 Scopes.RemoveScope();
+                if (objScope != null)
+                {
+                    Scopes.RemoveScope();
+                }
+
+                //If it was a library, return to old scope.
+                if (!isVariable)
+                {
+                    Scopes = oldScope;
+                }
             }
 
-            //If it was a library, return to old scope.
-            if (!isVariable)
+            //It wasn't a normal function, is it an emulated function?
+            else if (funcToCall.Type == AlgoValueType.EmulatedFunction)
             {
-                Scopes = oldScope;
+                //Emulated function, so just return the result of the delegate.
+                //First, have to grab parameters though.
+                AlgoPluginFunction func = (AlgoPluginFunction)funcToCall.Value;
+
+                //Evaluate parameters.
+                //Getting parameter length.
+                int paramLength = 0;
+                if (context.literal_params() != null)
+                {
+                    paramLength = context.literal_params().expr().Length;
+                }
+
+                //Check the parameter length is the same.
+                if (paramLength != func.ParameterCount)
+                {
+                    Error.Fatal(context, paramLength + " parameters passed to function " + func.Name + ", which expects " + func.ParameterCount + ".");
+                    return null;
+                }
+
+                //Parse all the parameters.
+                List<AlgoValue> paramvalues = new List<AlgoValue>();
+                if (context.literal_params() != null)
+                {
+                    foreach (var param in context.literal_params().expr())
+                    {
+                        AlgoValue evaluated = (AlgoValue)VisitExpr(param);
+                        paramvalues.Add(evaluated);
+                    }
+                }
+
+                //Return the result of the delegate.
+                return func.Function(paramvalues.ToArray());
+            }
+            else
+            {
+                //Not a function.
+                Error.Fatal(context, "The given function does not exist, so cannot call.");
             }
 
             return null;

@@ -164,7 +164,7 @@ namespace Algo
         public override object VisitStat_loadFuncExt([NotNull] algoParser.Stat_loadFuncExtContext context)
         {
             //Get the value of the function.
-            AlgoValue func = AlgoFunctionPlugins.GetEmulatedFuncValue(context);
+            AlgoValue func = Plugins.GetEmulatedFuncValue(context);
 
             //Check if a variable with the supplied name already exists in scope.
             if (Scopes.VariableExists(context.IDENTIFIER().GetText()))
@@ -174,7 +174,7 @@ namespace Algo
             }
 
             //Add to scope.
-            Scopes.AddVariable(context.IDENTIIFER().GetText(), func);
+            Scopes.AddVariable(context.IDENTIFIER().GetText(), func);
             return null;
         }
     }

@@ -92,7 +92,7 @@ namespace Algo
         }
 
         //Get an AlgoValue of type EmulatedFunction by supplying an external function load context.
-        public static AlgoValue GetEmulatedFuncValue(algoParser.Stat_loadFuncExtContext context)
+        public AlgoValue GetEmulatedFuncValue(algoParser.Stat_loadFuncExtContext context)
         {
             //Attempt to get the text (as array) of the class and function from obj_access.
             if (context.obj_access().IDENTIFIER().Length != 2)
@@ -105,15 +105,15 @@ namespace Algo
             string funcName = context.obj_access().IDENTIFIER()[1].GetText();
 
             //Attempt to grab the plugin from the plugins manager.
-            if (!Plugins.PluginExists(className))
+            if (!PluginExists(className))
             {
                 Error.Fatal(context, "Plugin name '" + className + "' is invalid or not loaded.");
                 return null;
             }
-            IFunctionPlugin classPlugin = Plugins.GetPlugin(className);
+            IFunctionPlugin classPlugin = GetPlugin(className);
 
             //Does the plugin contain a function with the given name?
-            if (!classPlugin.Functions.ContainsKey(funcName))
+            if (classPlugin.Functions.FindIndex(x => x.Name == funcName) == -1)
             {
                 Error.Fatal(context, "Plugin '" + className + "' does not contain a function of name '" + funcName + "', so cannot load it.");
                 return null;
@@ -123,7 +123,7 @@ namespace Algo
             return new AlgoValue()
             {
                 Type = AlgoValueType.EmulatedFunction,
-                Value = classPlugin.Functions[funcName]
+                Value = classPlugin.Functions.Find(x => x.Name == funcName)
             };
         }
     }

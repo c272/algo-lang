@@ -10,9 +10,22 @@ namespace Algo
         string Name { get; set; }
 
         //A list of functions the plugin provides.
-        Dictionary<string, AlgoFunctionDelegate> Functions { get; set; }
+        List<AlgoPluginFunction> Functions { get; set; }
     }
 
     //The function delegate to be followed by all plugin functions.
     public delegate AlgoValue AlgoFunctionDelegate(params AlgoValue[] args);
+
+    //Representation of a single plugin function.
+    public struct AlgoPluginFunction
+    {
+        //The function delegate.
+        public readonly AlgoFunctionDelegate Function;
+
+        //The amount of parameters the function has.
+        public int ParameterCount;
+
+        //The name of the function.
+        public string Name;
+    }
 }
