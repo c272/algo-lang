@@ -103,7 +103,7 @@ obj_access: (IDENTIFIER POINT)+ IDENTIFIER;
 //An array.
 array: '[' ((value ',')* value)? ']';
 //Accessing an array, through a stored, function returned or literal array.
-array_access: (IDENTIFIER | obj_access | stat_functionCall | STRING | array) '[' literal_params ']';
+array_access: (IDENTIFIER | obj_access | stat_functionCall | array) '[' literal_params ']';
 
 //A single Algo object represented in text.
 object: OBJ_SYM LBRACE obj_child_definitions? RBRACE;

@@ -247,7 +247,7 @@ namespace Algo
                 
                 //What type of access is this? Stored identifier/obj or a literal value.
                 AlgoValue currentValue = null;
-                if (context.IDENTIFIER() != null) 
+                if (context.array_access().IDENTIFIER() != null) 
                 {
                     //Identifier.
                     //Get the root value.
@@ -259,12 +259,12 @@ namespace Algo
 
                     currentValue = Scopes.GetVariable(context.array_access().IDENTIFIER().GetText());
                 }
-                else if (context.obj_access() != null && Scopes.VariableExists(context.obj_access().IDENTIFIER()[0].GetText())) 
+                else if (context.array_access().obj_access() != null && Scopes.VariableExists(context.array_access().obj_access().IDENTIFIER()[0].GetText())) 
                 {
                     //Object access.
                     //Stitch together the object access string.
                     string objStr = "";
-                    foreach (var objPart in context.obj_access().IDENTIFIER()) 
+                    foreach (var objPart in context.array_access().obj_access().IDENTIFIER()) 
                     {
                         objStr += objPart.GetText() + '.';
                     }
@@ -273,14 +273,14 @@ namespace Algo
                     //Get the value.
                     currentValue = Scopes.GetVariable(objStr);
                 }
-                else if (context.obj_access() != null) 
+                else if (context.array_access().obj_access() != null) 
                 {
                     //Library access.
                     //Get the library scope.
-                    var scopes_local = Scopes.GetScopeFromLibAccess(context.obj_access());
+                    var scopes_local = Scopes.GetScopeFromLibAccess(context.array_access().obj_access());
 
                     //Check that the variable exists in this scope.
-                    string varname = context.obj_access().IDENTIFIER().Last().GetText();
+                    string varname = context.array_access().obj_access().IDENTIFIER().Last().GetText();
                     if (!scopes_local.VariableExists(varname)) 
                     {
                         Error.Fatal(context, "No variable exists in library named '" + varname + "'.");
@@ -290,6 +290,35 @@ namespace Algo
                     //Set the value.
                     currentValue = scopes_local.GetVariable(varname);
                 }
+                else if (context.array_access().array() != null) 
+                {
+                    //Array, get value for each item in the array and construct.
+                    List<AlgoValue> arrayValues = new List<AlgoValue>();
+                    foreach (var val in context.array_access().array().value()) 
+                    {
+                        arrayValues.Add((AlgoValue)VisitValue(val));
+                    }
+
+                    //Set value.
+                    currentValue = new AlgoValue() 
+                    {
+                        Type = AlgoValueType.List,
+                        Value = arrayValues
+                    };
+                }
+                else if (context.array_access().stat_functionCall() != null) 
+                {
+                    //Function call.
+                    currentValue = (AlgoValue)VisitStat_functionCall(context.array_access().stat_functionCall());
+                    if (currentValue == null) 
+                    {
+                        Error.Fatal(context, "No value returned from the function to enumerate.");
+                        return null;
+                    }
+                } else {
+                    Error.Fatal(context, "Unknown statement type for enumeration. Implemented in parser, but not interpreter.");
+                    return null;
+                }
 
                 //Arrays can be more than 1D, and are separated using commas:
                 // x[3, 4, 5]
@@ -297,7 +326,7 @@ namespace Algo
                 foreach (var accessIndexExpr in context.array_access().literal_params().expr())
                 {
                     //Already found the end, but still going.
-                    if (currentValue.Type != AlgoValueType.List && currentValue.Type != AlgoValueType.String)
+                    if (currentValue.Type != AlgoValueType.List)
                     {
                         Error.Fatal(context, "Attempting to index into a value that isn't enumerable.");
                         return null;
@@ -321,37 +350,16 @@ namespace Algo
                     int accessIndexInt = int.Parse(((BigInteger)accessIndex.Value).ToString());
 
                     //Is the index too large?
-                    if (currentValue.Type == AlgoValueType.String)
+                    if (accessIndexInt > ((List<AlgoValue>)currentValue.Value).Count - 1) 
                     {
-                        if (accessIndexInt > ((string)currentValue.Value).Length) 
-                        {
-                            Error.Fatal(context, "Cannot access index in string, index out of bounds.");
-                            return null;
-                        }
-                    }
-                    else {
-                        if (accessIndexInt > ((List<AlgoValue>)currentValue.Value).Count) 
-                        {
-                            Error.Fatal(context, "Cannot access index in array, index out of bounds.");
-                            return null;
-                        }
+                        Error.Fatal(context, "Cannot access index in array, index out of bounds.");
+                        return null;
                     }
 
                     //Get the index of the current value.
                     try
                     {
-                        if (currentValue.Type == AlgoValueType.String) 
-                        {
-                            currentValue = new AlgoValue() 
-                            {
-                                Type = AlgoValueType.String,
-                                Value = new string(new char[]{ ((string)currentValue.Value)[accessIndexInt] })
-                            };
-                        } 
-                        else 
-                        {
-                            currentValue = ((List<AlgoValue>)currentValue.Value)[accessIndexInt];
-                        }
+                        currentValue = ((List<AlgoValue>)currentValue.Value)[accessIndexInt];
                     }
                     catch
                     {
