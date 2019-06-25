@@ -70,12 +70,7 @@ namespace Algo
                 isVariable = true;
 
                 //Stitch the access string together, and get value.
-                string objStr = "";
-                foreach (var objPart in context.obj_access().IDENTIFIER()) 
-                {
-                    objStr += objPart.GetText() + '.';
-                }
-                objStr = objStr.Substring(0, objStr.Length-1);
+                string objStr = context.obj_access().GetText();
 
                 //Checking if it's a function.
                 AlgoValue value = Scopes.GetVariable(objStr);

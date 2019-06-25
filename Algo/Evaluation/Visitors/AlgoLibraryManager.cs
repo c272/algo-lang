@@ -97,6 +97,7 @@ namespace Algo
             {
                 //Yep, load it.
                 RunAlgoScript(dirToCheck, importScope);
+                return null;
             }
 
             //Nope.
@@ -109,6 +110,7 @@ namespace Algo
             {
                 //Yep, load it.
                 RunAlgoScript(dirToCheck, importScope);
+                return null;
             }
 
             //No, nowhere else to check from, so throw a linking warning.

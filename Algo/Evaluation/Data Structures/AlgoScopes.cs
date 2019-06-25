@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace Algo
 {
+    [Serializable]
     public class AlgoScopeCollection
     {
         //The list of scopes.
         public List<Dictionary<string, AlgoValue>> Scopes = new List<Dictionary<string, AlgoValue>>();
-        public static Dictionary<string, AlgoScopeCollection> Libraries = new Dictionary<string, AlgoScopeCollection>();
+        public Dictionary<string, AlgoScopeCollection> Libraries = new Dictionary<string, AlgoScopeCollection>();
 
         public AlgoScopeCollection()
         {
@@ -60,6 +61,20 @@ namespace Algo
 
             //Not a dupe, add it.
             Libraries.Add(name, library);
+        }
+
+        //Remove a library.
+        public void RemoveLibrary(string name) 
+        {
+            //Does the library exist?
+            if (!Libraries.ContainsKey(name)) 
+            {
+                Error.FatalNoContext("A library with the name '" + name + "' does not exist to remove.");
+                return;
+            }
+
+            //Remove it.
+            Libraries.Remove(name);
         }
 
         //Returns the libraries in this collection.

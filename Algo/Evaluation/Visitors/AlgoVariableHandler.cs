@@ -210,7 +210,7 @@ namespace Algo
         public override object VisitStat_deletevar([NotNull] algoParser.Stat_deletevarContext context)
         {
             //Checking if the disregard wants to delete all variables or only one.
-            if (context.IDENTIFIER() != null && context.obj_access() != null)
+            if (context.IDENTIFIER() != null || context.obj_access() != null)
             {
                 //Get variable name.
                 string varname = "";
@@ -226,6 +226,15 @@ namespace Algo
                 //Check if variable exists.
                 if (!Scopes.VariableExists(varname))
                 {
+                    //Maybe it's a library?
+                    if (Scopes.LibraryExists(varname)) 
+                    {
+                        //Okay, just disregard the library.
+                        Scopes.RemoveLibrary(varname);
+                        return null;
+                    }
+
+                    //Not a library, so doesn't exist.
                     Error.Fatal(context, "Invalid variable name given to disregard.");
                     return null;
                 }
