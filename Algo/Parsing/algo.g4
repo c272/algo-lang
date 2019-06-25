@@ -38,7 +38,7 @@ stat_setvar_postfix: (IDENTIFIER | obj_access) postfix_op;
 stat_deletevar: DISREGARD_SYM (IDENTIFIER | obj_access | MUL_OP);
 stat_functionCall: (IDENTIFIER | obj_access) LBRACKET literal_params? RBRACKET;
 stat_functionDef: LET_SYM IDENTIFIER LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
-stat_loadFuncExt: (INTERNAL_SYM | EXTERNAL_SYM) IDENTIFIER obj_access;
+stat_loadFuncExt: EXTERNAL_SYM IDENTIFIER obj_access;
 stat_return: RETURN_SYM expr;
 stat_forLoop: FOR_SYM LBRACKET IDENTIFIER ((IN_SYM value) | UP_SYM TO_SYM value) RBRACKET LBRACE statement* RBRACE;
 stat_whileLoop: WHILE_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE;
@@ -151,7 +151,6 @@ IMPORT_SYM: 'import';
 RETURN_SYM: 'return';
 PRINT_SYM: 'print';
 DISREGARD_SYM: 'disregard';
-INTERNAL_SYM: 'internal';
 EXTERNAL_SYM: 'external';
 
 //NON-MATHEMATICAL SYMBOLS

@@ -87,6 +87,8 @@
     <Compile Include="Platform Libraries\CPFilePath.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Standard Library\FunctionPluginCore.cs" />
+    <Compile Include="Standard Library\FunctionPluginInterface.cs" />
   </ItemGroup>
   <ItemGroup>
     <Antlr4 Include="Parsing\algo.g4">

@@ -16,6 +16,7 @@
         Boolean,
         List,
         Function,
+        EmulatedFunction,
         Object,
         Null
     }

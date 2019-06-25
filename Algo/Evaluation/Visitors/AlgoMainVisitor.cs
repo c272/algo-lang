@@ -13,6 +13,9 @@ namespace Algo
         //Scopes collection for this instance.
         public static AlgoScopeCollection Scopes = new AlgoScopeCollection();
 
+        //Plugins collection for this instance.
+        public static AlgoFunctionPlugins Plugins = new AlgoFunctionPlugins();
+
         //When the "Statement" node is visited.
         public override object VisitCompileUnit(algoParser.CompileUnitContext context)
         {
