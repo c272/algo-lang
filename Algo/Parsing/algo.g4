@@ -45,7 +45,7 @@ stat_whileLoop: WHILE_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE;
 stat_if: IF_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE stat_elif* stat_else?;
 stat_print: PRINT_SYM expr rounding_expr?;
 stat_library: LIB_SYM IDENTIFIER LBRACE statement* RBRACE;
-stat_import: IMPORT_SYM (FILEPATH | IDENTIFIER) (AS_SYM (libalias=IDENTIFIER | MUL_OP))?;
+stat_import: IMPORT_SYM expr (AS_SYM IDENTIFIER)?;
 
 //Elif and else statements, not directly available, only by proxy.
 stat_elif: ELSE_SYM IF_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE;
@@ -191,9 +191,6 @@ LESS_THAN_ET: '<=';
 
 //Identifier.
 IDENTIFIER: [A-Za-z_] [0-9A-Za-z_]*;
-
-//Filepath.
-FILEPATH: [A-Za-z_0-9/]*;
 
 //Ignore comments, not relevant.
 COMMENT: '//' .*? '\n' -> skip;

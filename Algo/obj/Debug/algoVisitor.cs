@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from Z:\Algo\Algo\Parsing\algo.g4 by ANTLR 4.6.6
+// Generated from /home/c272/Repos/algo-lang/Algo/Parsing/algo.g4 by ANTLR 4.6.6
 
 // Unreachable code detected
 #pragma warning disable 0162

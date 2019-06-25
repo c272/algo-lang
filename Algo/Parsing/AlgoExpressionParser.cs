@@ -253,6 +253,9 @@ namespace Algo
                     return null;
                 }
 
+                //Arrays can be more than 1D, and are separated using commas:
+                // x[3, 4, 5]
+                //So, this steps through till the very bottom value is found.
                 var currentValue = Scopes.GetVariable(context.array_access().IDENTIFIER().GetText());
                 foreach (var accessIndexExpr in context.array_access().literal_params().expr())
                 {
@@ -280,6 +283,13 @@ namespace Algo
                     //Getting an integer representation of the index.
                     int accessIndexInt = int.Parse(((BigInteger)accessIndex.Value).ToString());
 
+                    //Is the index too large?
+                    if (accessIndexInt > ((List<AlgoValue>)currentValue.Value).Count) 
+                    {
+                        Error.Fatal(context, "Cannot access index in array, index out of bounds.");
+                        return null;
+                    }
+
                     //Get the index of the current value.
                     try
                     {
@@ -287,8 +297,8 @@ namespace Algo
                     }
                     catch
                     {
-                        //Not a list, attempt to get a single value instead.
-                        currentValue = (AlgoValue)currentValue.Value;
+                        //Not a list, can't index into it.
+                        Error.Fatal(context, "Cannot index into an item that is not enumerable.");
                     }
                 }
 

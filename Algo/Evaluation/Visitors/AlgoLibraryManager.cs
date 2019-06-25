@@ -49,13 +49,16 @@ namespace Algo
 
             //Getting directory tree text.
             string importLoc = "";
-            if (context.FILEPATH() != null)
+            
+            //Evaluating the statement to get dir text.
+            AlgoValue locVal = (AlgoValue)VisitExpr(context.expr());
+            if (locVal.Type != AlgoValueType.String) 
             {
-                importLoc = context.FILEPATH().GetText();
-            } else
-            {
-                importLoc = context.IDENTIFIER()[0].GetText();
+                Error.Fatal(context, "Given file path to import was not a string.");
+                return null;
             }
+            importLoc = (string)locVal.Value;
+
             List<string> fileParts = importLoc.Split('/').ToList();
 
             //Append the extension to the end (imports don't require an extension).
@@ -64,6 +67,13 @@ namespace Algo
                 fileParts[fileParts.Count - 1] = fileParts.Last() + ".ag";
             }
 
+            //Is the import being placed into a different scope?
+            string importScope = "";
+            if (context.AS_SYM() != null) 
+            {
+                //Yes, get the name of the scope.
+                importScope = context.IDENTIFIER().GetText();
+            }
 
             //Test 1: Executing directory of the script.
             string[] dirParts = new string[] { Environment.CurrentDirectory }.Concat(fileParts).ToArray();
@@ -73,7 +83,7 @@ namespace Algo
             if (File.Exists(dirToCheck))
             {
                 //Yes! Run the load function.
-                RunAlgoScript(dirToCheck);
+                RunAlgoScript(dirToCheck, importScope);
                 return null;
             }
 
@@ -86,7 +96,7 @@ namespace Algo
             if (File.Exists(dirToCheck))
             {
                 //Yep, load it.
-                RunAlgoScript(dirToCheck);
+                RunAlgoScript(dirToCheck, importScope);
             }
 
             //Nope.
@@ -98,7 +108,7 @@ namespace Algo
             if (File.Exists(dirToCheck))
             {
                 //Yep, load it.
-                RunAlgoScript(dirToCheck);
+                RunAlgoScript(dirToCheck, importScope);
             }
 
             //No, nowhere else to check from, so throw a linking warning.
@@ -107,7 +117,7 @@ namespace Algo
         }
 
         //Runs an Algo script, given a file path.
-        public void RunAlgoScript(string path)
+        public void RunAlgoScript(string path, string newScopeName="")
         {
             //Read the entire text file into a lexer and tokens.
             string input = File.ReadAllText(path);
@@ -125,11 +135,27 @@ namespace Algo
             string oldFile = Program.FileLoaded;
             Program.FileLoaded = fi.Name;
 
+            //If this is being placed in a separate scope, switch out now.
+            AlgoScopeCollection oldScope = null;
+            if (newScopeName != "") 
+            {
+                oldScope = Scopes;
+                Scopes = new AlgoScopeCollection();
+            }
+
             //Visit this tree, and fully execute.
             VisitCompileUnit(tree);
 
             //Set the currently loaded file back.
             Program.FileLoaded = oldFile;
+
+            //If it was executed in a separate scope, save as a library with this name.
+            if (newScopeName != "")
+            {
+                AlgoScopeCollection importScope = Scopes;
+                Scopes = oldScope;
+                Scopes.AddLibrary(newScopeName, importScope);
+            }
         }
     }
 }

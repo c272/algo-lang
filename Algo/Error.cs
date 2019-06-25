@@ -30,6 +30,7 @@ namespace Algo
         {
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Red;
+            if (Program.FileLoaded == "") { Program.FileLoaded = "No File"; }
             Console.WriteLine("Algo Runtime Error: " + Program.FileLoaded + ", NOCONTEXT - " + errMessage);
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Black;

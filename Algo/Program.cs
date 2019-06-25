@@ -36,9 +36,17 @@ namespace Algo
                 return;
             }
 
+            //Does the given file location exist?
+            string fullPath = CPFilePath.GetPlatformFilePath(new string[] { Environment.CurrentDirectory, args[0] });
+            if (!File.Exists(fullPath)) 
+            {
+                Error.FatalNoContext("No file with the name '" + args[0] + "' exists relative to your current directory.");
+                return;
+            }
+            
             //Test input string.
             FileLoaded = args[0];
-            string input = File.ReadAllText(CPFilePath.GetPlatformFilePath(new string[] { Environment.CurrentDirectory, args[0] }));
+            string input = File.ReadAllText(fullPath);
             var chars = new AntlrInputStream(input);
             var lexer = new algoLexer(chars);
             var tokens = new CommonTokenStream(lexer);
