@@ -47,8 +47,7 @@ namespace Algo
                     Scopes.AddVariable(indexName, new AlgoValue()
                     {
                         Type = AlgoValueType.Integer,
-                        Value = curIndex,
-                        IsEnumerable = false
+                        Value = curIndex
                     });
 
                     //Enumerate all statements.
@@ -70,17 +69,25 @@ namespace Algo
             //It's a loop, not a range.
             //Evaluating the value for the for loop body.
             AlgoValue toLoopOver = (AlgoValue)VisitValue(context.value());
-            if (!toLoopOver.IsEnumerable)
+            if (toLoopOver.Type != AlgoValueType.List && toLoopOver.Type != AlgoValueType.String)
             {
                 Error.Fatal(context, "Cannot loop over a value that is not enumerable.");
                 return null;
             }
 
-            //Get the list to be enumerated over.
-            List<AlgoValue> loopList = (List<AlgoValue>)toLoopOver.Value;
+            //Get the length to be enumerated over.
+            int loopLimit = -1;
+            if (toLoopOver.Type == AlgoValueType.List) 
+            {
+                List<AlgoValue> loopList = (List<AlgoValue>)toLoopOver.Value;
+                loopLimit = loopList.Count;
+            } else 
+            {
+                loopLimit = ((string)toLoopOver.Value).Length;
+            }
             
             //Enumerate all statements for n times, where n is the length of the list.
-            for (int i=0; i<loopList.Count; i++)
+            for (int i=0; i<loopLimit; i++)
             {
                 //Creating a new scope.
                 Scopes.AddScope();
@@ -90,7 +97,7 @@ namespace Algo
                 {
                     Type = AlgoValueType.Integer,
                     Value = new BigInteger(i),
-                    IsEnumerable = false
+                    
                 });
 
                 //Executing all statements in loop.

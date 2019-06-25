@@ -18,13 +18,6 @@ namespace Algo
                 return null;
             }
 
-            //Are either of them enumerable? Those can't be powered.
-            if (base_.IsEnumerable || power.IsEnumerable)
-            {
-                Error.Fatal(context, "Cannot perform mathematical powers on arrays.");
-                return null;
-            }
-
             //Identical sets.
             if (base_.Type == power.Type)
             {
@@ -40,7 +33,7 @@ namespace Algo
                         {
                             Type = AlgoValueType.Float,
                             Value = BigFloat.Pow((BigFloat)base_.Value, int.Parse(((BigFloat)power.Value).ToString().Split('.')[0])),
-                            IsEnumerable = false
+                            
                         };
 
                     case AlgoValueType.Integer:
@@ -57,7 +50,7 @@ namespace Algo
                         {
                             Type = AlgoValueType.Integer,
                             Value = BigInteger.Pow((BigInteger)base_.Value, int.Parse(((BigInteger)power.Value).ToString())),
-                            IsEnumerable = false
+                            
                         };
 
                     case AlgoValueType.Rational:
@@ -77,7 +70,7 @@ namespace Algo
                         {
                             Type = AlgoValueType.Rational,
                             Value = BigRational.Pow((BigRational)base_.Value, new BigInteger(castedPower)),
-                            IsEnumerable = false
+                            
                         };
                 }
             }
@@ -104,7 +97,7 @@ namespace Algo
                     {
                         Value = BigFloat.Pow((BigFloat)base_.Value, powerCasted),
                         Type = AlgoValueType.Float,
-                        IsEnumerable = false
+                        
                     };
                 }
                 else if (base_.Type == AlgoValueType.Rational)
@@ -113,7 +106,7 @@ namespace Algo
                     {
                         Value = BigRational.Pow((BigRational)base_.Value, powerCasted),
                         Type = AlgoValueType.Rational,
-                        IsEnumerable = false
+                        
                     };
                 }
             }
@@ -133,7 +126,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Integer,
                         Value = BigInteger.Pow((BigInteger)base_.Value, powerCasted),
-                        IsEnumerable = false
+                        
                     };
                 }
                 else if (base_.Type == AlgoValueType.Rational)
@@ -142,7 +135,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Rational,
                         Value = BigRational.Pow((BigRational)base_.Value, new BigInteger(powerCasted)),
-                        IsEnumerable = false
+                        
                     };
                 }
             }
@@ -166,7 +159,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Float,
                         Value = BigFloat.Pow((BigFloat)base_.Value, castedPower),
-                        IsEnumerable = false
+                        
                     };
                 }
                 else if (base_.Type == AlgoValueType.Integer)
@@ -175,7 +168,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Integer,
                         Value = BigInteger.Pow((BigInteger)base_.Value, castedPower),
-                        IsEnumerable = false
+                        
                     };
                 }
             }
@@ -195,13 +188,6 @@ namespace Algo
                 return null;
             }
 
-            //Check if either are arrays.
-            if (left.IsEnumerable || right.IsEnumerable)
-            {
-                Error.Fatal(context, "Cannot perform multiplication on arrays.");
-                return null;
-            }
-
             //Are the types the same? No explicit casting.
             if (left.Type == right.Type)
             {
@@ -212,7 +198,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Float,
                         Value = BigFloat.Multiply((BigFloat)left.Value, (BigFloat)right.Value),
-                        IsEnumerable = false
+                        
                     };
                 }
 
@@ -222,7 +208,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Integer,
                         Value = BigInteger.Multiply((BigInteger)left.Value, (BigInteger)right.Value),
-                        IsEnumerable = false
+                        
                     };
                 }
 
@@ -232,7 +218,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Rational,
                         Value = BigRational.Multiply((BigRational)left.Value, (BigRational)right.Value),
-                        IsEnumerable = false
+                        
                     };
                 }
             }
@@ -249,7 +235,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Float,
                         Value = BigFloat.Multiply((BigFloat)right.Value, new BigFloat((BigInteger)left.Value)),
-                        IsEnumerable = false
+                        
                     };
                 }
 
@@ -263,7 +249,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Rational,
                         Value = new BigRational(BigInteger.Zero, new Fraction(numerator, denominator)),
-                        IsEnumerable = false
+                        
                     };
                 }
             }
@@ -278,7 +264,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Float,
                         Value = BigFloat.Multiply((BigFloat)left.Value, new BigFloat((BigInteger)right.Value)),
-                        IsEnumerable = false
+                        
                     };
                 }
 
@@ -295,7 +281,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Float,
                         Value = BigFloat.Multiply(rational_as_float, (BigFloat)left.Value),
-                        IsEnumerable = false
+                        
                     };
                 }
             }
@@ -313,7 +299,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Rational,
                         Value = new BigRational(BigInteger.Zero, new Fraction(numerator, denominator)),
-                        IsEnumerable = false
+                        
                     };
                 }
 
@@ -330,7 +316,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Float,
                         Value = BigFloat.Multiply(rational_as_float, (BigFloat)right.Value),
-                        IsEnumerable = false
+                        
                     };
                 }
             }
@@ -350,13 +336,6 @@ namespace Algo
                 return null;
             }
 
-            //Check if either are arrays.
-            if (left.IsEnumerable || right.IsEnumerable)
-            {
-                Error.Fatal(context, "Cannot perform division on arrays.");
-                return null;
-            }
-
             //Are the types the same? No casting required that way.
             if (left.Type == right.Type)
             {
@@ -367,7 +346,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Float,
                         Value = BigFloat.Divide((BigFloat)left.Value, (BigFloat)right.Value),
-                        IsEnumerable = false
+                        
                     };
                 }
                 else if (left.Type == AlgoValueType.Integer)
@@ -382,7 +361,7 @@ namespace Algo
                         {
                             Type = AlgoValueType.Integer,
                             Value = BigInteger.Divide((BigInteger)left.Value, (BigInteger)right.Value),
-                            IsEnumerable = false
+                            
                         };
                     } else
                     {
@@ -391,7 +370,7 @@ namespace Algo
                         {
                             Type = AlgoValueType.Float,
                             Value = BigFloat.Divide((BigInteger)left.Value, (BigInteger)right.Value),
-                            IsEnumerable = false
+                            
                         };
                     }
                 }
@@ -411,7 +390,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Rational,
                         Value = new BigRational(new Fraction(numerator, denominator)),
-                        IsEnumerable = false
+                        
                     };
                 }
             }
@@ -428,7 +407,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Float,
                         Value = BigFloat.Divide((BigFloat)left.Value, new BigFloat((BigInteger)right.Value)),
-                        IsEnumerable = false
+                        
                     };
                 }
 
@@ -445,7 +424,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Float,
                         Value = BigFloat.Divide((BigFloat)left.Value, rational_as_float),
-                        IsEnumerable = false
+                        
                     };
                 }
             }
@@ -460,7 +439,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Float,
                         Value = BigFloat.Divide(new BigFloat((BigInteger)left.Value), (BigFloat)right.Value),
-                        IsEnumerable = false
+                        
                     };
                 }
 
@@ -475,7 +454,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Rational,
                         Value = new BigRational(new Fraction(numerator, denominator)),
-                        IsEnumerable = false
+                        
                     };
                 }
             }
@@ -494,7 +473,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Rational,
                         Value = new BigRational(new Fraction(numerator, denominator)),
-                        IsEnumerable = false
+                        
                     };
                 }
 
@@ -511,7 +490,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Float,
                         Value = BigFloat.Divide(rational_as_float, (BigFloat)right.Value),
-                        IsEnumerable = false
+                        
                     };
                 }
             }
@@ -526,11 +505,6 @@ namespace Algo
         {
             //Check neither of them are enumerable.
             //Future roadmap, you can use [] + 3 to create an array with a 3 in it, etc.
-            if (left.IsEnumerable || right.IsEnumerable)
-            {
-                Error.Fatal(context, "Cannot add enumerable types.");
-                return null;
-            }
 
             //Identical types.
             if (left.Type == right.Type)
@@ -541,7 +515,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Float,
                         Value = BigFloat.Add((BigFloat)left.Value, (BigFloat)right.Value),
-                        IsEnumerable = false
+                        
                     };
                 }
                 else if (left.Type == AlgoValueType.Integer)
@@ -550,7 +524,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Integer,
                         Value = BigInteger.Add((BigInteger)left.Value, (BigInteger)right.Value),
-                        IsEnumerable = false
+                        
                     };
                 }
                 else if (left.Type == AlgoValueType.Rational)
@@ -559,7 +533,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Rational,
                         Value = BigRational.Add((BigRational)left.Value, (BigRational)right.Value),
-                        IsEnumerable = false
+                        
                     };
                 }
                 else if (left.Type == AlgoValueType.String)
@@ -568,7 +542,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.String,
                         Value = (string)left.Value + (string)right.Value,
-                        IsEnumerable = false
+                        
                     };
                 }
             }
@@ -585,7 +559,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Float,
                         Value = BigFloat.Add((BigFloat)left.Value, new BigFloat((BigInteger)right.Value)),
-                        IsEnumerable = false
+                        
                     };
                 }
 
@@ -602,7 +576,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Float,
                         Value = BigFloat.Add(rational_as_float, (BigFloat)left.Value),
-                        IsEnumerable = false
+                        
                     };
                 }
 
@@ -613,7 +587,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.String,
                         Value = ((BigFloat)left.Value).ToString() + (string)right.Value,
-                        IsEnumerable = false
+                        
                     };
                 }
             }
@@ -628,7 +602,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Float,
                         Value = BigFloat.Add((BigFloat)right.Value, new BigFloat((BigInteger)left.Value)),
-                        IsEnumerable = false
+                        
                     };
                 }
 
@@ -639,7 +613,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Rational,
                         Value = BigRational.Add(new BigRational((BigInteger)left.Value), (BigRational)right.Value),
-                        IsEnumerable = false
+                        
                     };
                 }
 
@@ -670,7 +644,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Float,
                         Value = BigFloat.Add(rational_as_float, (BigFloat)right.Value),
-                        IsEnumerable = false
+                        
                     };
                 }
 
@@ -681,7 +655,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Rational,
                         Value = BigRational.Add((BigRational)left.Value, new BigRational((BigInteger)right.Value)),
-                        IsEnumerable = false
+                        
                     };
                 }
 
@@ -692,7 +666,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.String,
                         Value = ((BigRational)left.Value).ToString() + (string)right.Value,
-                        IsEnumerable = false
+                        
                     };
                 }
             }
@@ -707,7 +681,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.String,
                         Value = (string)left.Value + ((BigFloat)right.Value).ToString(),
-                        IsEnumerable = false
+                        
                     };
                 }
                 
@@ -718,7 +692,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.String,
                         Value = (string)left.Value + ((BigInteger)right.Value).ToString(),
-                        IsEnumerable = false
+                        
                     };
                 }
 
@@ -729,7 +703,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.String,
                         Value = (string)left.Value + ((BigRational)right.Value).ToString(),
-                        IsEnumerable = false
+                        
                     };
                 }
             }
@@ -742,14 +716,6 @@ namespace Algo
         //Take one AlgoValue from another.
         public static AlgoValue Sub(ParserRuleContext context, AlgoValue left, AlgoValue right)
         {
-            //Are either of them enumerable?
-            //Roadmap: Remove elements from array by doing [] - 3.
-            if (left.IsEnumerable || right.IsEnumerable)
-            {
-                Error.Fatal(context, "Cannot use a subtract operation on an enumerable.");
-                return null;
-            }
-
             //Are either of them strings?
             if (left.Type == AlgoValueType.String || right.Type == AlgoValueType.String)
             {
@@ -767,7 +733,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Float,
                         Value = BigFloat.Subtract((BigFloat)left.Value, (BigFloat)right.Value),
-                        IsEnumerable = false
+                        
                     };
                 }
 
@@ -778,7 +744,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Float,
                         Value = BigFloat.Subtract((BigFloat)left.Value, new BigFloat((BigInteger)right.Value)),
-                        IsEnumerable = false
+                        
                     };
                 }
 
@@ -795,7 +761,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Float,
                         Value = BigFloat.Subtract((BigFloat)left.Value, rational_as_float),
-                        IsEnumerable = false
+                        
                     };
                 }
             }
@@ -810,7 +776,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Integer,
                         Value = BigInteger.Subtract((BigInteger)left.Value, (BigInteger)right.Value),
-                        IsEnumerable = false
+                        
                     };
                 }
 
@@ -821,7 +787,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Float,
                         Value = BigFloat.Subtract(new BigFloat((BigInteger)left.Value), (BigFloat)right.Value),
-                        IsEnumerable = false
+                        
                     };
                 }
 
@@ -832,7 +798,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Rational,
                         Value = BigRational.Subtract(new BigRational((BigInteger)left.Value), (BigRational)right.Value),
-                        IsEnumerable = false
+                        
                     };
                 }
             }
@@ -853,7 +819,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Float,
                         Value = BigFloat.Subtract((BigFloat)left.Value, (BigFloat)right.Value),
-                        IsEnumerable = false
+                        
                     };
                 }
 
@@ -864,7 +830,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Rational,
                         Value = BigRational.Subtract((BigRational)left.Value, new BigRational((BigInteger)right.Value)),
-                        IsEnumerable = false
+                        
                     };
                 }
 
@@ -875,7 +841,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Rational,
                         Value = BigRational.Subtract((BigRational)left.Value, (BigRational)right.Value),
-                        IsEnumerable = false
+                        
                     };
                 }
             }
@@ -924,7 +890,7 @@ namespace Algo
             {
                 Type = AlgoValueType.Float,
                 Value = BigFloat.Parse(rounded),
-                IsEnumerable = false
+                
             };
         }
 
@@ -937,7 +903,7 @@ namespace Algo
                 {
                     Type = AlgoValueType.Boolean,
                     Value = AlgoComparators.GetBooleanValue(value, context),
-                    IsEnumerable = false
+                    
                 };
             }
 
@@ -964,7 +930,7 @@ namespace Algo
                         {
                             Type = AlgoValueType.Float,
                             Value = new BigFloat(newValue),
-                            IsEnumerable = false
+                            
                         };
                     
                     //FLOAT.
@@ -977,7 +943,7 @@ namespace Algo
                         {
                             Type = AlgoValueType.Float,
                             Value = new BigFloat((BigInteger)value.Value),
-                            IsEnumerable = false
+                            
                         };
                     
                     //RATIONAL.
@@ -992,7 +958,7 @@ namespace Algo
                         {
                             Type = AlgoValueType.Float,
                             Value = rational_as_float,
-                            IsEnumerable = false
+                            
                         };
 
                     default:
@@ -1019,7 +985,7 @@ namespace Algo
                         {
                             Type = AlgoValueType.Integer,
                             Value = converted,
-                            IsEnumerable = false
+                            
                         };
 
                     case AlgoValueType.Integer:
@@ -1045,7 +1011,7 @@ namespace Algo
                         {
                             Type = AlgoValueType.Integer,
                             Value = converted_rt,
-                            IsEnumerable = false
+                            
                         };
                         
                     default:
@@ -1064,7 +1030,7 @@ namespace Algo
                         {
                             Type = AlgoValueType.Rational,
                             Value = new BigRational((BigInteger)value.Value),
-                            IsEnumerable = false
+                            
                         };
 
                     default:
@@ -1083,7 +1049,7 @@ namespace Algo
                         {
                             Type = AlgoValueType.String,
                             Value = ((bool)value.Value).ToString(),
-                            IsEnumerable = false
+                            
                         };
 
                     case AlgoValueType.Float:
@@ -1091,7 +1057,7 @@ namespace Algo
                         {
                             Type = AlgoValueType.String,
                             Value = ((BigFloat)value.Value).ToString(),
-                            IsEnumerable = false
+                            
                         };
 
                     case AlgoValueType.Integer:
@@ -1099,7 +1065,7 @@ namespace Algo
                         {
                             Type = AlgoValueType.String,
                             Value = ((BigInteger)value.Value).ToString(),
-                            IsEnumerable = false
+                            
                         };
 
                     case AlgoValueType.Rational:
@@ -1107,7 +1073,7 @@ namespace Algo
                         {
                             Type = AlgoValueType.String,
                             Value = ((BigRational)value.Value).ToString(),
-                            IsEnumerable = false
+                            
                         };
 
                     case AlgoValueType.String:

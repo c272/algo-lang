@@ -191,8 +191,7 @@ namespace Algo
                     newValue = AlgoOperators.Add(context, oldValue, new AlgoValue()
                     {
                         Type = AlgoValueType.Integer,
-                        Value = new BigInteger(toAdd),
-                        IsEnumerable = false
+                        Value = new BigInteger(toAdd)
                     });
 
                     break;

@@ -104,7 +104,7 @@ namespace Algo
                 {
                     Type = AlgoValueType.Boolean,
                     Value = AlgoComparators.AND(context, left, right),
-                    IsEnumerable = false
+                    
                 };
             }
             else if (context.BIN_OR() != null)
@@ -119,7 +119,7 @@ namespace Algo
                 {
                     Type = AlgoValueType.Boolean,
                     Value = AlgoComparators.OR(context, left, right),
-                    IsEnumerable = false
+                    
                 };
             }
             else if (context.LBRACKET() != null)
@@ -140,7 +140,7 @@ namespace Algo
                 {
                     Type = AlgoValueType.Boolean,
                     Value = !evaledBool,
-                    IsEnumerable = false
+                    
                 };
             }
             else
@@ -165,7 +165,7 @@ namespace Algo
                 {
                     Type = AlgoValueType.Boolean,
                     Value = AlgoComparators.GreaterThan(context, left, right, false),
-                    IsEnumerable = false
+                    
                 };
             }
             else if (context.GRTR_THAN_ET() != null)
@@ -179,7 +179,7 @@ namespace Algo
                 {
                     Type = AlgoValueType.Boolean,
                     Value = AlgoComparators.GreaterThan(context, left, right, true),
-                    IsEnumerable = false
+                    
                 };
             }
             else if (context.LESS_THAN() != null)
@@ -193,7 +193,7 @@ namespace Algo
                 {
                     Type = AlgoValueType.Boolean,
                     Value = AlgoComparators.LessThan(context, left, right, false),
-                    IsEnumerable = false
+                    
                 };
             }
             else if (context.LESS_THAN_ET() != null)
@@ -207,7 +207,7 @@ namespace Algo
                 {
                     Type = AlgoValueType.Boolean,
                     Value = AlgoComparators.LessThan(context, left, right, true),
-                    IsEnumerable = false
+                    
                 };
             }
             else if (context.BIN_EQUALS() != null)
@@ -222,7 +222,7 @@ namespace Algo
                 {
                     Type = AlgoValueType.Boolean,
                     Value = AlgoComparators._Equals(context, left, right),
-                    IsEnumerable = false
+                    
                 };
             }
             else if (context.BIN_NET() != null)
@@ -237,7 +237,7 @@ namespace Algo
                 {
                     Type = AlgoValueType.Boolean,
                     Value = !AlgoComparators._Equals(context, left, right),
-                    IsEnumerable = false
+                    
                 };
             }
             else

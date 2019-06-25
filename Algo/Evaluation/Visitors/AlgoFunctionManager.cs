@@ -44,8 +44,7 @@ namespace Algo
             AlgoValue funcValue = new AlgoValue()
             {
                 Type = AlgoValueType.Function,
-                Value = func,
-                IsEnumerable = false
+                Value = func
             };
 
             //Add to scope.
@@ -70,49 +69,16 @@ namespace Algo
                 //Yes, it's a variable.
                 isVariable = true;
 
-                //Get the starting variable.
-                AlgoValue objValue = Scopes.GetVariable(context.obj_access().IDENTIFIER()[0].GetText());
-                if (objValue.Type != AlgoValueType.Object)
+                //Stitch the access string together, and get value.
+                string objStr = "";
+                foreach (var objPart in context.obj_access().IDENTIFIER()) 
                 {
-                    Error.Fatal(context, "The variable you tried to reference as an object is not an object.");
-                    return null;
+                    objStr += objPart.GetText() + '.';
                 }
-                objScope = ((AlgoObject)objValue.Value).ObjectScopes;
-
-                //Get the final object.
-                AlgoObject currentObj = (AlgoObject)objValue.Value;
-                for (int i = 1; i < context.obj_access().IDENTIFIER().Length - 1; i++) {
-
-                    //Check if the next variable exists.
-                    var cvarname = context.obj_access().IDENTIFIER()[i].GetText();
-                    if (!currentObj.ObjectScopes.VariableExists(cvarname))
-                    {
-                        Error.Fatal(context, "A nested variable with the name '" + cvarname + "' does not exist.");
-                        return null;
-                    }
-
-                    //Getting the next object.
-                    AlgoValue newObjValue = currentObj.ObjectScopes.GetVariable(cvarname);
-                    if (newObjValue.Type != AlgoValueType.Object)
-                    {
-                        Error.Fatal(context, "The variable '" + cvarname + "' is not an object, can't access child.");
-                        return null;
-                    }
-
-                    //Setting current object.
-                    currentObj = (AlgoObject)newObjValue.Value;
-                }
-
-                //Get the final value.
-                var finalValueName = context.obj_access().IDENTIFIER()[context.obj_access().IDENTIFIER().Length - 1].GetText();
-                if (!currentObj.ObjectScopes.VariableExists(finalValueName))
-                {
-                    Error.Fatal(context, "The value with name '" + finalValueName + "' does not exist inside the given object.");
-                    return null;
-                }
+                objStr = objStr.Substring(0, objStr.Length-1);
 
                 //Checking if it's a function.
-                AlgoValue value = currentObj.ObjectScopes.GetVariable(finalValueName);
+                AlgoValue value = Scopes.GetVariable(objStr);
                 if (value.Type != AlgoValueType.Function)
                 {
                     Error.Fatal(context, "The variable you referenced is not a function, so cannot be called.");

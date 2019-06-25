@@ -134,7 +134,7 @@ namespace Algo
                 {
                     Type = AlgoValueType.Integer,
                     Value = BigInteger.Parse(context.INTEGER().GetText()),
-                    IsEnumerable = false
+                    
                 };
             }
             else if (context.FLOAT() != null)
@@ -144,7 +144,7 @@ namespace Algo
                 {
                     Type = AlgoValueType.Float,
                     Value = BigFloat.Parse(context.FLOAT().GetText()),
-                    IsEnumerable = false
+                    
                 };
             }
             else if (context.STRING() != null)
@@ -154,7 +154,7 @@ namespace Algo
                 {
                     Type = AlgoValueType.String,
                     Value = context.STRING().GetText().Substring(1, context.STRING().GetText().Length - 2).Replace("\\n", "\n"),
-                    IsEnumerable = false
+                    
                 };
             }
             else if (context.RATIONAL() != null)
@@ -169,7 +169,7 @@ namespace Algo
                 {
                     Type = AlgoValueType.Rational,
                     Value = new BigRational(BigInteger.Zero, new Fraction(BigInteger.Parse(numerator), BigInteger.Parse(denominator))),
-                    IsEnumerable = false
+                    
                 };
             }
             else if (context.BOOLEAN() != null)
@@ -179,7 +179,7 @@ namespace Algo
                 {
                     Type = AlgoValueType.Boolean,
                     Value = (context.BOOLEAN().GetText() == "true"),
-                    IsEnumerable = false
+                    
                 };
             }
             else if (context.NULL() != null)
@@ -189,7 +189,7 @@ namespace Algo
                 {
                     Type = AlgoValueType.Null,
                     Value = null,
-                    IsEnumerable = false
+                    
                 };
             }
             else if (context.IDENTIFIER() != null)
@@ -219,7 +219,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Null,
                         Value = null,
-                        IsEnumerable = false
+                        
                     };
                 }
             }
@@ -238,29 +238,66 @@ namespace Algo
                 return new AlgoValue()
                 {
                     Type = AlgoValueType.List,
-                    Value = list,
-                    IsEnumerable = true
+                    Value = list
                 };
             }
             else if (context.array_access() != null)
             {
                 //ACCESSED ARRAY VALUE
-
-                //Get the root value.
-                if (!Scopes.VariableExists(context.array_access().IDENTIFIER().GetText()))
+                
+                //What type of access is this? Stored identifier/obj or a literal value.
+                AlgoValue currentValue = null;
+                if (context.IDENTIFIER() != null) 
                 {
-                    Error.Fatal(context, "An enumerable variable with name '" + context.array_access().IDENTIFIER().GetText() + "' does not exist.");
-                    return null;
+                    //Identifier.
+                    //Get the root value.
+                    if (!Scopes.VariableExists(context.array_access().IDENTIFIER().GetText()))
+                    {
+                        Error.Fatal(context, "An enumerable variable with name '" + context.array_access().IDENTIFIER().GetText() + "' does not exist.");
+                        return null;
+                    }
+
+                    currentValue = Scopes.GetVariable(context.array_access().IDENTIFIER().GetText());
+                }
+                else if (context.obj_access() != null && Scopes.VariableExists(context.obj_access().IDENTIFIER()[0].GetText())) 
+                {
+                    //Object access.
+                    //Stitch together the object access string.
+                    string objStr = "";
+                    foreach (var objPart in context.obj_access().IDENTIFIER()) 
+                    {
+                        objStr += objPart.GetText() + '.';
+                    }
+                    objStr = objStr.Substring(0, objStr.Length-1);
+
+                    //Get the value.
+                    currentValue = Scopes.GetVariable(objStr);
+                }
+                else if (context.obj_access() != null) 
+                {
+                    //Library access.
+                    //Get the library scope.
+                    var scopes_local = Scopes.GetScopeFromLibAccess(context.obj_access());
+
+                    //Check that the variable exists in this scope.
+                    string varname = context.obj_access().IDENTIFIER().Last().GetText();
+                    if (!scopes_local.VariableExists(varname)) 
+                    {
+                        Error.Fatal(context, "No variable exists in library named '" + varname + "'.");
+                        return null;
+                    }
+
+                    //Set the value.
+                    currentValue = scopes_local.GetVariable(varname);
                 }
 
                 //Arrays can be more than 1D, and are separated using commas:
                 // x[3, 4, 5]
                 //So, this steps through till the very bottom value is found.
-                var currentValue = Scopes.GetVariable(context.array_access().IDENTIFIER().GetText());
                 foreach (var accessIndexExpr in context.array_access().literal_params().expr())
                 {
                     //Already found the end, but still going.
-                    if (currentValue.IsEnumerable == false)
+                    if (currentValue.Type != AlgoValueType.List && currentValue.Type != AlgoValueType.String)
                     {
                         Error.Fatal(context, "Attempting to index into a value that isn't enumerable.");
                         return null;
@@ -284,16 +321,37 @@ namespace Algo
                     int accessIndexInt = int.Parse(((BigInteger)accessIndex.Value).ToString());
 
                     //Is the index too large?
-                    if (accessIndexInt > ((List<AlgoValue>)currentValue.Value).Count) 
+                    if (currentValue.Type == AlgoValueType.String)
                     {
-                        Error.Fatal(context, "Cannot access index in array, index out of bounds.");
-                        return null;
+                        if (accessIndexInt > ((string)currentValue.Value).Length) 
+                        {
+                            Error.Fatal(context, "Cannot access index in string, index out of bounds.");
+                            return null;
+                        }
+                    }
+                    else {
+                        if (accessIndexInt > ((List<AlgoValue>)currentValue.Value).Count) 
+                        {
+                            Error.Fatal(context, "Cannot access index in array, index out of bounds.");
+                            return null;
+                        }
                     }
 
                     //Get the index of the current value.
                     try
                     {
-                        currentValue = ((List<AlgoValue>)currentValue.Value)[accessIndexInt];
+                        if (currentValue.Type == AlgoValueType.String) 
+                        {
+                            currentValue = new AlgoValue() 
+                            {
+                                Type = AlgoValueType.String,
+                                Value = new string(new char[]{ ((string)currentValue.Value)[accessIndexInt] })
+                            };
+                        } 
+                        else 
+                        {
+                            currentValue = ((List<AlgoValue>)currentValue.Value)[accessIndexInt];
+                        }
                     }
                     catch
                     {
@@ -395,7 +453,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Object,
                         Value = toReturn,
-                        IsEnumerable = false
+                        
                     };
                 }
 
@@ -449,7 +507,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Function,
                         Value = func,
-                        IsEnumerable = false
+                        
                     };
 
                     toReturn.ObjectScopes.AddVariable(value.IDENTIFIER().GetText(), funcValue);
@@ -460,7 +518,7 @@ namespace Algo
                 {
                     Type = AlgoValueType.Object,
                     Value = toReturn,
-                    IsEnumerable = false
+                    
                 };
             }
             else
@@ -471,7 +529,7 @@ namespace Algo
                 {
                     Type = AlgoValueType.Null,
                     Value = null,
-                    IsEnumerable = false
+                    
                 };
             }
         }

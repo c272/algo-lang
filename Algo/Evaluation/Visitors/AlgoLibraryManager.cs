@@ -157,5 +157,30 @@ namespace Algo
                 Scopes.AddLibrary(newScopeName, importScope);
             }
         }
+
+        //When an external or internal plugin library function is loaded.
+        public override object VisitStat_loadFuncExt([NotNull] algoParser.Stat_loadFuncExtContext context)
+        {
+            //Attempt to get the text (as array) of the class and function from obj_access.
+            if (context.obj_access().IDENTIFIER().Length != 2) 
+            {
+                Error.Fatal(context, "Import function is invalid, must be in the form \"Class.Function\".");
+                return null;
+            }
+
+            string className = context.obj_access().IDENTIFIER()[0].GetText();
+
+            //Is the plugin internal or external?
+            if (context.INTERNAL_SYM() != null) 
+            {
+                //Internal function, load from the standard library bank.
+            } 
+            else
+            {
+                //External function, load from the plugin classes.
+            }
+
+            return null;
+        }
     }
 }

@@ -5,7 +5,6 @@
     {
         public object Value;
         public AlgoValueType Type;
-        public bool IsEnumerable;
     }
 
     public enum AlgoValueType
