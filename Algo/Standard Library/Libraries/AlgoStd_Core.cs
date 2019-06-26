@@ -1,4 +1,5 @@
 ﻿using Antlr4.Runtime;
+using ExtendedNumerics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,46 @@ namespace Algo.StandardLibrary
                 Name = "len",
                 ParameterCount = 1,
                 Function = Length
+            },
+
+            //str(x)
+            new AlgoPluginFunction()
+            {
+                Name = "str",
+                ParameterCount = 1,
+                Function = ConvertString
+            },
+
+            //int(x)
+            new AlgoPluginFunction()
+            {
+                Name = "int",
+                ParameterCount = 1,
+                Function = ConvertInt
+            },
+
+            //flt(x)
+            new AlgoPluginFunction()
+            {
+                Name = "flt",
+                ParameterCount = 1,
+                Function = ConvertFlt
+            },
+
+            //rat(x)
+            new AlgoPluginFunction()
+            {
+                Name = "rat",
+                ParameterCount = 1,
+                Function = ConvertRat
+            },
+
+            //bool(x)
+            new AlgoPluginFunction()
+            {
+                Name = "bool",
+                ParameterCount = 1,
+                Function = ConvertBool
             }
         };
 
@@ -57,31 +98,90 @@ namespace Algo.StandardLibrary
         //String.
         public static AlgoValue ConvertString(ParserRuleContext context, params AlgoValue[] args)
         {
-            return null;
+            //Return converted string representation of the value.
+            return new AlgoValue()
+            {
+                Type = AlgoValueType.String,
+                Value = AlgoConversion.GetStringRepresentation(context, args[0])
+            };
         }
 
         //Integer.
         public static AlgoValue ConvertInt(ParserRuleContext context, params AlgoValue[] args)
         {
-            return null;
+            //Is it a string?
+            if (args[0].Type == AlgoValueType.String)
+            {
+                //Return a parsed bigint.
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Integer,
+                    Value = BigInteger.Parse((string)args[0].Value)
+                };
+            }
+
+            //Nah, then just cast.
+            return AlgoOperators.ConvertType(context, args[0], AlgoValueType.Integer);
         }
 
         //Float.
         public static AlgoValue ConvertFlt(ParserRuleContext context, params AlgoValue[] args)
         {
-            return null;
+            //Is it a string?
+            if (args[0].Type == AlgoValueType.String)
+            {
+                //Return a parsed bigfloat.
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Float,
+                    Value = BigFloat.Parse((string)args[0].Value)
+                };
+            }
+
+            //Nah, then just cast.
+            return AlgoOperators.ConvertType(context, args[0], AlgoValueType.Float);
         }
 
         //Rational.
         public static AlgoValue ConvertRat(ParserRuleContext context, params AlgoValue[] args)
         {
-            return null;
+            //Is it a string?
+            if (args[0].Type == AlgoValueType.String)
+            {
+                //Return a parsed bigint.
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Rational,
+                    Value = BigRational.Parse((string)args[0].Value)
+                };
+            }
+
+            //Nah, then just cast.
+            return AlgoOperators.ConvertType(context, args[0], AlgoValueType.Rational);
         }
 
         //Bool.
         public static AlgoValue ConvertBool(ParserRuleContext context, params AlgoValue[] args)
         {
-            return null;
+            if (args[0].Type == AlgoValueType.String)
+            {
+                if ((string)args[0].Value != "true" && (string)args[0].Value != "false")
+                {
+                    throw new Exception("Invalid string given to convert to boolean.");
+                }
+
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Boolean,
+                    Value = bool.Parse((string)args[0].Value)
+                };
+            }
+
+            return new AlgoValue()
+            {
+                Type = AlgoValueType.Boolean,
+                Value = AlgoComparators.GetBooleanValue(args[0], context)
+            };
         }
     }
 }

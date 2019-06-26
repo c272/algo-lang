@@ -6,20 +6,18 @@
 external len std_core.len;
 
 //Static casts for all core types.
-library convert {
 	
-	//String.
-	external toString std_core.ConvertString;
+//String.
+external str std_core.str;
 
-	//Integer.
-	external toInt std_core.ConvertInt;
+//Integer.
+external int std_core.int;
 
-	//Rational.
-	external toRat std_core.ConvertRat;
+//Rational.
+external rat std_core.rat;
 
-	//Float.
-	external toFlt std_core.ConvertFlt;
+//Float.
+external flt std_core.flt;
 
-	//Boolean.
-	external toBool std_core.ConvertBool;
-}
+//Boolean.
+external bool std_core.bool;

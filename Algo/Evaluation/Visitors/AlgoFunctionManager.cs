@@ -237,7 +237,7 @@ namespace Algo
                 }
                 catch(Exception e)
                 {
-                    Error.Fatal(context, "Failed to run external function '" + func.Name + "', given error message: " + e.Message);
+                    Error.Fatal(context, e.Message);
                 }
             }
             else
