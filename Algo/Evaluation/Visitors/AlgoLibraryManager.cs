@@ -134,8 +134,8 @@ namespace Algo
 
             //Set the currently loaded file.
             FileInfo fi = new FileInfo(path);
-            string oldFile = Program.FileLoaded;
-            Program.FileLoaded = fi.Name;
+            string oldFile = AlgoRuntimeInformation.FileLoaded;
+            AlgoRuntimeInformation.FileLoaded = fi.Name;
 
             //If this is being placed in a separate scope, switch out now.
             AlgoScopeCollection oldScope = null;
@@ -149,7 +149,7 @@ namespace Algo
             VisitCompileUnit(tree);
 
             //Set the currently loaded file back.
-            Program.FileLoaded = oldFile;
+            AlgoRuntimeInformation.FileLoaded = oldFile;
 
             //If it was executed in a separate scope, save as a library with this name.
             if (newScopeName != "")

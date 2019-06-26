@@ -17,7 +17,10 @@ namespace Algo
         public AlgoFunctionPlugins()
         {
             //Add standard libraries.
+            //string.*
             Plugins.Add(new StandardLibrary.AlgoStd_String());
+            //*.* (core)
+            Plugins.Add(new StandardLibrary.AlgoStd_Core());
         }
 
         //Load a plugin from an assembly path.

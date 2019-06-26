@@ -7,7 +7,7 @@ namespace Algo
     /// <summary>
     /// The Algo error handling class.
     /// </summary>
-    public class Error
+    public class ExternalError
     {
         //Fatal error, with token context.
         public static void Fatal(ParserRuleContext context, string errMessage)
@@ -20,8 +20,6 @@ namespace Algo
             Console.WriteLine("Algo Runtime Error: " + AlgoRuntimeInformation.FileLoaded + ", Line " + context.Start.Line + ":" + context.Start.StartIndex + " - " + errMessage);
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Black;
-
-            ANTLRDebug.PrintScopes();
             Environment.Exit(-1);
         }
 
@@ -34,8 +32,6 @@ namespace Algo
             Console.WriteLine("Algo Runtime Error: " + AlgoRuntimeInformation.FileLoaded + ", NOCONTEXT - " + errMessage);
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Black;
-
-            ANTLRDebug.PrintScopes();
             Environment.Exit(-1);
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Antlr4.Runtime;
+using System;
 using System.Collections.Generic;
 
 namespace Algo.StandardLibrary
@@ -19,12 +20,12 @@ namespace Algo.StandardLibrary
         };
 
         //Returns a character array of the string.
-        public static AlgoValue ToCharArray(params AlgoValue[] args)
+        public static AlgoValue ToCharArray(ParserRuleContext context, params AlgoValue[] args)
         {
             //Get the first argument, check the value is a string.
             if (args[0].Type != AlgoValueType.String)
             {
-                Error.FatalNoContext("Cannot convert a non-string to a character array.");
+                Error.Fatal(context, "Cannot convert a non-string to a character array.");
                 return null;
             }
 

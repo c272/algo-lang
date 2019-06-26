@@ -231,7 +231,14 @@ namespace Algo
                 }
 
                 //Return the result of the delegate.
-                return func.Function(paramvalues.ToArray());
+                try
+                {
+                    return func.Function(context, paramvalues.ToArray());
+                }
+                catch(Exception e)
+                {
+                    Error.Fatal(context, "Failed to run external function '" + func.Name + "', given error message: " + e.Message);
+                }
             }
             else
             {

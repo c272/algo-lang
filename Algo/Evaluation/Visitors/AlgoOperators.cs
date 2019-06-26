@@ -1049,7 +1049,6 @@ namespace Algo
                         {
                             Type = AlgoValueType.String,
                             Value = ((bool)value.Value).ToString(),
-                            
                         };
 
                     case AlgoValueType.Float:
@@ -1057,7 +1056,6 @@ namespace Algo
                         {
                             Type = AlgoValueType.String,
                             Value = ((BigFloat)value.Value).ToString(),
-                            
                         };
 
                     case AlgoValueType.Integer:

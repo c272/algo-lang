@@ -1,0 +1,25 @@
+﻿// The "core" standard library, provided by Algo.
+// NOTE: THESE FUNCTIONS ARE NOT IN A LIBRARY.
+// v0.0.1, revision 0.
+
+//Returns the length of an array or string.
+external len std_core.len;
+
+//Static casts for all core types.
+library convert {
+	
+	//String.
+	external toString std_core.ConvertString;
+
+	//Integer.
+	external toInt std_core.ConvertInt;
+
+	//Rational.
+	external toRat std_core.ConvertRat;
+
+	//Float.
+	external toFlt std_core.ConvertFlt;
+
+	//Boolean.
+	external toBool std_core.ConvertBool;
+}

@@ -13,9 +13,6 @@ namespace Algo
 {
     class Program
     {
-        //The currently loaded file.
-        public static string FileLoaded = "";
-
         static void Main(string[] args)
         {
             //Check that all the necessary directories exist.
@@ -45,7 +42,7 @@ namespace Algo
             }
             
             //Test input string.
-            FileLoaded = args[0];
+            AlgoRuntimeInformation.FileLoaded = args[0];
             string input = File.ReadAllText(fullPath);
             var chars = new AntlrInputStream(input);
             var lexer = new algoLexer(chars);

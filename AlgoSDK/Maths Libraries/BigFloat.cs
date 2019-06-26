@@ -11,7 +11,7 @@ using System.Numerics;
 namespace ExtendedNumerics
 {
     [Serializable]
-    class BigFloat : IComparable, IComparable<BigFloat>, IEquatable<BigFloat>
+    public class BigFloat : IComparable, IComparable<BigFloat>, IEquatable<BigFloat>
     {
         private BigInteger numerator;
         private BigInteger denominator;

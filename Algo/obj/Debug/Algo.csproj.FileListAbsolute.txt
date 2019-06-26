@@ -57,3 +57,5 @@ Z:\Algo\Algo\obj\Debug\Algo.csproj.CoreCompileInputs.cache
 Z:\Algo\Algo\obj\Debug\Algo.csproj.CopyComplete
 Z:\Algo\Algo\obj\Debug\Algo.exe
 Z:\Algo\Algo\obj\Debug\Algo.pdb
+Z:\Algo\Algo\bin\Debug\AlgoSDK.dll
+Z:\Algo\Algo\bin\Debug\AlgoSDK.pdb

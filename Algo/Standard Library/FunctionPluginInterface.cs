@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Antlr4.Runtime;
+using System;
 using System.Collections.Generic;
 
 namespace Algo
@@ -14,7 +15,7 @@ namespace Algo
     }
 
     //The function delegate to be followed by all plugin functions.
-    public delegate AlgoValue AlgoFunctionDelegate(params AlgoValue[] args);
+    public delegate AlgoValue AlgoFunctionDelegate(ParserRuleContext context, params AlgoValue[] args);
 
     //Representation of a single plugin function.
     public struct AlgoPluginFunction
