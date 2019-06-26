@@ -1,6 +1,6 @@
-/home/c272/Repos/algo-lang/Algo/obj/Debug/algoLexer.cs
-/home/c272/Repos/algo-lang/Algo/obj/Debug/algoParser.cs
-/home/c272/Repos/algo-lang/Algo/obj/Debug/algoListener.cs
-/home/c272/Repos/algo-lang/Algo/obj/Debug/algoBaseListener.cs
-/home/c272/Repos/algo-lang/Algo/obj/Debug/algoVisitor.cs
-/home/c272/Repos/algo-lang/Algo/obj/Debug/algoBaseVisitor.cs
+Z:\Algo\Algo\obj\Debug\algoLexer.cs
+Z:\Algo\Algo\obj\Debug\algoParser.cs
+Z:\Algo\Algo\obj\Debug\algoListener.cs
+Z:\Algo\Algo\obj\Debug\algoBaseListener.cs
+Z:\Algo\Algo\obj\Debug\algoVisitor.cs
+Z:\Algo\Algo\obj\Debug\algoBaseVisitor.cs

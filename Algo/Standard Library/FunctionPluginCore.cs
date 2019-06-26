@@ -10,7 +10,7 @@ namespace Algo
     public class AlgoFunctionPlugins
     {
         //The list of loaded plugins.
-        public List<IFunctionPlugin> Plugins;
+        public List<IFunctionPlugin> Plugins = new List<IFunctionPlugin>();
 
         //On construct, add all the standard libraries as loaded function plugins.
         //Also, load in all plugins in the "/packages/" directory (and all subdirectories).

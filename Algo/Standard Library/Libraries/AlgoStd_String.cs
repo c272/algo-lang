@@ -6,14 +6,20 @@ namespace Algo.StandardLibrary
     //Additional methods required for the "string" standard library.
     public class AlgoStd_String : IFunctionPlugin
     {
-        public string Name { get; set; } = "String";
+        public string Name { get; set; } = "std_string";
         public List<AlgoPluginFunction> Functions { get; set; } = new List<AlgoPluginFunction>
         {
-
+            //ToCharArray
+            new AlgoPluginFunction()
+            {
+                Name = "toCharArray",
+                ParameterCount = 1,
+                Function = ToCharArray
+            }
         };
 
         //Returns a character array of the string.
-        public AlgoValue ToCharArray(params AlgoValue[] args)
+        public static AlgoValue ToCharArray(params AlgoValue[] args)
         {
             //Get the first argument, check the value is a string.
             if (args[0].Type != AlgoValueType.String)

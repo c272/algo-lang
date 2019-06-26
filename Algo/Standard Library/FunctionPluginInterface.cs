@@ -20,7 +20,7 @@ namespace Algo
     public struct AlgoPluginFunction
     {
         //The function delegate.
-        public readonly AlgoFunctionDelegate Function;
+        public AlgoFunctionDelegate Function;
 
         //The amount of parameters the function has.
         public int ParameterCount;
