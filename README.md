@@ -16,19 +16,20 @@ Building in "Debug" mode is recommended for all contributions to the update bran
 ## Code Example
 
     //Import the input library and string library.
-    import std/input
-    import std/strings
+    import "std/input";
+    import "std/core";
+    import "std/string"
 
     //Define a function to enumerate over the string characters.
     let printCharacters(x) = {
 
         //Print all the characters individually.
-        let charList = strings.getChars(x);
+        let charList = string.getChars(x);
         for (i in charList) {
             print charList[i];
         }
 
-        print "Your string is " + strings.length(x) + " characters long.";
+        print "Your string is " + len(x) + " characters long.";
     };
 
     //Make some cool stuff happen.
