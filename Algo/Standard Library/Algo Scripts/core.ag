@@ -3,7 +3,7 @@
 // v0.0.1, revision 0.
 
 //Returns the length of an array or string.
-external len std_core.len;
+external len <- std_core.len;
 
 //Static casts for all core types.
 	
