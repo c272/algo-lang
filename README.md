@@ -18,7 +18,7 @@ Building in "Debug" mode is recommended for all contributions to the update bran
     //Import the input library and string library.
     import "std/input";
     import "std/core";
-    import "std/string"
+    import "std/string";
 
     //Define a function to enumerate over the string characters.
     let printCharacters(x) = {
