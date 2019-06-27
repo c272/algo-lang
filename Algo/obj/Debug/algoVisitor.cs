@@ -89,6 +89,13 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitStat_deletevar([NotNull] algoParser.Stat_deletevarContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.stat_enumDef"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStat_enumDef([NotNull] algoParser.Stat_enumDefContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="algoParser.stat_functionCall"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

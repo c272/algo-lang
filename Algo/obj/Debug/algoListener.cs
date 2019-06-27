@@ -120,6 +120,17 @@ public interface IalgoListener : IParseTreeListener {
 	void ExitStat_deletevar([NotNull] algoParser.Stat_deletevarContext context);
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.stat_enumDef"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterStat_enumDef([NotNull] algoParser.Stat_enumDefContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.stat_enumDef"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitStat_enumDef([NotNull] algoParser.Stat_enumDefContext context);
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.stat_functionCall"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

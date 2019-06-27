@@ -108,7 +108,25 @@ namespace Algo
             AlgoScopeCollection toReturn = this;
             for (int i=0; i<lib_accessContext.IDENTIFIER().Length-1; i++)
             {
-                toReturn = toReturn.GetLibrary(lib_accessContext.IDENTIFIER()[i].GetText());
+                //Library?
+                string vname = lib_accessContext.IDENTIFIER()[i].GetText();
+                if (toReturn.LibraryExists(vname))
+                {
+                    toReturn = toReturn.GetLibrary(vname);
+                }
+                else
+                {
+                    //Object?
+                    if (toReturn.VariableExists(vname) && toReturn.GetVariable(vname).Type == AlgoValueType.Object)
+                    {
+                        toReturn = ((AlgoObject)toReturn.GetVariable(vname).Value).ObjectScopes;
+                    }
+                    else
+                    {
+                        Error.Fatal(lib_accessContext, "Invalid library or object name '" + vname + "' given to access.");
+                        return null;
+                    }
+                }
             }
 
             return toReturn;

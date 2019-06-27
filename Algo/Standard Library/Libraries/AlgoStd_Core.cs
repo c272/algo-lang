@@ -63,6 +63,14 @@ namespace Algo.StandardLibrary
                 Name = "bool",
                 ParameterCount = 1,
                 Function = ConvertBool
+            },
+
+            //type(x)
+            new AlgoPluginFunction()
+            {
+                Name = "get_type",
+                ParameterCount = 1,
+                Function = GetType
             }
         };
 
@@ -181,6 +189,17 @@ namespace Algo.StandardLibrary
             {
                 Type = AlgoValueType.Boolean,
                 Value = AlgoComparators.GetBooleanValue(args[0], context)
+            };
+        }
+
+        //Returns the type of the variable.
+        public static AlgoValue GetType(ParserRuleContext context, params AlgoValue[] args)
+        {
+            //Enums in Algo are represented by objects with integer members.
+            return new AlgoValue()
+            {
+                Type = AlgoValueType.Integer,
+                Value = args[0].Type
             };
         }
     }

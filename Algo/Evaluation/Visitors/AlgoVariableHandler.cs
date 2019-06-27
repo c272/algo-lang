@@ -30,6 +30,50 @@ namespace Algo
             return null;
         }
 
+        //When an enum is first defined.
+        public override object VisitStat_enumDef([NotNull] algoParser.Stat_enumDefContext context)
+        {
+            //Check if the variable already exists at local scope.
+            if (Scopes.VariableExistsLowest(context.IDENTIFIER().GetText()))
+            {
+                Error.Fatal(context, "A variable with the name '" + context.IDENTIFIER().GetText() + "'already exists, cannot create a duplicate.");
+                return null;
+            }
+
+            //Create an object for the enum.
+            AlgoObject enumObj = new AlgoObject();
+
+            //For each enum member, create a child in the object with an integer value.
+            BigInteger enumIndex = 0;
+            if (context.abstract_params() != null) {
+                foreach (var id in context.abstract_params().IDENTIFIER())
+                {
+                    //Does a member with this name already exist?
+                    if (enumObj.ObjectScopes.VariableExists(id.GetText()))
+                    {
+                        Error.Fatal(context, "An enum member with the name '" + id.GetText() + "' already exists.");
+                        return null;
+                    }
+
+                    //Add member.
+                    enumObj.ObjectScopes.AddVariable(id.GetText(), new AlgoValue()
+                    {
+                        Type = AlgoValueType.Integer,
+                        Value = enumIndex
+                    });
+                }
+            }
+
+            //Create an enum variable with this name.
+            Scopes.AddVariable(context.IDENTIFIER().GetText(), new AlgoValue()
+            {
+                Type = AlgoValueType.Object,
+                Value = enumObj
+            });
+
+            return null;
+        }
+
         //When a variable's value is changed.
         public override object VisitStat_setvar([NotNull] algoParser.Stat_setvarContext context)
         {

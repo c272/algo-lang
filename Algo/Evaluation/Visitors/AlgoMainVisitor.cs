@@ -80,6 +80,11 @@ namespace Algo
                 //A while loop.
                 VisitStat_whileLoop(context.stat_whileLoop());
             }
+            else if (context.stat_enumDef() != null)
+            {
+                //Definition of an enum.
+                VisitStat_enumDef(context.stat_enumDef());
+            }
             else if (context.stat_functionCall() != null)
             {
                 //A function call.

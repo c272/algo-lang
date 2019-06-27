@@ -5,7 +5,9 @@
 //Returns the length of an array or string.
 external len <- std_core.len;
 
-//Static casts for all core types.
+//////////////////////////////////////
+// Static casts for all core types. //
+//////////////////////////////////////
 	
 //String.
 external str <- std_core.str;
@@ -21,3 +23,27 @@ external flt <- std_core.flt;
 
 //Boolean.
 external bool <- std_core.bool;
+
+//////////////////////////////////
+// Check the type of variables. //
+//////////////////////////////////
+
+//Types enum.
+library core {
+    let types = enum 
+    {
+        String,
+        Integer,
+        Float,
+        Rational,
+        Boolean,
+        List,
+        Function,
+        EmulatedFunction,
+        Object,
+        Null
+    };
+}
+
+//Function to check the type of a variable.
+external type <- std_core.get_type;

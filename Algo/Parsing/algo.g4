@@ -12,6 +12,7 @@ block: statement*;
 
 //Statements which require endlines, and those that don't.
 statement: (  stat_define
+            | stat_enumDef
 			| stat_functionCall
 			| stat_print
 			| stat_setvar
@@ -36,6 +37,7 @@ stat_setvar: (IDENTIFIER | obj_access) EQUALS expr rounding_expr?;
 stat_setvar_op: (IDENTIFIER | obj_access) selfmod_op expr;
 stat_setvar_postfix: (IDENTIFIER | obj_access) postfix_op;
 stat_deletevar: DISREGARD_SYM (IDENTIFIER | obj_access | MUL_OP);
+stat_enumDef: LET_SYM IDENTIFIER EQUALS ENUM_SYM LBRACE abstract_params? RBRACE;
 stat_functionCall: (IDENTIFIER | obj_access) LBRACKET literal_params? RBRACKET;
 stat_functionDef: LET_SYM IDENTIFIER LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
 stat_loadFuncExt: EXTERNAL_SYM IDENTIFIER STREAMING_SYM obj_access;
@@ -143,6 +145,7 @@ IF_SYM: 'if';
 UP_SYM: 'up';
 TO_SYM: 'to';
 AS_SYM: 'as';
+ENUM_SYM: 'enum';
 LIB_SYM: 'library';
 SIG_FIG_SYM: 'sf';
 OBJ_SYM: 'object';

@@ -140,6 +140,19 @@ public partial class algoBaseListener : IalgoListener {
 	public virtual void ExitStat_deletevar([NotNull] algoParser.Stat_deletevarContext context) { }
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.stat_enumDef"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterStat_enumDef([NotNull] algoParser.Stat_enumDefContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.stat_enumDef"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitStat_enumDef([NotNull] algoParser.Stat_enumDefContext context) { }
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.stat_functionCall"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
