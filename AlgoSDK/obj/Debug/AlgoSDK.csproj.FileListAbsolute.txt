@@ -20,7 +20,6 @@ D:/Files/Programming/GitHub/algo/AlgoSDK/obj/Debug/AlgoSDK.pdb
 /home/c272/Repos/algo-lang/AlgoSDK/bin/Debug/AlgoSDK.pdb
 /home/c272/Repos/algo-lang/AlgoSDK/bin/Debug/Antlr4.Runtime.dll
 /home/c272/Repos/algo-lang/AlgoSDK/bin/Debug/Antlr4.Runtime.xml
-/home/c272/Repos/algo-lang/AlgoSDK/obj/Debug/AlgoSDK.csprojAssemblyReference.cache
 /home/c272/Repos/algo-lang/AlgoSDK/obj/Debug/AlgoSDK.csproj.CoreCompileInputs.cache
 /home/c272/Repos/algo-lang/AlgoSDK/obj/Debug/AlgoSDK.csproj.CopyComplete
 /home/c272/Repos/algo-lang/AlgoSDK/obj/Debug/AlgoSDK.dll

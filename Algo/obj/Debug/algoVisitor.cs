@@ -166,6 +166,20 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitStat_import([NotNull] algoParser.Stat_importContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.stat_list_add"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStat_list_add([NotNull] algoParser.Stat_list_addContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.stat_list_remove"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStat_list_remove([NotNull] algoParser.Stat_list_removeContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="algoParser.stat_elif"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

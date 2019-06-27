@@ -120,6 +120,16 @@ namespace Algo
                 //Load an external or internal plugin function.
                 VisitStat_loadFuncExt(context.stat_loadFuncExt());
             }
+            else if (context.stat_list_add() != null)
+            {
+                //Add a value to a list.
+                VisitStat_list_add(context.stat_list_add());
+            }
+            else if (context.stat_list_remove() != null)
+            {
+                //Remove a value from a list.
+                VisitStat_list_remove(context.stat_list_remove());
+            }
             else
             {
                 Error.Fatal(context, "Syntax error, unrecognized statement.");
