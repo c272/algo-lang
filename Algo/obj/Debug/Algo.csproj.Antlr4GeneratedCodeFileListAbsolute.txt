@@ -1,6 +1,6 @@
-D:\Files\Programming\GitHub\algo\Algo\obj\Debug\algoLexer.cs
-D:\Files\Programming\GitHub\algo\Algo\obj\Debug\algoParser.cs
-D:\Files\Programming\GitHub\algo\Algo\obj\Debug\algoListener.cs
-D:\Files\Programming\GitHub\algo\Algo\obj\Debug\algoBaseListener.cs
-D:\Files\Programming\GitHub\algo\Algo\obj\Debug\algoVisitor.cs
-D:\Files\Programming\GitHub\algo\Algo\obj\Debug\algoBaseVisitor.cs
+/home/c272/Repos/algo-lang/Algo/obj/Debug/algoLexer.cs
+/home/c272/Repos/algo-lang/Algo/obj/Debug/algoParser.cs
+/home/c272/Repos/algo-lang/Algo/obj/Debug/algoListener.cs
+/home/c272/Repos/algo-lang/Algo/obj/Debug/algoBaseListener.cs
+/home/c272/Repos/algo-lang/Algo/obj/Debug/algoVisitor.cs
+/home/c272/Repos/algo-lang/Algo/obj/Debug/algoBaseVisitor.cs

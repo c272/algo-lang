@@ -45,7 +45,14 @@ namespace Algo
                     string varValue = "Null";
                     if (variable.Value.Type != AlgoValueType.Null)
                     {
-                        varValue = variable.Value.Value.ToString();
+                        try
+                        {
+                            varValue = variable.Value.Value.ToString();
+                        }
+                        catch
+                        {
+                            varValue = "Undefined / Unavailable";
+                        }
                     }
 
                     Console.WriteLine(variable.Key + " of type " + variable.Value.Type.ToString() + ", value " + varValue + ".");

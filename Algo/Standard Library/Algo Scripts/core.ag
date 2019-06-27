@@ -8,16 +8,16 @@ external len std_core.len;
 //Static casts for all core types.
 	
 //String.
-external str std_core.str;
+external str <- std_core.str;
 
 //Integer.
-external int std_core.int;
+external int <- std_core.int;
 
 //Rational.
-external rat std_core.rat;
+external rat <- std_core.rat;
 
 //Float.
-external flt std_core.flt;
+external flt <- std_core.flt;
 
 //Boolean.
-external bool std_core.bool;
+external bool <- std_core.bool;

@@ -16,7 +16,6 @@
     </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,6 +23,14 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CustomCommands>
+      <CustomCommands>
+        <Command>
+          <type>BeforeBuild</type>
+          <command></command>
+        </Command>
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -87,6 +94,7 @@
     <Compile Include="Standard Library\FunctionPluginInterface.cs" />
     <Compile Include="Standard Library\Libraries\AlgoStd_Core.cs" />
     <Compile Include="Standard Library\Libraries\AlgoStd_String.cs" />
+    <Compile Include="Standard Library\Libraries\AlgoStd_IO.cs" />
   </ItemGroup>
   <ItemGroup>
     <Antlr4 Include="Parsing\algo.g4">
@@ -97,6 +105,7 @@
     <None Include="packages.config" />
     <None Include="Standard Library\Algo Scripts\core.ag" />
     <None Include="Standard Library\Algo Scripts\string.ag" />
+    <None Include="Standard Library\Algo Scripts\io.ag" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AlgoSDK\AlgoSDK.csproj">
@@ -114,7 +123,5 @@
   </Target>
   <Import Project="..\packages\Antlr4.CodeGenerator.4.6.6\build\Antlr4.CodeGenerator.targets" Condition="Exists('..\packages\Antlr4.CodeGenerator.4.6.6\build\Antlr4.CodeGenerator.targets')" />
   <PropertyGroup>
-    <PreBuildEvent>robocopy "$(ProjectDir)Standard Library\Algo Scripts" "std" /e
-SET ERRORLEVEL=0</PreBuildEvent>
   </PropertyGroup>
 </Project>

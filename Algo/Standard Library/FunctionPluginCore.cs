@@ -21,6 +21,8 @@ namespace Algo
             Plugins.Add(new StandardLibrary.AlgoStd_String());
             //*.* (core)
             Plugins.Add(new StandardLibrary.AlgoStd_Core());
+            //input.* and output.* (io)
+            Plugins.Add(new StandardLibrary.AlgoStd_IO());
         }
 
         //Load a plugin from an assembly path.

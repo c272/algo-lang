@@ -46,7 +46,7 @@ namespace Algo
             if (context == null) { FatalNoContext(errMessage); return; }
 
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("Algo Warning: Line " + context.Start.Line + ":" + context.Start.StartIndex + " - " + errMessage);
+            Console.WriteLine("Algo Warning: " + AlgoRuntimeInformation.FileLoaded + ", line " + context.Start.Line + ":" + context.Start.StartIndex + " - " + errMessage);
             Console.ForegroundColor = ConsoleColor.White;
         }
 
@@ -54,7 +54,7 @@ namespace Algo
         public static void WarningNoContext(string errMessage)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("Algo Warning: NOCONTEXT - " + errMessage);
+            Console.WriteLine("Algo Warning: " + AlgoRuntimeInformation.FileLoaded + ", NOCONTEXT - " + errMessage);
             Console.ForegroundColor = ConsoleColor.White;
         }
     }

@@ -1,9 +1,10 @@
 ﻿//The "string" standard library provided by Algo.
 //v0.0.1, revision 0.
 
-library string {
+library string 
+{
 
 	//Return a character array of the string.
-	external toChars std_string.toCharArray;
+	external toChars <- std_string.toCharArray;
 
 }

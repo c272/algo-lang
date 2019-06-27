@@ -1,0 +1,11 @@
+﻿// The "io" standard library, provided by Algo.
+// Contains two namespaces, "input" and "output".
+// v0.0.1, revision 0.
+
+library input 
+{
+
+    //Get input directly from the console.
+    external get <- std_io.input_get;
+
+}
