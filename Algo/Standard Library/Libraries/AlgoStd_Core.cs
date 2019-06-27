@@ -199,7 +199,7 @@ namespace Algo.StandardLibrary
             return new AlgoValue()
             {
                 Type = AlgoValueType.Integer,
-                Value = args[0].Type
+                Value = new BigInteger((int)args[0].Type)
             };
         }
     }

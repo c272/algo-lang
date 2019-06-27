@@ -61,6 +61,8 @@ namespace Algo
                         Type = AlgoValueType.Integer,
                         Value = enumIndex
                     });
+
+                    enumIndex++;
                 }
             }
 
