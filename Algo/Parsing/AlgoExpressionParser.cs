@@ -153,8 +153,11 @@ namespace Algo
                 return new AlgoValue()
                 {
                     Type = AlgoValueType.String,
-                    Value = context.STRING().GetText().Substring(1, context.STRING().GetText().Length - 2).Replace("\\n", "\n"),
-                    
+                    Value = context.STRING().GetText().Substring(1, context.STRING().GetText().Length - 2)
+                                   .Replace("\\n", "\n")
+                                   .Replace("\\t", "\t")
+                                   .Replace("\\r", "\r")
+                                   .Replace("\\\"", "\"")
                 };
             }
             else if (context.RATIONAL() != null)

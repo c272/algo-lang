@@ -68,7 +68,7 @@ namespace Algo
 
             //It's a loop, not a range.
             //Evaluating the value for the for loop body.
-            AlgoValue toLoopOver = (AlgoValue)VisitValue(context.value());
+            AlgoValue toLoopOver = (AlgoValue)VisitExpr(context.expr());
             if (toLoopOver.Type != AlgoValueType.List && toLoopOver.Type != AlgoValueType.String)
             {
                 Error.Fatal(context, "Cannot loop over a value that is not enumerable.");

@@ -42,7 +42,7 @@ namespace Algo
                     break;
 
                 default:
-                    Error.Fatal(context, "Invalid type to print, cannot print a value of type '" + toPrint.Type + "'.");
+                    Error.Fatal(context, "Invalid type, cannot convert a value of type '" + toPrint.Type + "' to string.");
                     return null;
             }
 

@@ -16,6 +16,14 @@ namespace Algo.StandardLibrary
                 Name = "toCharArray",
                 ParameterCount = 1,
                 Function = ToCharArray
+            },
+
+            //Contains
+            new AlgoPluginFunction()
+            {
+                Name = "contains",
+                ParameterCount = 2,
+                Function = ContainsString
             }
         };
 
@@ -57,5 +65,21 @@ namespace Algo.StandardLibrary
                 Value = algo_chars
             };
         }
+
+        //Returns whether the given string containsa specific substring.
+        public static AlgoValue ContainsString(ParserRuleContext context, params AlgoValue[] args)
+        {
+            //Get the base string and the substring.
+            string baseString = AlgoConversion.GetStringRepresentation(context, args[0]);
+            string substring = AlgoConversion.GetStringRepresentation(context, args[1]);
+
+            //Return a bool.
+            return new AlgoValue()
+            {
+                Type = AlgoValueType.Boolean,
+                Value = baseString.Contains(substring)
+            };
+        }
+
     }
 }

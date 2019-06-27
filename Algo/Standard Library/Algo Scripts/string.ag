@@ -7,4 +7,6 @@ library string
 	//Return a character array of the string.
 	external toChars <- std_string.toCharArray;
     
+    //Return whether a string contains a substring.
+    external contains <- std_string.contains;
 }
