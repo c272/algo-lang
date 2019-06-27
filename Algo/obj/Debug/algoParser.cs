@@ -1038,8 +1038,8 @@ public partial class algoParser : Parser {
 		public ITerminalNode RBRACE() { return GetToken(algoParser.RBRACE, 0); }
 		public ITerminalNode UP_SYM() { return GetToken(algoParser.UP_SYM, 0); }
 		public ITerminalNode TO_SYM() { return GetToken(algoParser.TO_SYM, 0); }
-		public ValueContext value() {
-			return GetRuleContext<ValueContext>(0);
+		public ExprContext expr() {
+			return GetRuleContext<ExprContext>(0);
 		}
 		public StatementContext[] statement() {
 			return GetRuleContexts<StatementContext>();
@@ -1048,6 +1048,9 @@ public partial class algoParser : Parser {
 			return GetRuleContext<StatementContext>(i);
 		}
 		public ITerminalNode IN_SYM() { return GetToken(algoParser.IN_SYM, 0); }
+		public ValueContext value() {
+			return GetRuleContext<ValueContext>(0);
+		}
 		public Stat_forLoopContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -1094,7 +1097,7 @@ public partial class algoParser : Parser {
 				{
 				State = 185; Match(UP_SYM);
 				State = 186; Match(TO_SYM);
-				State = 187; value();
+				State = 187; expr(0);
 				}
 				break;
 			default:
@@ -3395,7 +3398,7 @@ public partial class algoParser : Parser {
 		"\x2\x2\x2\xB3\xB4\a\x16\x2\x2\xB4\xB5\x5\x32\x1A\x2\xB5\x19\x3\x2\x2\x2"+
 		"\xB6\xB7\a\n\x2\x2\xB7\xB8\a#\x2\x2\xB8\xBE\a\x39\x2\x2\xB9\xBA\a\f\x2"+
 		"\x2\xBA\xBF\x5\x42\"\x2\xBB\xBC\a\xE\x2\x2\xBC\xBD\a\xF\x2\x2\xBD\xBF"+
-		"\x5\x42\"\x2\xBE\xB9\x3\x2\x2\x2\xBE\xBB\x3\x2\x2\x2\xBF\xC0\x3\x2\x2"+
+		"\x5\x32\x1A\x2\xBE\xB9\x3\x2\x2\x2\xBE\xBB\x3\x2\x2\x2\xBF\xC0\x3\x2\x2"+
 		"\x2\xC0\xC1\a$\x2\x2\xC1\xC5\a\x1D\x2\x2\xC2\xC4\x5\x6\x4\x2\xC3\xC2\x3"+
 		"\x2\x2\x2\xC4\xC7\x3\x2\x2\x2\xC5\xC3\x3\x2\x2\x2\xC5\xC6\x3\x2\x2\x2"+
 		"\xC6\xC8\x3\x2\x2\x2\xC7\xC5\x3\x2\x2\x2\xC8\xC9\a\x1E\x2\x2\xC9\x1B\x3"+

@@ -23,7 +23,7 @@ namespace Algo
             if (context.UP_SYM() != null)
             {
                 //Just a range. Evaluate the value to be stretched to.
-                AlgoValue limit = (AlgoValue)VisitValue(context.value());
+                AlgoValue limit = (AlgoValue)VisitExpr(context.expr());
                 if (limit.Type != AlgoValueType.Integer)
                 {
                     Error.Fatal(context, "Range limit must be an integer, cannot be type" + limit.Type.ToString() + ".");

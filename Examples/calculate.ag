@@ -1,0 +1,32 @@
+import "std/io";
+import "std/core";
+
+//Get the desired operator.
+print "Enter your operator (*, +, - or /):";
+let op = input.get();
+
+//Get two numbers.
+print "Enter your first number:";
+let num1 = flt(input.get());
+print "Enter your second number:";
+let num2 = flt(input.get());
+
+let result = null;
+if (op == "*") 
+{
+    result = num1*num2;
+}
+else if (op == "/")
+{
+    result = num1/num2;
+}
+else if (op == "+")
+{
+    result = num1+num2;
+}
+else
+{
+    result = num1-num2;
+}
+
+print "Your result is: " + result + "!";

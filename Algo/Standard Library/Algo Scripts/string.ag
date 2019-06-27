@@ -6,5 +6,5 @@ library string
 
 	//Return a character array of the string.
 	external toChars <- std_string.toCharArray;
-
+    
 }
