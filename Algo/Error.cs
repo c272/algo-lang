@@ -21,7 +21,12 @@ namespace Algo
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Black;
 
-            ANTLRDebug.PrintScopes();
+            //Only print the scopes in developer mode.
+            if (AlgoRuntimeInformation.DeveloperMode)
+            {
+                ANTLRDebug.PrintScopes();
+            }
+
             Environment.Exit(-1);
         }
 
@@ -35,7 +40,11 @@ namespace Algo
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Black;
 
-            ANTLRDebug.PrintScopes();
+            //Only print scopes if we're in developer mode.
+            if (AlgoRuntimeInformation.DeveloperMode)
+            {
+                ANTLRDebug.PrintScopes();
+            }
             Environment.Exit(-1);
         }
 

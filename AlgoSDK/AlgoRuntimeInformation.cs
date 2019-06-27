@@ -10,5 +10,8 @@ namespace Algo
     {
         //The currently loaded script file.
         public static string FileLoaded = "";
+
+        //Whether the current runtime is in developer mode or not.
+        public static bool DeveloperMode = false;
     }
 }

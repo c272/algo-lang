@@ -18,6 +18,12 @@ namespace Algo
             //Check that all the necessary directories exist.
             CPFilePath.CreateDefaultDirectories();
 
+            //Setting all flags based on console arguments.
+            if (args.Contains("--dev"))
+            {
+                AlgoRuntimeInformation.DeveloperMode = true;
+            }
+
             //Check the command line arguments are valid.
             if (args.Length < 1)
             {
@@ -49,25 +55,34 @@ namespace Algo
             var tokens = new CommonTokenStream(lexer);
 
             //Debug print.
-            ANTLRDebug.PrintTokens(lexer);
+            if (AlgoRuntimeInformation.DeveloperMode)
+            {
+                ANTLRDebug.PrintTokens(lexer);
+            }
 
             //Debug print tree.
             var parser = new algoParser(tokens);
             parser.BuildParseTree = true;
             var tree = parser.compileUnit();
-            ANTLRDebug.PrintParseList(tree, parser);
+            if (AlgoRuntimeInformation.DeveloperMode)
+            {
+                ANTLRDebug.PrintParseList(tree, parser);
 
-            //Add a gap.
-            Console.WriteLine(" --------------------\n | BEGIN EVALUATION |\n --------------------\n");
+                //Add a gap.
+                Console.WriteLine(" --------------------\n | BEGIN EVALUATION |\n --------------------\n");
+            }
 
             //Walking the tree.
             var visitor = new algoVisitor();
             visitor.VisitCompileUnit(tree);
 
-            Console.WriteLine("\n ------------------\n | END EVALUATION |\n ------------------\n");
+            if (AlgoRuntimeInformation.DeveloperMode)
+            {
+                Console.WriteLine("\n ------------------\n | END EVALUATION |\n ------------------\n");
 
-            //Print variables.
-            ANTLRDebug.PrintScopes();
+                //Print variables.
+                ANTLRDebug.PrintScopes();
+            }
         }
     }
 }
