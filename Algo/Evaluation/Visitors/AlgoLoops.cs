@@ -53,7 +53,11 @@ namespace Algo
                     //Enumerate all statements.
                     foreach (var statement in context.statement())
                     {
-                        VisitStatement(statement);
+                        AlgoValue returned = (AlgoValue)VisitStatement(statement);
+                        if (returned != null)
+                        {
+                            return returned;
+                        }
                     }
 
                     //Remove the scope.
@@ -77,14 +81,31 @@ namespace Algo
 
             //Get the length to be enumerated over.
             int loopLimit = -1;
+            List<AlgoValue> literalValues = new List<AlgoValue>();
             if (toLoopOver.Type == AlgoValueType.List) 
             {
                 List<AlgoValue> loopList = (List<AlgoValue>)toLoopOver.Value;
                 loopLimit = loopList.Count;
+                literalValues = loopList;
             } else 
             {
                 loopLimit = ((string)toLoopOver.Value).Length;
+
+                //If it's a foreach, we need to set literal values for the string,
+                //so they can be looped over.
+                if (context.FOREACH_SYM() != null)
+                {
+                    foreach (var char_ in (string)toLoopOver.Value)
+                    {
+                        literalValues.Add(new AlgoValue()
+                        {
+                            Type = AlgoValueType.String,
+                            Value = new string(new char[] { char_ })
+                        });
+                    }
+                }
             }
+
             
             //Enumerate all statements for n times, where n is the length of the list.
             for (int i=0; i<loopLimit; i++)
@@ -93,17 +114,31 @@ namespace Algo
                 Scopes.AddScope();
 
                 //Setting the index variable in the scope under the given name.
-                Scopes.AddVariable(context.IDENTIFIER().GetText(), new AlgoValue()
+                //If it's a foreach loop, then use the literal value instead of the index.
+                if (context.FOREACH_SYM() != null)
                 {
-                    Type = AlgoValueType.Integer,
-                    Value = new BigInteger(i),
-                    
-                });
+                    Scopes.AddVariable(context.IDENTIFIER().GetText(), literalValues[i]);
+                }
+                else
+                {
+                    Scopes.AddVariable(context.IDENTIFIER().GetText(), new AlgoValue()
+                    {
+                        Type = AlgoValueType.Integer,
+                        Value = new BigInteger(i),
+
+                    });
+                }
 
                 //Executing all statements in loop.
                 foreach (var statement in context.statement())
                 {
-                    VisitStatement(statement);
+                    //For statements executing other statements, it must be remembered to return results from
+                    //those statements.
+                    AlgoValue returned = (AlgoValue)VisitStatement(statement);
+                    if (returned != null)
+                    {
+                        return returned;
+                    }
                 }
 
                 //Destroying the scope.
@@ -133,7 +168,11 @@ namespace Algo
                 //Loop over all the statements.
                 foreach (var statement in context.statement())
                 {
-                    VisitStatement(statement);
+                    AlgoValue returned = (AlgoValue)VisitStatement(statement);
+                    if (returned != null)
+                    {
+                        return returned;
+                    }
                 }
             }
 

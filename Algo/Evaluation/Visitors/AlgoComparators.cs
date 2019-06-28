@@ -36,7 +36,7 @@ namespace Algo
         //Binary equals.
         public static bool _Equals(ParserRuleContext context, AlgoValue left, AlgoValue right)
         {
-            return object.Equals(left.Value, right.Value);
+            return left._Equals(right);
         }
 
         //Greater than.

@@ -44,7 +44,7 @@ stat_functionCall: (IDENTIFIER | obj_access) LBRACKET literal_params? RBRACKET;
 stat_functionDef: LET_SYM IDENTIFIER LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
 stat_loadFuncExt: EXTERNAL_SYM IDENTIFIER STREAMING_SYM obj_access;
 stat_return: RETURN_SYM expr;
-stat_forLoop: FOR_SYM LBRACKET IDENTIFIER ((IN_SYM expr) | UP_SYM TO_SYM expr) RBRACKET LBRACE statement* RBRACE;
+stat_forLoop: (FOR_SYM | FOREACH_SYM) LBRACKET IDENTIFIER ((IN_SYM expr) | UP_SYM TO_SYM expr) RBRACKET LBRACE statement* RBRACE;
 stat_whileLoop: WHILE_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE;
 stat_if: IF_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE stat_elif* stat_else?;
 stat_print: PRINT_SYM expr rounding_expr?;
@@ -143,6 +143,7 @@ NULL: 'null';
 // RESERVED WORDS
 LET_SYM: 'let';
 FOR_SYM: 'for';
+FOREACH_SYM: 'foreach';
 ADD_SYM: 'add';
 AT_SYM: 'at';
 REMOVE_SYM: 'remove';

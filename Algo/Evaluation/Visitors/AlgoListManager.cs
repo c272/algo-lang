@@ -121,7 +121,7 @@ namespace Algo
                 }
 
                 //Remove the value.
-                int index = toSet.FindIndex(x => x.Value.Equals(toRemove.Value));
+                int index = toSet.FindIndex(x => x._Equals(toRemove));
                 toSet.RemoveAt(index);
             }
             else

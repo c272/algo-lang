@@ -68,17 +68,17 @@ namespace Algo
             else if (context.stat_if() != null)
             {
                 //An "if" statement.
-                VisitStat_if(context.stat_if());
+                return VisitStat_if(context.stat_if());
             }
             else if (context.stat_forLoop() != null)
             {
                 //A for loop.
-                VisitStat_forLoop(context.stat_forLoop());
+                return VisitStat_forLoop(context.stat_forLoop());
             }
             else if (context.stat_whileLoop() != null)
             {
                 //A while loop.
-                VisitStat_whileLoop(context.stat_whileLoop());
+                return VisitStat_whileLoop(context.stat_whileLoop());
             }
             else if (context.stat_enumDef() != null)
             {
@@ -88,7 +88,7 @@ namespace Algo
             else if (context.stat_functionCall() != null)
             {
                 //A function call.
-                VisitStat_functionCall(context.stat_functionCall());
+                return VisitStat_functionCall(context.stat_functionCall());
             }
             else if (context.stat_functionDef() != null)
             {

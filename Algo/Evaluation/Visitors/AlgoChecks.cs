@@ -28,7 +28,11 @@ namespace Algo
                 //Evaluate the main statement body.
                 foreach (var statement in context.statement())
                 {
-                    VisitStatement(statement);
+                    AlgoValue returned = (AlgoValue)VisitStatement(statement);
+                    if (returned != null)
+                    {
+                        return returned;
+                    }
                 }
 
                 //Delete scope.
@@ -56,7 +60,11 @@ namespace Algo
                         //Evaluate statements.
                         foreach (var statement in elseifblock.statement())
                         {
-                            VisitStatement(statement);
+                            AlgoValue returned = (AlgoValue)VisitStatement(statement);
+                            if (returned != null)
+                            {
+                                return returned;
+                            }
                         }
 
                         //Remove scope.
@@ -77,7 +85,11 @@ namespace Algo
                 //Evaluate statements.
                 foreach (var statement in context.stat_else().statement())
                 {
-                    VisitStatement(statement);
+                    AlgoValue returned = (AlgoValue)VisitStatement(statement);
+                    if (returned != null)
+                    {
+                        return returned;
+                    }
                 }
 
                 //Deleting scope.
