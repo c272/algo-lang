@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using ExtendedNumerics;
@@ -28,14 +29,15 @@ namespace Algo
             if (args.Length < 1)
             {
                 //Nah, just print the version number.
-                //...
-
+                Console.WriteLine("Algo Language Interpreter v" + typeof(Program).Assembly.GetName().Version.ToString() + ".");
+                Console.WriteLine("(c) Larry Tang, 2019-" + DateTime.Now.Year);
+                Console.WriteLine("\nFor information on how to use this interpreter, enter 'algo help'.");
                 return;
             }
             else if (args[0] == "pkg")
             {
                 //Package management.
-                //...
+                Console.WriteLine("package management detected, still todo.");
                 return;
             }
 

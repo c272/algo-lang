@@ -51,7 +51,7 @@ stat_print: PRINT_SYM expr rounding_expr?;
 stat_library: LIB_SYM IDENTIFIER LBRACE statement* RBRACE;
 stat_import: IMPORT_SYM expr (AS_SYM IDENTIFIER)?;
 stat_list_add: ADD_SYM expr TO_SYM (IDENTIFIER | obj_access) (AT_SYM expr)?;
-stat_list_remove: REMOVE_SYM expr FROM_SYM? (IDENTIFIER | obj_access);
+stat_list_remove: REMOVE_SYM expr (FROM_SYM | IN_SYM) (IDENTIFIER | obj_access);
 
 //Elif and else statements, not directly available, only by proxy.
 stat_elif: ELSE_SYM IF_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE;
