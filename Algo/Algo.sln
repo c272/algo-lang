@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Algo", "Algo.csproj", "{6B2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgoSDK", "..\AlgoSDK\AlgoSDK.csproj", "{F4512291-4C2F-48BE-BF80-21F0B980CA38}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgoUnitTests", "AlgoUnitTests\AlgoUnitTests.csproj", "{AB722708-7B4E-435F-BBB4-0990AABB8237}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,5 +21,9 @@ Global
 		{F4512291-4C2F-48BE-BF80-21F0B980CA38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4512291-4C2F-48BE-BF80-21F0B980CA38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4512291-4C2F-48BE-BF80-21F0B980CA38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB722708-7B4E-435F-BBB4-0990AABB8237}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB722708-7B4E-435F-BBB4-0990AABB8237}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB722708-7B4E-435F-BBB4-0990AABB8237}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB722708-7B4E-435F-BBB4-0990AABB8237}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
