@@ -24,7 +24,9 @@ Including the `--dev` flag makes the interpreter print all lexed tokens, and sho
 
 Simply running `algo` in console will display your current version, including the build number and revision. **Please state your build and revision when reporting bugs in the issues section.**
 
-Also, as an example of what the language looks like, here's some sample code I've typed up:
+## Sample Code
+Also, as an example of what the language looks like, here's some sample code I've typed up.
+
 *Warning: This may be out of date when there are major updates and revisions to the language, and the README hasn't been modified.*
 
     //Import the input library and string library.
