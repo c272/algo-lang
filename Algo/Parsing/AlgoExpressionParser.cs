@@ -134,7 +134,7 @@ namespace Algo
                 {
                     Type = AlgoValueType.Integer,
                     Value = BigInteger.Parse(context.INTEGER().GetText()),
-                    
+
                 };
             }
             else if (context.FLOAT() != null)
@@ -144,7 +144,7 @@ namespace Algo
                 {
                     Type = AlgoValueType.Float,
                     Value = BigFloat.Parse(context.FLOAT().GetText()),
-                    
+
                 };
             }
             else if (context.STRING() != null)
@@ -172,7 +172,7 @@ namespace Algo
                 {
                     Type = AlgoValueType.Rational,
                     Value = new BigRational(BigInteger.Zero, new Fraction(BigInteger.Parse(numerator), BigInteger.Parse(denominator))),
-                    
+
                 };
             }
             else if (context.BOOLEAN() != null)
@@ -182,7 +182,7 @@ namespace Algo
                 {
                     Type = AlgoValueType.Boolean,
                     Value = (context.BOOLEAN().GetText() == "true"),
-                    
+
                 };
             }
             else if (context.NULL() != null)
@@ -192,7 +192,7 @@ namespace Algo
                 {
                     Type = AlgoValueType.Null,
                     Value = null,
-                    
+
                 };
             }
             else if (context.IDENTIFIER() != null)
@@ -222,7 +222,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Null,
                         Value = null,
-                        
+
                     };
                 }
             }
@@ -247,10 +247,10 @@ namespace Algo
             else if (context.array_access() != null)
             {
                 //ACCESSED ARRAY VALUE
-                
+
                 //What type of access is this? Stored identifier/obj or a literal value.
                 AlgoValue currentValue = null;
-                if (context.array_access().IDENTIFIER() != null) 
+                if (context.array_access().IDENTIFIER() != null)
                 {
                     //Identifier.
                     //Get the root value.
@@ -262,21 +262,21 @@ namespace Algo
 
                     currentValue = Scopes.GetVariable(context.array_access().IDENTIFIER().GetText());
                 }
-                else if (context.array_access().obj_access() != null && Scopes.VariableExists(context.array_access().obj_access().IDENTIFIER()[0].GetText())) 
+                else if (context.array_access().obj_access() != null && Scopes.VariableExists(context.array_access().obj_access().IDENTIFIER()[0].GetText()))
                 {
                     //Object access.
                     //Stitch together the object access string.
                     string objStr = "";
-                    foreach (var objPart in context.array_access().obj_access().IDENTIFIER()) 
+                    foreach (var objPart in context.array_access().obj_access().IDENTIFIER())
                     {
                         objStr += objPart.GetText() + '.';
                     }
-                    objStr = objStr.Substring(0, objStr.Length-1);
+                    objStr = objStr.Substring(0, objStr.Length - 1);
 
                     //Get the value.
                     currentValue = Scopes.GetVariable(objStr);
                 }
-                else if (context.array_access().obj_access() != null) 
+                else if (context.array_access().obj_access() != null)
                 {
                     //Library access.
                     //Get the library scope.
@@ -284,7 +284,7 @@ namespace Algo
 
                     //Check that the variable exists in this scope.
                     string varname = context.array_access().obj_access().IDENTIFIER().Last().GetText();
-                    if (!scopes_local.VariableExists(varname)) 
+                    if (!scopes_local.VariableExists(varname))
                     {
                         Error.Fatal(context, "No variable exists in library named '" + varname + "'.");
                         return null;
@@ -293,27 +293,27 @@ namespace Algo
                     //Set the value.
                     currentValue = scopes_local.GetVariable(varname);
                 }
-                else if (context.array_access().array() != null) 
+                else if (context.array_access().array() != null)
                 {
                     //Array, get value for each item in the array and construct.
                     List<AlgoValue> arrayValues = new List<AlgoValue>();
-                    foreach (var val in context.array_access().array().value()) 
+                    foreach (var val in context.array_access().array().value())
                     {
                         arrayValues.Add((AlgoValue)VisitValue(val));
                     }
 
                     //Set value.
-                    currentValue = new AlgoValue() 
+                    currentValue = new AlgoValue()
                     {
                         Type = AlgoValueType.List,
                         Value = arrayValues
                     };
                 }
-                else if (context.array_access().stat_functionCall() != null) 
+                else if (context.array_access().stat_functionCall() != null)
                 {
                     //Function call.
                     currentValue = (AlgoValue)VisitStat_functionCall(context.array_access().stat_functionCall());
-                    if (currentValue == null) 
+                    if (currentValue == null)
                     {
                         Error.Fatal(context, "No value returned from the function to enumerate.");
                         return null;
@@ -353,7 +353,7 @@ namespace Algo
                     int accessIndexInt = int.Parse(((BigInteger)accessIndex.Value).ToString());
 
                     //Is the index too large?
-                    if (accessIndexInt > ((List<AlgoValue>)currentValue.Value).Count - 1) 
+                    if (accessIndexInt > ((List<AlgoValue>)currentValue.Value).Count - 1)
                     {
                         Error.Fatal(context, "Cannot access index in array, index out of bounds.");
                         return null;
@@ -396,7 +396,7 @@ namespace Algo
                     AlgoObject currentObj = (AlgoObject)objValue.Value;
 
                     //Step through object children until scope found.
-                    for (var i=1; i<ids.Length-1; i++)
+                    for (var i = 1; i < ids.Length - 1; i++)
                     {
                         if (!currentObj.ObjectScopes.VariableExists(ids[i].GetText())) {
                             Error.Fatal(context, "You attempted to get child '" + ids[i].GetText() + " from an object, but it was not found.");
@@ -416,7 +416,7 @@ namespace Algo
                     }
 
                     //Get the value from this final object scope.
-                    if (!currentObj.ObjectScopes.VariableExists(ids[ids.Length-1].GetText()))
+                    if (!currentObj.ObjectScopes.VariableExists(ids[ids.Length - 1].GetText()))
                     {
                         //Value doesn't exist.
                         Error.Fatal(context, "No value with the name '" + ids[ids.Length - 1].GetText() + "' exists in the given object.");
@@ -464,7 +464,7 @@ namespace Algo
                     {
                         Type = AlgoValueType.Object,
                         Value = toReturn,
-                        
+
                     };
                 }
 
@@ -518,18 +518,35 @@ namespace Algo
                     {
                         Type = AlgoValueType.Function,
                         Value = func,
-                        
+
                     };
 
                     toReturn.ObjectScopes.AddVariable(value.IDENTIFIER().GetText(), funcValue);
+                }
+
+                //Enumerate all external functions defined.
+                foreach (var ext in context.@object().obj_child_definitions().obj_externdefine())
+                {
+                    //Get the value of the function.
+                    var loadFuncStat = ext.stat_loadFuncExt();
+                    AlgoValue func = Plugins.GetEmulatedFuncValue(loadFuncStat);
+
+                    //Check if a variable with this name already exists.
+                    if (toReturn.ObjectScopes.VariableExists(loadFuncStat.IDENTIFIER().GetText()))
+                    {
+                        Error.Fatal(context, "A variable with the name '" + loadFuncStat.IDENTIFIER().GetText() + "' already exists in this object. Cannot duplicate.");
+                        return null;
+                    }
+
+                    //Add that function to the return object.
+                    toReturn.ObjectScopes.AddVariable(loadFuncStat.IDENTIFIER().GetText(), func);
                 }
 
                 //Return the object.
                 return new AlgoValue()
                 {
                     Type = AlgoValueType.Object,
-                    Value = toReturn,
-                    
+                    Value = toReturn
                 };
             }
             else
@@ -539,8 +556,7 @@ namespace Algo
                 return new AlgoValue()
                 {
                     Type = AlgoValueType.Null,
-                    Value = null,
-                    
+                    Value = null
                 };
             }
         }

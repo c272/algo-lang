@@ -113,9 +113,10 @@ array_access: (IDENTIFIER | obj_access | stat_functionCall | array) '[' literal_
 
 //A single Algo object represented in text.
 object: OBJ_SYM LBRACE obj_child_definitions? RBRACE;
-obj_child_definitions: (obj_vardefine | obj_funcdefine)+;
+obj_child_definitions: (obj_vardefine | obj_funcdefine | obj_externdefine)+;
 obj_vardefine: LET_SYM IDENTIFIER EQUALS expr ENDLINE;
 obj_funcdefine: LET_SYM IDENTIFIER LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
+obj_externdefine: stat_loadFuncExt ENDLINE;
 
 /*
  * Lexer Rules

@@ -1,6 +1,0 @@
-/home/c272/Repos/algo-lang/Algo/AlgoUnitTests/bin/Debug/AlgoUnitTests.dll
-/home/c272/Repos/algo-lang/Algo/AlgoUnitTests/bin/Debug/AlgoUnitTests.pdb
-/home/c272/Repos/algo-lang/Algo/AlgoUnitTests/obj/Debug/AlgoUnitTests.csprojAssemblyReference.cache
-/home/c272/Repos/algo-lang/Algo/AlgoUnitTests/obj/Debug/AlgoUnitTests.csproj.CoreCompileInputs.cache
-/home/c272/Repos/algo-lang/Algo/AlgoUnitTests/obj/Debug/AlgoUnitTests.dll
-/home/c272/Repos/algo-lang/Algo/AlgoUnitTests/obj/Debug/AlgoUnitTests.pdb
