@@ -253,7 +253,18 @@ namespace Algo
         public override object VisitStat_return([NotNull] algoParser.Stat_returnContext context)
         {
             //Evaluate the expression to return.
-            AlgoValue toReturn = (AlgoValue)VisitExpr(context.expr());
+            AlgoValue toReturn;
+            if (context.expr() != null)
+            {
+                toReturn = (AlgoValue)VisitExpr(context.expr());
+            } else
+            {
+                toReturn = new AlgoValue()
+                {
+                    Type = AlgoValueType.Null,
+                    Value = null
+                };
+            }
 
             //Return it.
             return toReturn;

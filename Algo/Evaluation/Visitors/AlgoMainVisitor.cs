@@ -130,6 +130,11 @@ namespace Algo
                 //Remove a value from a list.
                 VisitStat_list_remove(context.stat_list_remove());
             }
+            else if (context.stat_break() != null)
+            {
+                //Break statement, ignore this, this is detected by loops.
+                return null;
+            }
             else
             {
                 Error.Fatal(context, "Syntax error, unrecognized statement.");

@@ -309,6 +309,19 @@ public partial class algoBaseListener : IalgoListener {
 	public virtual void ExitStat_list_remove([NotNull] algoParser.Stat_list_removeContext context) { }
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.stat_break"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterStat_break([NotNull] algoParser.Stat_breakContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.stat_break"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitStat_break([NotNull] algoParser.Stat_breakContext context) { }
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.stat_elif"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

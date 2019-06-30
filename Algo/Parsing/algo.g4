@@ -24,6 +24,7 @@ statement: (  stat_define
 			| stat_loadFuncExt
             | stat_list_add
             | stat_list_remove
+			| stat_break
 		   )  ENDLINE
 		   
 			|  ( stat_forLoop
@@ -43,7 +44,7 @@ stat_enumDef: LET_SYM IDENTIFIER EQUALS ENUM_SYM LBRACE abstract_params? RBRACE;
 stat_functionCall: (IDENTIFIER | obj_access) LBRACKET literal_params? RBRACKET;
 stat_functionDef: LET_SYM IDENTIFIER LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
 stat_loadFuncExt: EXTERNAL_SYM IDENTIFIER STREAMING_SYM obj_access;
-stat_return: RETURN_SYM expr;
+stat_return: RETURN_SYM expr?;
 stat_forLoop: (FOR_SYM | FOREACH_SYM) LBRACKET IDENTIFIER ((IN_SYM expr) | UP_SYM TO_SYM expr) RBRACKET LBRACE statement* RBRACE;
 stat_whileLoop: WHILE_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE;
 stat_if: IF_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE stat_elif* stat_else?;
@@ -52,6 +53,7 @@ stat_library: LIB_SYM IDENTIFIER LBRACE statement* RBRACE;
 stat_import: IMPORT_SYM expr (AS_SYM IDENTIFIER)?;
 stat_list_add: ADD_SYM expr TO_SYM (IDENTIFIER | obj_access) (AT_SYM expr)?;
 stat_list_remove: REMOVE_SYM expr (FROM_SYM | IN_SYM) (IDENTIFIER | obj_access);
+stat_break: BREAK_SYM;
 
 //Elif and else statements, not directly available, only by proxy.
 stat_elif: ELSE_SYM IF_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE;
@@ -146,6 +148,7 @@ LET_SYM: 'let';
 FOR_SYM: 'for';
 FOREACH_SYM: 'foreach';
 ADD_SYM: 'add';
+BREAK_SYM: 'break';
 AT_SYM: 'at';
 REMOVE_SYM: 'remove';
 FROM_SYM: 'from';

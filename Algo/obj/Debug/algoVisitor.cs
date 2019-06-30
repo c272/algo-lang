@@ -180,6 +180,13 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitStat_list_remove([NotNull] algoParser.Stat_list_removeContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.stat_break"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStat_break([NotNull] algoParser.Stat_breakContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="algoParser.stat_elif"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

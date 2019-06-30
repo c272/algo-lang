@@ -53,6 +53,12 @@ namespace Algo
                     //Enumerate all statements.
                     foreach (var statement in context.statement())
                     {
+                        //If it's a break statement, then just return null, not a value.
+                        if (statement.stat_break() != null)
+                        {
+                            return null;
+                        }
+
                         AlgoValue returned = (AlgoValue)VisitStatement(statement);
                         if (returned != null)
                         {
@@ -132,6 +138,12 @@ namespace Algo
                 //Executing all statements in loop.
                 foreach (var statement in context.statement())
                 {
+                    //If it's a break statement, then just return null, not a value.
+                    if (statement.stat_break() != null)
+                    {
+                        return null;
+                    }
+
                     //For statements executing other statements, it must be remembered to return results from
                     //those statements.
                     AlgoValue returned = (AlgoValue)VisitStatement(statement);
@@ -168,6 +180,12 @@ namespace Algo
                 //Loop over all the statements.
                 foreach (var statement in context.statement())
                 {
+                    //If it's a break statement, then just return null, not a value.
+                    if (statement.stat_break() != null)
+                    {
+                        return null;
+                    }
+
                     AlgoValue returned = (AlgoValue)VisitStatement(statement);
                     if (returned != null)
                     {
@@ -176,6 +194,12 @@ namespace Algo
                 }
             }
 
+            return null;
+        }
+
+        //A break statement in Algo.
+        public override object VisitStat_break([NotNull] algoParser.Stat_breakContext context)
+        {
             return null;
         }
     }
