@@ -60,10 +60,10 @@ namespace Algo.Sharpie
                     }
                 }
 
-                //Unzip the file into the packages directory.
+                //Unzip the file into the packages directory. (/packages/somepkgname)
                 try
                 {
-                    ZipFile.ExtractToDirectory(pkgZipFile, PackagesDirectory);
+                    ZipFile.ExtractToDirectory(pkgZipFile, CPFilePath.GetPlatformFilePath(new string[] { PackagesDirectory, pkg }));
                 } catch(Exception e)
                 {
                     Error.WarningNoContext("An unknown error occured when extracting the given package '" + pkg + "' (" + e.Message + "), package skipped.");
@@ -113,8 +113,38 @@ namespace Algo.Sharpie
                 //Does the package exist?
                 if (!packages.PackageExists(pkg))
                 {
-                    
+                    Error.WarningNoContext("A package with the name '" + pkg + "' does not exist in the master list, so has been skipped.");
+                    continue;
                 }
+
+                //Package does exist, get it and check if it's installed.
+                SharpiePackage pkgObj = packages.GetPackage(pkg);
+                if (!pkgObj.Installed)
+                {
+                    Error.WarningNoContext("The package '" + pkg + "' was not installed, so has not been removed. Skipping.");
+                    continue;
+                }
+
+                //Delete the package directory, mark as uninstalled.
+                string pkgDir = CPFilePath.GetPlatformFilePath(new string[] { PackagesDirectory, pkg });
+                try
+                {
+                    Directory.Delete(pkgDir, true);
+                } catch(Exception e)
+                {
+                    Error.WarningNoContext("Failed to delete package directory for the package '" + pkg + "', skipping.");
+                    continue;
+                }
+
+                //Mark as uninstalled, serialize back.
+                pkgObj.Installed = false;
+                packages.SetPackage(pkg, pkgObj);
+                File.WriteAllText(PackagesFile, JsonConvert.SerializeObject(packages));
+
+                //Confirm success.
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Successfully removed package '" + pkg + "'.");
+                Console.ForegroundColor = ConsoleColor.White;
             }
         }
 
@@ -126,10 +156,39 @@ namespace Algo.Sharpie
                 Error.FatalNoContext("No packages given to update.");
             }
 
+            //Deserialize package file.
+            SharpiePackages packages = JsonConvert.DeserializeObject<SharpiePackages>(PackagesFile);
+
             //For each argument, process the package.
             foreach (var pkg in args)
             {
+                //Does the package exist?
+                if (!packages.PackageExists(pkg))
+                {
+                    Error.WarningNoContext("No package with the name '" + pkg + "' exists in the master list, skipping.");
+                    continue;
+                }
 
+                //Is it installed?
+                SharpiePackage pkgObj = packages.GetPackage(pkg);
+                if (!pkgObj.Installed)
+                {
+                    Error.WarningNoContext("The package '" + pkg + "' is not installed, so cannot update. Skipping.");
+                    continue;
+                }
+
+                //Is the current version less than the version?
+                if (pkgObj.CurrentPackageVersion >= pkgObj.PackageVersion)
+                {
+                    Error.WarningNoContext("The package '" + pkg + "' is already up to date, skipping.");
+                    continue;
+                }
+
+                //It needs updating. Attempt to grab from the source.
+                Console.WriteLine("Package '" + pkg + "' requires an update, reinstalling...");
+                RemovePackage(new string[] { pkg });
+                AddPackage(new string[] { pkg });
+                Console.WriteLine("Successfully updated package '" + pkg + "' to the latest version (" + pkgObj.PackageVersion + ").");
             }
         }
     }
