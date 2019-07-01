@@ -41,18 +41,18 @@ namespace Algo.PacMan
             {
                 //todo
             }
+            
+            //Managing sources?
+            if (args[0] == "sources")
+            {
+                ManageSources(args.Slice(1, -1));
+                return;
+            }
 
             //All commands past here require two parameters.
             if (args.Length < 2)
             {
                 Error.FatalNoContext("Invalid amount of arguments for the package manager.");
-                return;
-            }
-
-            //Managing sources?
-            if (args[0] == "sources")
-            {
-                ManageSources(args.Slice(1, -1));
                 return;
             }
 

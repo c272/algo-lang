@@ -17,6 +17,7 @@ namespace Algo
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Red;
+            if (AlgoRuntimeInformation.FileLoaded == "") { AlgoRuntimeInformation.FileLoaded = "No File"; }
             Console.WriteLine("Algo Runtime Error: " + AlgoRuntimeInformation.FileLoaded + ", Line " + context.Start.Line + ":" + context.Start.StartIndex + " - " + errMessage);
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Black;
@@ -54,6 +55,7 @@ namespace Algo
             //Check context isn't broken before attempting to use it, don't want the error message throwing an error.
             if (context == null) { FatalNoContext(errMessage); return; }
 
+            if (AlgoRuntimeInformation.FileLoaded == "") { AlgoRuntimeInformation.FileLoaded = "No File"; }
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Algo Warning: " + AlgoRuntimeInformation.FileLoaded + ", line " + context.Start.Line + ":" + context.Start.StartIndex + " - " + errMessage);
             Console.ForegroundColor = ConsoleColor.White;
@@ -62,6 +64,7 @@ namespace Algo
         //Warning, but where rule contexts are unavailable.
         public static void WarningNoContext(string errMessage)
         {
+            if (AlgoRuntimeInformation.FileLoaded == "") { AlgoRuntimeInformation.FileLoaded = "No File"; }
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Algo Warning: " + AlgoRuntimeInformation.FileLoaded + ", NOCONTEXT - " + errMessage);
             Console.ForegroundColor = ConsoleColor.White;

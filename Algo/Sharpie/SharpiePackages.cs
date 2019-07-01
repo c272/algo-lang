@@ -26,7 +26,7 @@ namespace Algo.PacMan
             }
 
             //Deserialize package file.
-            SharpiePackages packages = JsonConvert.DeserializeObject<SharpiePackages>(PackagesFile);
+            SharpiePackages packages = JsonConvert.DeserializeObject<SharpiePackages>(File.ReadAllText(PackagesFile));
 
             //For each argument, process the package.
             foreach (var pkg in args)
@@ -105,7 +105,7 @@ namespace Algo.PacMan
             }
 
             //Deserialize package file.
-            SharpiePackages packages = JsonConvert.DeserializeObject<SharpiePackages>(PackagesFile);
+            SharpiePackages packages = JsonConvert.DeserializeObject<SharpiePackages>(File.ReadAllText(PackagesFile));
 
             //For each argument, process the package.
             foreach (var pkg in args)
@@ -157,7 +157,7 @@ namespace Algo.PacMan
             }
 
             //Deserialize package file.
-            SharpiePackages packages = JsonConvert.DeserializeObject<SharpiePackages>(PackagesFile);
+            SharpiePackages packages = JsonConvert.DeserializeObject<SharpiePackages>(File.ReadAllText(PackagesFile));
 
             //For each argument, process the package.
             foreach (var pkg in args)

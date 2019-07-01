@@ -18,7 +18,7 @@ namespace Algo.PacMan
         public void ManageSources(string[] args)
         {
             //Get the current source list from file.
-            SharpieSources sources = JsonConvert.DeserializeObject<SharpieSources>(SourcesFile);
+            SharpieSources sources = JsonConvert.DeserializeObject<SharpieSources>(File.ReadAllText(SourcesFile));
 
             //No arguments? List all current sources.
             if (args.Length < 1)
@@ -28,12 +28,16 @@ namespace Algo.PacMan
                 {
                     Console.WriteLine(source.SourceName + " | " + source.Link);
                 }
+                if (sources.Sources.Count == 0)
+                {
+                    Console.WriteLine("No sources installed.");
+                }
                 Console.WriteLine();
             }
             else if (args[0] == "add")
             {
                 //Add a source.
-                
+                AddSource(args.Slice(1, -1));
             }
             else if (args[0] == "remove")
             {
@@ -41,7 +45,8 @@ namespace Algo.PacMan
             }
             else
             {
-
+                Error.FatalNoContext("Invalid command for sources.");
+                return;
             }
 
         }
@@ -49,18 +54,18 @@ namespace Algo.PacMan
         //Add a source to the source list.
         public void AddSource(string[] args)
         {
-            //Deserialize source list and package list.
-            SharpieSources sources = JsonConvert.DeserializeObject<SharpieSources>(SourcesFile);
-            SharpiePackages packages = JsonConvert.DeserializeObject<SharpiePackages>(PackagesFile);
-
-            //Has the warning been read already? If not, read the warning.
-            if (!sources.SourceWarningRead) { DisplayWarning(); sources.SourceWarningRead = true; }
-
             //Check the argument length.
             if (args.Length < 1)
             {
                 Error.FatalNoContext("No source links supplied to add.");
             }
+
+            //Deserialize source list and package list.
+            SharpieSources sources = JsonConvert.DeserializeObject<SharpieSources>(File.ReadAllText(SourcesFile));
+            SharpiePackages packages = JsonConvert.DeserializeObject<SharpiePackages>(File.ReadAllText(PackagesFile));
+
+            //Has the warning been read already? If not, read the warning.
+            if (!sources.SourceWarningRead) { DisplayWarning(); sources.SourceWarningRead = true; }
 
             //Loop the sources, and add them.
             foreach (var source in args)
@@ -86,7 +91,7 @@ namespace Algo.PacMan
                 //Check if a source with this name already exists.
                 if (sources.SourceExists(parsed.Item1.SourceName))
                 {
-                    Error.WarningNoContext("A source with the name '" + parsed.Item1.SourceName + " is already installed, so skipping.");
+                    Error.WarningNoContext("A source with the name '" + parsed.Item1.SourceName + "' is already installed, so skipping.");
                     continue;
                 }
 
@@ -119,11 +124,12 @@ namespace Algo.PacMan
         private void DisplayWarning()
         {
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.WriteLine("WARNING: Don't install sources from untrusted sites or providers. Packages from untrusted sources can possibly cause damage to your system.");
-            Console.WriteLine("For recommended sources and advice, visit http://github.com/c272/algo-lang/wiki/.");
+            Console.Write("WARNING: Don't install sources from untrusted sites or providers. Packages from untrusted sources can possibly cause damage to your system.");
+            Console.WriteLine(" For recommended sources and advice, visit http://github.com/c272/algo-lang/wiki/.");
             Console.WriteLine();
             Console.WriteLine("Algo and its authors do not take responsibility for any damage you receive to your system or files due to installing packages.");
             Console.WriteLine("Do you accept these terms? (Y/N)");
+            Console.ForegroundColor = ConsoleColor.White;
             string yesNo = Console.ReadLine();
             if (yesNo == "Y") { return; }
             Environment.Exit(0);

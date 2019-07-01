@@ -65,3 +65,4 @@ Z:\Algo\Algo\bin\Debug\Antlr4.Runtime.xml
 Z:\Algo\Algo\bin\Debug\MathNet.Numerics.xml
 Z:\Algo\Algo\bin\Debug\Newtonsoft.Json.xml
 Z:\Algo\Algo\obj\Debug\Algo.csproj.CopyComplete
+Z:\Algo\Algo\obj\Debug\Algo.csprojAssemblyReference.cache
