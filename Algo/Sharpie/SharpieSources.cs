@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -47,8 +49,9 @@ namespace Algo.PacMan
         //Add a source to the source list.
         public void AddSource(string[] args)
         {
-            //Deserialize source list.
+            //Deserialize source list and package list.
             SharpieSources sources = JsonConvert.DeserializeObject<SharpieSources>(SourcesFile);
+            SharpiePackages packages = JsonConvert.DeserializeObject<SharpiePackages>(PackagesFile);
 
             //Has the warning been read already? If not, read the warning.
             if (!sources.SourceWarningRead) { DisplayWarning(); sources.SourceWarningRead = true; }
@@ -62,7 +65,53 @@ namespace Algo.PacMan
             //Loop the sources, and add them.
             foreach (var source in args)
             {
-                //
+                //Try and download the source.
+                string srcString = "";
+                using (var client = new WebClient())
+                {
+                    try
+                    {
+                        srcString = client.DownloadString(source);
+                    }
+                    catch (Exception e)
+                    {
+                        Error.WarningNoContext("An unknown error occured when downloading the source '" + source + "' (" + e.Message + "), source skipped.");
+                        continue;
+                    }
+                }
+
+                //Attempt to parse the source into a source object.
+                Tuple<SharpieSource, List<SharpiePackage>> parsed = SharpieSourceParser.Parse(srcString, source);
+
+                //Check if a source with this name already exists.
+                if (sources.SourceExists(parsed.Item1.SourceName))
+                {
+                    Error.WarningNoContext("A source with the name '" + parsed.Item1.SourceName + " is already installed, so skipping.");
+                    continue;
+                }
+
+                //No, so add the packages and source.
+                Console.WriteLine("Attempting to add source packages for source '" + parsed.Item1.SourceName + "'...");
+                foreach (var pkg in parsed.Item2)
+                {
+                    if (packages.PackageExists(pkg.PackageName))
+                    {
+                        Error.WarningNoContext("A package with the name '" + pkg.PackageName + "' already exists, so skipping.");
+                        continue;
+                    }
+
+                    packages.Packages.Add(pkg);
+                    Console.WriteLine("Added package '" + pkg.PackageName + "'.");
+                }
+
+                sources.Sources.Add(parsed.Item1);
+
+                //Serializing and saving.
+                File.WriteAllText(SourcesFile, JsonConvert.SerializeObject(sources));
+                File.WriteAllText(PackagesFile, JsonConvert.SerializeObject(packages));
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Successfully added source '" + parsed.Item1.SourceName + "'.");
+                Console.ForegroundColor = ConsoleColor.White;
             }
         }
 

@@ -43,11 +43,12 @@ namespace Algo.PacMan
     //A single package within Sharpie.
     public class SharpiePackage
     {
-        public SharpiePackage(string name, int ver, string link)
+        public SharpiePackage(string name, int ver, string link, string parent)
         {
             PackageName = name;
             PackageVersion = ver;
             Link = link;
+            ParentSource = parent;
         }
 
         public string PackageName;
@@ -55,6 +56,7 @@ namespace Algo.PacMan
         public int CurrentPackageVersion = -1;
         public bool Installed = false;
         public string Link;
+        public string ParentSource;
     }
 
     //A collection of sources within Sharpie.
@@ -62,6 +64,12 @@ namespace Algo.PacMan
     {
         public List<SharpieSource> Sources = new List<SharpieSource>();
         public bool SourceWarningRead = false;
+
+        //Checks whether a source exists in the current list or not.
+        public bool SourceExists(string source)
+        {
+            return (Sources.FindIndex(x => x.SourceName == source) != -1);
+        }
     }
 
     //A single source in Sharpie.

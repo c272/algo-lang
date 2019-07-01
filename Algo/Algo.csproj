@@ -100,6 +100,7 @@
     <Compile Include="Sharpie\Sharpie.cs" />
     <Compile Include="Sharpie\SharpieDataModels.cs" />
     <Compile Include="Sharpie\SharpiePackages.cs" />
+    <Compile Include="Sharpie\SharpieSourceParser.cs" />
     <Compile Include="Sharpie\SharpieSources.cs" />
     <Compile Include="Standard Library\FunctionPluginCore.cs" />
     <Compile Include="Standard Library\FunctionPluginInterface.cs" />
