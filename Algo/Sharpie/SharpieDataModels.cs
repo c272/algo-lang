@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Algo.Sharpie
+namespace Algo.PacMan
 {
     //A collection of packages within Sharpie.
     public class SharpiePackages

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ExtendedNumerics;
 using System.Numerics;
+using Algo.PacMan;
 
 namespace Algo
 {
@@ -37,7 +38,7 @@ namespace Algo
             else if (args[0] == "pkg")
             {
                 //Package management.
-                Console.WriteLine("package management detected, still todo.");
+                Sharpie sharpie = new Sharpie(args.Slice(1, -1));
                 return;
             }
 

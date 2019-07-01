@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Algo.Sharpie
+namespace Algo.PacMan
 {
     public partial class Sharpie
     {
@@ -68,6 +68,9 @@ namespace Algo.Sharpie
             else if (args[0] == "update")
             {
 
+            } else
+            {
+                //unknown command
             }
         }
     }

@@ -20,3 +20,6 @@ D:\Files\Programming\GitHub\algo\AlgoUnitTests\obj\Debug\AlgoUnitTests.csproj.Co
 D:\Files\Programming\GitHub\algo\AlgoUnitTests\obj\Debug\AlgoUnitTests.csproj.CopyComplete
 D:\Files\Programming\GitHub\algo\AlgoUnitTests\obj\Debug\AlgoUnitTests.dll
 D:\Files\Programming\GitHub\algo\AlgoUnitTests\obj\Debug\AlgoUnitTests.pdb
+Z:\Algo\AlgoUnitTests\obj\Debug\AlgoUnitTests.csprojAssemblyReference.cache
+Z:\Algo\AlgoUnitTests\obj\Debug\AlgoUnitTests.csproj.CoreCompileInputs.cache
+Z:\Algo\AlgoUnitTests\obj\Debug\AlgoUnitTests.dll

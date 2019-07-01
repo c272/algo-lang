@@ -1,12 +1,3 @@
-Z:/Algo/AlgoSDK/bin/Debug/AlgoSDK.dll
-Z:/Algo/AlgoSDK/bin/Debug/AlgoSDK.pdb
-Z:/Algo/AlgoSDK/bin/Debug/Antlr4.Runtime.dll
-Z:/Algo/AlgoSDK/bin/Debug/Antlr4.Runtime.xml
-Z:/Algo/AlgoSDK/obj/Debug/AlgoSDK.csprojAssemblyReference.cache
-Z:/Algo/AlgoSDK/obj/Debug/AlgoSDK.csproj.CoreCompileInputs.cache
-Z:/Algo/AlgoSDK/obj/Debug/AlgoSDK.csproj.CopyComplete
-Z:/Algo/AlgoSDK/obj/Debug/AlgoSDK.dll
-Z:/Algo/AlgoSDK/obj/Debug/AlgoSDK.pdb
 /home/c272/Repos/algo-lang/AlgoSDK/bin/Debug/AlgoSDK.dll
 /home/c272/Repos/algo-lang/AlgoSDK/bin/Debug/AlgoSDK.pdb
 /home/c272/Repos/algo-lang/AlgoSDK/bin/Debug/Antlr4.Runtime.dll
@@ -25,3 +16,11 @@ D:\Files\Programming\GitHub\algo\AlgoSDK\obj\Debug\AlgoSDK.csproj.CoreCompileInp
 D:\Files\Programming\GitHub\algo\AlgoSDK\obj\Debug\AlgoSDK.csproj.CopyComplete
 D:\Files\Programming\GitHub\algo\AlgoSDK\obj\Debug\AlgoSDK.dll
 D:\Files\Programming\GitHub\algo\AlgoSDK\obj\Debug\AlgoSDK.pdb
+Z:\Algo\AlgoSDK\bin\Debug\AlgoSDK.dll
+Z:\Algo\AlgoSDK\bin\Debug\AlgoSDK.pdb
+Z:\Algo\AlgoSDK\bin\Debug\Antlr4.Runtime.dll
+Z:\Algo\AlgoSDK\bin\Debug\Antlr4.Runtime.xml
+Z:\Algo\AlgoSDK\obj\Debug\AlgoSDK.csproj.CoreCompileInputs.cache
+Z:\Algo\AlgoSDK\obj\Debug\AlgoSDK.csproj.CopyComplete
+Z:\Algo\AlgoSDK\obj\Debug\AlgoSDK.dll
+Z:\Algo\AlgoSDK\obj\Debug\AlgoSDK.pdb

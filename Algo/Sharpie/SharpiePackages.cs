@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.IO.Compression;
 using System.IO;
 
-namespace Algo.Sharpie
+namespace Algo.PacMan
 {
     public partial class Sharpie
     {
