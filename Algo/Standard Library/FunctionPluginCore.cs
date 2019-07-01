@@ -26,12 +26,28 @@ namespace Algo
 
             //Are there any plugin files in the /packages/ directory?
             string[] files = Directory.GetFiles(CPFilePath.GetPlatformFilePath(DefaultDirectories.PackagesDirectory));
+            string[] dirs = Directory.GetDirectories(CPFilePath.GetPlatformFilePath(DefaultDirectories.PackagesDirectory));
+
             List<string> dllFiles = new List<string>();
             foreach (var file in files)
             {
                 if (file.Contains(".dll"))
                 {
                     dllFiles.Add(file);
+                }
+            }
+
+            //Also search one directory deeper.
+            foreach (var dir in dirs)
+            {
+                DirectoryInfo d = new DirectoryInfo(dir);
+                FileInfo[] dirFiles = d.GetFiles();
+                foreach (var file in dirFiles)
+                {
+                    if (file.Extension == ".dll")
+                    {
+                        dllFiles.Add(file.FullName);
+                    }
                 }
             }
 
