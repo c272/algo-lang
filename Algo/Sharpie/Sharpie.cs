@@ -67,7 +67,7 @@ namespace Algo.PacMan
             }
             else if (args[0] == "update")
             {
-
+                UpdatePackage(args.Slice(1, -1));
             } else
             {
                 //unknown command

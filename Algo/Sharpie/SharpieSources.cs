@@ -120,6 +120,14 @@ namespace Algo.PacMan
             }
         }
 
+        //Remove sources from the source list, and all associated packages.
+        public void RemoveSource(string[] args)
+        {
+
+        }
+
+        //Update a given source (or all sources) from the master list.
+
         //Displays a warning to the user about installing untrusted sources.
         private void DisplayWarning()
         {

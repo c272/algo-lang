@@ -83,6 +83,7 @@ namespace Algo.PacMan
 
                 //Mark as installed in sharpie packages.
                 pkgObj.Installed = true;
+                pkgObj.CurrentPackageVersion = pkgObj.PackageVersion;
 
                 //Save to object, serialize again.
                 packages.SetPackage(pkg, pkgObj);
@@ -160,6 +161,12 @@ namespace Algo.PacMan
             SharpiePackages packages = JsonConvert.DeserializeObject<SharpiePackages>(File.ReadAllText(PackagesFile));
 
             //For each argument, process the package.
+            if (args[0] == "*")
+            {
+                //If the argument is '*', it means all installed packages.
+                args = packages.Packages.Where(x => x.Installed == true).Select(x => x.PackageName).ToArray();
+            }
+
             foreach (var pkg in args)
             {
                 //Does the package exist?
@@ -180,7 +187,7 @@ namespace Algo.PacMan
                 //Is the current version less than the version?
                 if (pkgObj.CurrentPackageVersion >= pkgObj.PackageVersion)
                 {
-                    Error.WarningNoContext("The package '" + pkg + "' is already up to date, skipping.");
+                    Console.WriteLine("No update required for package '" + pkg + "'.");
                     continue;
                 }
 
