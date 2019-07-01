@@ -1,0 +1,3 @@
+[submodule "sharpie"]
+	path = sharpie
+	url = https://github.com/c272/sharpie.git

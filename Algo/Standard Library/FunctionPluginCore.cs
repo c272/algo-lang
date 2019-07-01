@@ -23,6 +23,23 @@ namespace Algo
             Plugins.Add(new StandardLibrary.AlgoStd_Core());
             //input.* and output.* (io)
             Plugins.Add(new StandardLibrary.AlgoStd_IO());
+
+            //Are there any plugin files in the /packages/ directory?
+            string[] files = Directory.GetFiles(CPFilePath.GetPlatformFilePath(DefaultDirectories.PackagesDirectory));
+            List<string> dllFiles = new List<string>();
+            foreach (var file in files)
+            {
+                if (file.Contains(".dll"))
+                {
+                    dllFiles.Add(file);
+                }
+            }
+
+            //Attempt to load all the DLL files.
+            foreach (var file in dllFiles)
+            {
+                LoadPlugin(file);
+            }
         }
 
         //Load a plugin from an assembly path.
