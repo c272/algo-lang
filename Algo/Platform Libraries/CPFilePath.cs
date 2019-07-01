@@ -32,5 +32,6 @@ namespace Algo
     {
         public static string[] PackagesDirectory = { AppDomain.CurrentDomain.BaseDirectory, "packages" };
         public static string[] StandardLibDirectory = { AppDomain.CurrentDomain.BaseDirectory, "std" };
+        public static string[] WorkingDirectory = { Environment.CurrentDirectory };
     }
 }

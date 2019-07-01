@@ -27,7 +27,8 @@
       <CustomCommands>
         <Command>
           <type>BeforeBuild</type>
-          <command></command>
+          <command>
+          </command>
         </Command>
       </CustomCommands>
     </CustomCommands>
@@ -48,8 +49,13 @@
     <Reference Include="MathNet.Numerics, Version=4.8.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MathNet.Numerics.4.8.1\lib\net461\MathNet.Numerics.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
@@ -90,6 +96,11 @@
     <Compile Include="Platform Libraries\CPFilePath.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sharpie\Extensions.cs" />
+    <Compile Include="Sharpie\Sharpie.cs" />
+    <Compile Include="Sharpie\SharpieDataModels.cs" />
+    <Compile Include="Sharpie\SharpiePackages.cs" />
+    <Compile Include="Sharpie\SharpieSources.cs" />
     <Compile Include="Standard Library\FunctionPluginCore.cs" />
     <Compile Include="Standard Library\FunctionPluginInterface.cs" />
     <Compile Include="Standard Library\Libraries\AlgoStd_Core.cs" />
