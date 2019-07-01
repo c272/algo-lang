@@ -133,7 +133,7 @@ namespace Algo.PacMan
                     Directory.Delete(pkgDir, true);
                 } catch(Exception e)
                 {
-                    Error.WarningNoContext("Failed to delete package directory for the package '" + pkg + "', skipping.");
+                    Error.WarningNoContext("Failed to delete package directory for the package '" + pkg + "' (" + e.Message + "), skipping.");
                     continue;
                 }
 

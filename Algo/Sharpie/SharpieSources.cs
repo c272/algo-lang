@@ -123,7 +123,18 @@ namespace Algo.PacMan
         //Remove sources from the source list, and all associated packages.
         public void RemoveSource(string[] args)
         {
+            //Check the argument length.
+            if (args.Length < 1)
+            {
+                Error.FatalNoContext("No source given to remove.");
+                return;
+            }
 
+            //Check whether a source is installed.
+            SharpieSources sources = JsonConvert.DeserializeObject<SharpieSources>(File.ReadAllText(SourcesFile));
+            SharpiePackages packages = JsonConvert.DeserializeObject<SharpiePackages>(File.ReadAllText(PackagesFile));
+
+            //todo
         }
 
         //Update a given source (or all sources) from the master list.
