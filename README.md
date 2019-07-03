@@ -30,17 +30,16 @@ Also, as an example of what the language looks like, here's some sample code I'v
 *Warning: This may be out of date when there are major updates and revisions to the language, and the README hasn't been modified.*
 
     //Import the input library and string library.
-    import "std/input";
-    import "std/core";
-    import "std/string";
+    import "core";
+    import "io";
 
     //Define a function to enumerate over the string characters.
     let printCharacters(x) = {
 
         //Print all the characters individually.
         let charList = string.getChars(x);
-        for (i in charList) {
-            print charList[i];
+        foreach (i in charList) {
+            print i;
         }
 
         print "Your string is " + len(x) + " characters long.";
