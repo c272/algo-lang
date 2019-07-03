@@ -32,7 +32,7 @@ namespace Algo.PacMan
                 {
                     Console.WriteLine("No sources installed.");
                 }
-                Console.WriteLine();
+                Console.WriteLine("-----------\n");
             }
             else if (args[0] == "add")
             {
@@ -42,6 +42,7 @@ namespace Algo.PacMan
             else if (args[0] == "remove")
             {
                 //Remove a source.
+                RemoveSource(args.Slice(1, -1));
             }
             else
             {
@@ -57,7 +58,7 @@ namespace Algo.PacMan
             //Check the argument length.
             if (args.Length < 1)
             {
-                Error.FatalNoContext("No source links supplied to add.");
+                Error.FatalNoContext("No source link(s) supplied to add.");
             }
 
             //Deserialize source list and package list.
@@ -126,18 +127,52 @@ namespace Algo.PacMan
             //Check the argument length.
             if (args.Length < 1)
             {
-                Error.FatalNoContext("No source given to remove.");
+                Error.FatalNoContext("No source(s) given to remove.");
                 return;
             }
 
-            //Check whether a source is installed.
+            //Get the source and package lists from file.
             SharpieSources sources = JsonConvert.DeserializeObject<SharpieSources>(File.ReadAllText(SourcesFile));
             SharpiePackages packages = JsonConvert.DeserializeObject<SharpiePackages>(File.ReadAllText(PackagesFile));
 
-            //todo
+            foreach (var source in args)
+            {
+                //Check if the source is actually installed.
+                if (!sources.SourceExists(source))
+                {
+                    Error.WarningNoContext("A source with the name '" + source + "' is not installed, skipping.");
+                    continue;
+                }
+
+                //Yes, loop through all packages with the source name attached and uninstall them.
+                Console.WriteLine("Attempting to remove packages for source '" + source + "'...");
+                string[] toRemove = packages.Packages.Where(x => x.ParentSource == source).Where(x => x.Installed==true).Select(x => x.PackageName).ToArray();
+                RemovePackage(toRemove);
+
+                //Actually deleting the packages from the master list which have this source as a parent.
+                packages.Packages.RemoveAll(x => x.ParentSource == source);
+
+                //Removing the source itself from the source list.
+                Console.WriteLine("Deleting source '" + source + "' from master list...");
+                int amtRemoved = sources.Sources.RemoveAll(x => x.SourceName == source);
+                if (amtRemoved <= 0)
+                {
+                    Error.WarningNoContext("Failed to remove source from master list, skipping.");
+                    continue;
+                }
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Successfully removed source '" + source + "'.");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+
+            //Done modifying the lists, serialize them back to file.
+            File.WriteAllText(PackagesFile, JsonConvert.SerializeObject(packages));
+            File.WriteAllText(SourcesFile, JsonConvert.SerializeObject(sources));
         }
 
         //Update a given source (or all sources) from the master list.
+        //todo
 
         //Displays a warning to the user about installing untrusted sources.
         private void DisplayWarning()

@@ -34,7 +34,7 @@ namespace Algo.PacMan
                 //Check the length to verify source.
                 if (pkgParts.Length != 3)
                 {
-                    Error.FatalNoContext("Source is invalid, at line " + (i+1) + ", too many package parameters.");
+                    Error.FatalNoContext("Source is invalid, at line " + (i+1) + ", invalid amount of package parameters.");
                     return null;
                 }
 

@@ -66,3 +66,5 @@ Z:\Algo\Algo\bin\Debug\MathNet.Numerics.xml
 Z:\Algo\Algo\bin\Debug\Newtonsoft.Json.xml
 Z:\Algo\Algo\obj\Debug\Algo.csproj.CopyComplete
 Z:\Algo\Algo\obj\Debug\Algo.csprojAssemblyReference.cache
+D:\Files\Programming\GitHub\algo\Algo\bin\Debug\Newtonsoft.Json.dll
+D:\Files\Programming\GitHub\algo\Algo\bin\Debug\Newtonsoft.Json.xml

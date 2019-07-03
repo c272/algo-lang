@@ -1,6 +1,6 @@
-Z:\Algo\Algo\obj\Debug\algoLexer.cs
-Z:\Algo\Algo\obj\Debug\algoParser.cs
-Z:\Algo\Algo\obj\Debug\algoListener.cs
-Z:\Algo\Algo\obj\Debug\algoBaseListener.cs
-Z:\Algo\Algo\obj\Debug\algoVisitor.cs
-Z:\Algo\Algo\obj\Debug\algoBaseVisitor.cs
+D:\Files\Programming\GitHub\algo\Algo\obj\Debug\algoLexer.cs
+D:\Files\Programming\GitHub\algo\Algo\obj\Debug\algoParser.cs
+D:\Files\Programming\GitHub\algo\Algo\obj\Debug\algoListener.cs
+D:\Files\Programming\GitHub\algo\Algo\obj\Debug\algoBaseListener.cs
+D:\Files\Programming\GitHub\algo\Algo\obj\Debug\algoVisitor.cs
+D:\Files\Programming\GitHub\algo\Algo\obj\Debug\algoBaseVisitor.cs

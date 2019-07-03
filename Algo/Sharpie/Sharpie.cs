@@ -41,9 +41,16 @@ namespace Algo.PacMan
             {
                 //todo
             }
+
+            //Listing?
+            else if (args[0] == "list")
+            {
+                ListPackages();
+                return;
+            }
             
             //Managing sources?
-            if (args[0] == "sources")
+            else if (args[0] == "sources")
             {
                 ManageSources(args.Slice(1, -1));
                 return;
@@ -70,7 +77,7 @@ namespace Algo.PacMan
                 UpdatePackage(args.Slice(1, -1));
             } else
             {
-                //unknown command
+                Error.FatalNoContext("Unknown command supplied to package manager.");
             }
         }
     }

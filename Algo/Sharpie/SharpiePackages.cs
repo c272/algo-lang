@@ -15,6 +15,27 @@ namespace Algo.PacMan
         //Get the packages directory.
         public static string PackagesDirectory = CPFilePath.GetPlatformFilePath(DefaultDirectories.PackagesDirectory);
         public static string PackagesFile = CPFilePath.GetPlatformFilePath(DefaultDirectories.PackagesDirectory.Concat(new string[] { "packages.pkg" }).ToArray());
+        
+        //List all current packages.
+        public void ListPackages()
+        {
+            //Load package data.
+            SharpiePackages packages = JsonConvert.DeserializeObject<SharpiePackages>(File.ReadAllText(PackagesFile));
+
+            //Loop over packages and write.
+            Console.WriteLine("Sharpie Package Master List");
+            Console.WriteLine("key: name | version | installed? | link");
+            Console.WriteLine("--------------------------");
+            foreach (var pkg in packages.Packages)
+            {
+                Console.WriteLine(pkg.PackageName + " | " + pkg.PackageVersion + " | " + pkg.Installed.ToString() + " | " + pkg.Link);
+            }
+            if (packages.Packages.Count == 0)
+            {
+                Console.WriteLine("No packages in master list.");
+            }
+            Console.WriteLine("--------------------------\n");
+        }
 
         //Add a package to the packages directory.
         public void AddPackage(string[] args)
@@ -149,6 +170,7 @@ namespace Algo.PacMan
             }
         }
 
+        //Update a given Algo package.
         public void UpdatePackage(string[] args)
         {
             //Check the argument is there.

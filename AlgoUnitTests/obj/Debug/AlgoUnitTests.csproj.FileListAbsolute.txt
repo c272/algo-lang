@@ -23,3 +23,5 @@ D:\Files\Programming\GitHub\algo\AlgoUnitTests\obj\Debug\AlgoUnitTests.pdb
 Z:\Algo\AlgoUnitTests\obj\Debug\AlgoUnitTests.csprojAssemblyReference.cache
 Z:\Algo\AlgoUnitTests\obj\Debug\AlgoUnitTests.csproj.CoreCompileInputs.cache
 Z:\Algo\AlgoUnitTests\obj\Debug\AlgoUnitTests.dll
+D:\Files\Programming\GitHub\algo\AlgoUnitTests\bin\Debug\Newtonsoft.Json.dll
+D:\Files\Programming\GitHub\algo\AlgoUnitTests\bin\Debug\Newtonsoft.Json.xml
