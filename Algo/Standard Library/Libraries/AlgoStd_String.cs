@@ -1,6 +1,7 @@
 ﻿using Antlr4.Runtime;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace Algo.StandardLibrary
 {
@@ -40,6 +41,22 @@ namespace Algo.StandardLibrary
                 Name = "replace",
                 ParameterCount = 3,
                 Function = ReplaceSubstring
+            },
+
+            //Substring.
+            new AlgoPluginFunction()
+            {
+                Name = "substring",
+                ParameterCount = 3,
+                Function = GetSubstring
+            },
+
+            //EndsWith
+            new AlgoPluginFunction()
+            {
+                Name = "endsWith",
+                ParameterCount = 2,
+                Function = StringEndsWith
             }
         };
 
@@ -161,5 +178,63 @@ namespace Algo.StandardLibrary
             return args[0];
         }
 
+
+        //Returns a substring of a string.
+        public static AlgoValue GetSubstring(ParserRuleContext context, params AlgoValue[] args)
+        {
+            //Check argument is a string.
+            if (args[0].Type != AlgoValueType.String)
+            {
+                Error.Fatal(context, "Cannot get a substring from a non-string value.");
+                return null;
+            }
+            if (args[1].Type != AlgoValueType.Integer || args[2].Type != AlgoValueType.Integer)
+            {
+                Error.Fatal(context, "Bounds for the substring must be an integer.");
+                return null;
+            }
+
+            //Check the bounds are above zero, and within bounds.
+            BigInteger lowerBound = (BigInteger)args[1].Value;
+            BigInteger len = (BigInteger)args[2].Value;
+            string val = (string)args[0].Value;
+
+            if (lowerBound < 0 || len < 0)
+            {
+                Error.Fatal(context, "Start index and length for the substring must be greater than zero.");
+                return null;
+            }
+            if (lowerBound >= val.Length || len >= val.Length || lowerBound > int.MaxValue || len > int.MaxValue)
+            {
+                Error.Fatal(context, "Start index and length for the substring must be smaller than the length of the string, and less than max 32 bit integer limit.");
+                return null;
+            }
+
+            //Return substring.
+            return new AlgoValue()
+            {
+                Type = AlgoValueType.String,
+                Value = val.Substring((int)lowerBound, (int)len)
+            };
+        }
+
+        //Returns whether a string value ends with a specific substring.
+        public static AlgoValue StringEndsWith(ParserRuleContext context, params AlgoValue[] args)
+        {
+            //Arguments are strings?
+            if (args[0].Type != AlgoValueType.String || args[1].Type != AlgoValueType.String)
+            {
+                Error.Fatal(context, "Source and substring must both be of type String.");
+                return null;
+            }
+
+            string source = (string)args[0].Value;
+            string end = (string)args[1].Value;
+            return new AlgoValue()
+            {
+                Type = AlgoValueType.Boolean,
+                Value = source.EndsWith(end)
+            };
+        }
     }
 }

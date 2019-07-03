@@ -15,4 +15,10 @@ library string
 
 	//Replace all instances of a substring with another substring.
 	external replace <- std_string.replace;
+	
+	//Get a substring of a string.
+	external substring <- std_string.substring;
+
+	//Returns a boolean of whether a string ends with a substring.
+	external endsWith <- std_string.endsWith;
 }
