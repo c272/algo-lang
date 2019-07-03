@@ -24,6 +24,22 @@ namespace Algo.StandardLibrary
                 Name = "contains",
                 ParameterCount = 2,
                 Function = ContainsString
+            },
+
+            //Split
+            new AlgoPluginFunction()
+            {
+                Name = "split",
+                ParameterCount = 2,
+                Function = SplitString
+            },
+
+            //Replace
+            new AlgoPluginFunction()
+            {
+                Name = "replace",
+                ParameterCount = 3,
+                Function = ReplaceSubstring
             }
         };
 
@@ -79,6 +95,70 @@ namespace Algo.StandardLibrary
                 Type = AlgoValueType.Boolean,
                 Value = baseString.Contains(substring)
             };
+        }
+
+        //Splits a given string into an Algo array given a separator.
+        public static AlgoValue SplitString(ParserRuleContext context, params AlgoValue[] args)
+        {
+            //Extract the string from the first value.
+            if (args[0].Type != AlgoValueType.String)
+            {
+                Error.Fatal(context, "Cannot perform a string split on a non-string value.");
+                return null;
+            }
+            string toSplit = (string)args[0].Value;
+
+            //Get the split argument.
+            if (args[1].Type != AlgoValueType.String)
+            {
+                Error.Fatal(context, "Cannot split by a separator that's not a string.");
+                return null;
+            }
+            string separator = (string)args[1].Value;
+            if (separator.Length != 1)
+            {
+                Error.Fatal(context, "Separator must be 1 character long.");
+                return null;
+            }
+
+            //Splitting.
+            string[] split = toSplit.Split(separator[0]);
+
+            //For every string, create an algovalue and add to list.
+            List<AlgoValue> strings = new List<AlgoValue>();
+            foreach (var part in split)
+            {
+                strings.Add(new AlgoValue()
+                {
+                    Type = AlgoValueType.String,
+                    Value = part
+                });
+            }
+
+            //Return the list.
+            return new AlgoValue()
+            {
+                Type = AlgoValueType.List,
+                Value = strings
+            };
+        }
+
+        //Replaces a given substring inside an Algo string with another.
+        public static AlgoValue ReplaceSubstring(ParserRuleContext context, params AlgoValue[] args)
+        {
+            //Check the inputs are all strings.
+            if (args[0].Type != AlgoValueType.String || args[1].Type != AlgoValueType.String || args[2].Type != AlgoValueType.String)
+            {
+                Error.Fatal(context, "All parameters to the 'replace' function must be of the type String.");
+                return null;
+            }
+
+            //Replace.
+            string original = (string)args[1].Value;
+            string replaceWith = (string)args[2].Value;
+
+            args[0].Value = ((string)args[0].Value).Replace(original, replaceWith);
+            return args[0];
         }
 
     }

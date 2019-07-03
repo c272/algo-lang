@@ -9,4 +9,10 @@ library string
     
     //Return whether a string contains a substring.
     external contains <- std_string.contains;
+
+	//Split a string into an array by a separator.
+	external split <- std_string.split;
+
+	//Replace all instances of a substring with another substring.
+	external replace <- std_string.replace;
 }
