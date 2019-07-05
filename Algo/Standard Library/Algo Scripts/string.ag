@@ -1,5 +1,5 @@
 ﻿//The "string" standard library provided by Algo.
-//v0.0.1, revision 0.
+//v0.0.2, revision 2.
 
 library string 
 {
@@ -21,4 +21,5 @@ library string
 
 	//Returns a boolean of whether a string ends with a substring.
 	external endsWith <- std_string.endsWith;
+
 }

@@ -237,7 +237,7 @@ namespace Algo
                 }
                 catch(Exception e)
                 {
-                    Error.Fatal(context, e.Message);
+                    Error.Fatal(context, "External function returned an error, " + e.Message);
                 }
             }
             else
