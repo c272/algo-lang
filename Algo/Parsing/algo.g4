@@ -210,10 +210,10 @@ LESS_THAN_ET: '<=';
 IDENTIFIER: [A-Za-z_] [0-9A-Za-z_]*;
 
 //Ignore comments, not relevant.
-COMMENT: '//' .*? '\n' -> skip;
+COMMENT: '//' .*? '\n' -> channel(HIDDEN);
 
 //Ignore all whitespace, not relevant.
-WS:	[ \n\r\t] -> skip;
+WS:	[ \n\r\t] -> channel(HIDDEN);
 
 //Unknown symbol.
 UNKNOWN_SYMBOL: .;
