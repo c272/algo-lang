@@ -24,6 +24,8 @@ Including the `--dev` flag makes the interpreter print all lexed tokens, and sho
 
 Simply running `algo` in console will display your current version, including the build number and revision. **Please state your build and revision when reporting bugs in the issues section.**
 
+For more information on language syntax and usage, see the GitHub wiki, [here.](https://github.com/c272/algo-lang/wiki)
+
 ## Sample Code
 Also, as an example of what the language looks like, here's some sample code I've typed up.
 
