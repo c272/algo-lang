@@ -73,6 +73,15 @@ namespace Algo
                 //Perform division.
                 return AlgoOperators.Div(context, left, right);
             }
+            else if (context.MOD_OP() != null)
+            {
+                //Modulus.
+                AlgoValue left = (AlgoValue)VisitTerm(context.term());
+                AlgoValue right = (AlgoValue)VisitFactor(context.factor());
+
+                //Perform modulus.
+                return AlgoOperators.Mod(context, left, right);
+            }
             else
             {
                 //No, just a factor, evaluate.

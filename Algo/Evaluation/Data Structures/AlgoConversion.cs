@@ -48,5 +48,12 @@ namespace Algo
 
             return printString;
         }
+
+        public static BigFloat RationalToFloat(AlgoValue rational)
+        {
+            BigInteger numerator = ((BigRational)rational.Value).FractionalPart.Numerator;
+            BigInteger denominator = ((BigRational)rational.Value).FractionalPart.Denominator;
+            return BigFloat.Divide(new BigFloat(numerator), new BigFloat(denominator));
+        }
     }
 }

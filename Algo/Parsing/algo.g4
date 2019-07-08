@@ -88,6 +88,7 @@ rounding_expr: TO_SYM expr SIG_FIG_SYM;
 
 term: term MUL_OP factor
 	| term DIV_OP factor
+	| term MOD_OP factor
 	| factor;
 
 factor: factor POW_OP sub
@@ -188,6 +189,7 @@ TAKE_OP: '-';
 MUL_OP: '*';
 DIV_OP: '/';
 POW_OP: '^';
+MOD_OP: '%';
 POINT: '.';
 ADDFROM_OP: '+=';
 TAKEFROM_OP: '-=';

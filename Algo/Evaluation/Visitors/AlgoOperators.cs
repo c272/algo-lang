@@ -178,6 +178,106 @@ namespace Algo
             return null;
         }
 
+        //Modulus one AlgoValue with another.
+        public static AlgoValue Mod(algoParser.TermContext context, AlgoValue left, AlgoValue right)
+        {
+            //Switch over types.
+            if (left.Type == AlgoValueType.Integer)
+            {
+                //INTEGER % something
+                switch (right.Type)
+                {
+                    case AlgoValueType.Integer:
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.Integer,
+                            Value = BigInteger.Remainder((BigInteger)left.Value, (BigInteger)right.Value)
+                        };
+
+                    case AlgoValueType.Float:
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.Float,
+                            Value = BigFloat.Remainder(new BigFloat((BigInteger)left.Value), (BigFloat)right.Value)
+                        };
+
+                    case AlgoValueType.Rational:
+                        //Get float representation of rational.
+                        BigFloat rational_as_float = AlgoConversion.RationalToFloat(right);
+
+                        //Perform float remainder.
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.Float,
+                            Value = BigFloat.Remainder(new BigFloat((BigInteger)left.Value), rational_as_float)
+                        };
+                }
+            }
+            else if (left.Type == AlgoValueType.Float)
+            {
+                //FLOAT % something
+                switch (right.Type)
+                {
+                    case AlgoValueType.Integer:
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.Float,
+                            Value = BigFloat.Remainder((BigFloat)left.Value, new BigFloat((BigInteger)right.Value))
+                        };
+                    case AlgoValueType.Float:
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.Float,
+                            Value = BigFloat.Remainder((BigFloat)left.Value, (BigFloat)right.Value)
+                        };
+                    case AlgoValueType.Rational:
+                        //Get float representation of rational.
+                        BigFloat rational_as_float = AlgoConversion.RationalToFloat(right);
+
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.Rational,
+                            Value = BigFloat.Remainder((BigFloat)left.Value, rational_as_float)
+                        };
+                }
+            }
+            else if (left.Type == AlgoValueType.Rational)
+            {
+                //RATIONAL % something
+
+                //Get float representation of rational.
+                BigFloat rational_as_float = AlgoConversion.RationalToFloat(left);
+                
+                switch (right.Type)
+                {
+                    case AlgoValueType.Integer:
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.Float,
+                            Value = BigFloat.Remainder(rational_as_float, new BigFloat((BigInteger)right.Value))
+                        };
+                    case AlgoValueType.Float:
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.Float,
+                            Value = BigFloat.Remainder(rational_as_float, (BigFloat)right.Value)
+                        };
+                    case AlgoValueType.Rational:
+                        //Get rational as float.
+                        BigFloat sec_rational_as_float = AlgoConversion.RationalToFloat(right);
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.Float,
+                            Value = BigFloat.Remainder(rational_as_float, sec_rational_as_float)
+                        };
+                }
+            }
+
+            //No return was found, so error out.
+            Error.Fatal(context, "Cannot modulus type '" + left.Type.ToString() + "' with type '" + right.Type.ToString() + "'.");
+            return null;
+        }
+
         //Multiply one AlgoValue by another.
         public static AlgoValue Mul(ParserRuleContext context, AlgoValue left, AlgoValue right)
         {
@@ -272,9 +372,7 @@ namespace Algo
                 else if (right.Type == AlgoValueType.Rational)
                 {
                     //Get the rational part as a float.
-                    BigInteger numerator = ((BigRational)right.Value).FractionalPart.Numerator;
-                    BigInteger denominator = ((BigRational)right.Value).FractionalPart.Denominator;
-                    BigFloat rational_as_float = BigFloat.Divide(new BigFloat(numerator), new BigFloat(denominator));
+                    BigFloat rational_as_float = AlgoConversion.RationalToFloat(right);
 
                     //Returning.
                     return new AlgoValue()
@@ -307,9 +405,7 @@ namespace Algo
                 else if (right.Type == AlgoValueType.Float)
                 {
                     //Get the rational part as a float.
-                    BigInteger numerator = ((BigRational)left.Value).FractionalPart.Numerator;
-                    BigInteger denominator = ((BigRational)left.Value).FractionalPart.Denominator;
-                    BigFloat rational_as_float = BigFloat.Divide(new BigFloat(numerator), new BigFloat(denominator));
+                    BigFloat rational_as_float = AlgoConversion.RationalToFloat(right);
 
                     //Returning.
                     return new AlgoValue()
@@ -415,9 +511,7 @@ namespace Algo
                 else if (right.Type == AlgoValueType.Rational)
                 {
                     //Get the rational part as a float.
-                    BigInteger numerator = ((BigRational)right.Value).FractionalPart.Numerator;
-                    BigInteger denominator = ((BigRational)right.Value).FractionalPart.Denominator;
-                    BigFloat rational_as_float = BigFloat.Divide(new BigFloat(numerator), new BigFloat(denominator));
+                    BigFloat rational_as_float = AlgoConversion.RationalToFloat(right);
 
                     //Return.
                     return new AlgoValue()
@@ -481,9 +575,7 @@ namespace Algo
                 else if (right.Type == AlgoValueType.Float)
                 {
                     //Get the rational part as a float.
-                    BigInteger numerator = ((BigRational)left.Value).FractionalPart.Numerator;
-                    BigInteger denominator = ((BigRational)left.Value).FractionalPart.Denominator;
-                    BigFloat rational_as_float = BigFloat.Divide(new BigFloat(numerator), new BigFloat(denominator));
+                    BigFloat rational_as_float = AlgoConversion.RationalToFloat(right);
 
                     //Return.
                     return new AlgoValue()
@@ -567,9 +659,7 @@ namespace Algo
                 else if (right.Type == AlgoValueType.Rational)
                 {
                     //Getting float version of rational.
-                    BigInteger numerator = ((BigRational)right.Value).FractionalPart.Numerator;
-                    BigInteger denominator = ((BigRational)right.Value).FractionalPart.Denominator;
-                    BigFloat rational_as_float = BigFloat.Divide(new BigFloat(numerator), new BigFloat(denominator));
+                    BigFloat rational_as_float = AlgoConversion.RationalToFloat(right);
 
                     //Returning.
                     return new AlgoValue()
@@ -635,9 +725,7 @@ namespace Algo
                 if (right.Type == AlgoValueType.Float)
                 {
                     //Getting float version of rational.
-                    BigInteger numerator = ((BigRational)left.Value).FractionalPart.Numerator;
-                    BigInteger denominator = ((BigRational)left.Value).FractionalPart.Denominator;
-                    BigFloat rational_as_float = BigFloat.Divide(new BigFloat(numerator), new BigFloat(denominator));
+                    BigFloat rational_as_float = AlgoConversion.RationalToFloat(right);
 
                     //Returning.
                     return new AlgoValue()
@@ -752,9 +840,7 @@ namespace Algo
                 else if (right.Type == AlgoValueType.Rational)
                 {
                     //Casting rational to a float.
-                    BigInteger numerator = ((BigRational)right.Value).FractionalPart.Numerator;
-                    BigInteger denominator = ((BigRational)right.Value).FractionalPart.Denominator;
-                    BigFloat rational_as_float = BigFloat.Divide(new BigFloat(numerator), new BigFloat(denominator));
+                    BigFloat rational_as_float = AlgoConversion.RationalToFloat(right);
 
                     //Subtracting.
                     return new AlgoValue()
@@ -810,9 +896,7 @@ namespace Algo
                 if (right.Type == AlgoValueType.Float)
                 {
                     //Casting rational to float.
-                    BigInteger numerator = ((BigRational)left.Value).FractionalPart.Numerator;
-                    BigInteger denominator = ((BigRational)left.Value).FractionalPart.Denominator;
-                    BigFloat rational_as_float = BigFloat.Divide(new BigFloat(numerator), new BigFloat(denominator));
+                    BigFloat rational_as_float = AlgoConversion.RationalToFloat(right);
 
                     //Returning.
                     return new AlgoValue()
@@ -949,9 +1033,7 @@ namespace Algo
                     //RATIONAL.
                     case AlgoValueType.Rational:
                         //Casting rational to a float.
-                        BigInteger numerator = ((BigRational)value.Value).FractionalPart.Numerator;
-                        BigInteger denominator = ((BigRational)value.Value).FractionalPart.Denominator;
-                        BigFloat rational_as_float = BigFloat.Divide(new BigFloat(numerator), new BigFloat(denominator));
+                        BigFloat rational_as_float = AlgoConversion.RationalToFloat(value);
 
                         //Returning.
                         return new AlgoValue()
@@ -995,9 +1077,7 @@ namespace Algo
                         Error.Warning(context, "Implicitly casting from rational to intger will likely cause loss of data.");
 
                         //Casting rational to a float.
-                        BigInteger numerator = ((BigRational)value.Value).FractionalPart.Numerator;
-                        BigInteger denominator = ((BigRational)value.Value).FractionalPart.Denominator;
-                        BigFloat rational_as_float = BigFloat.Divide(new BigFloat(numerator), new BigFloat(denominator));
+                        BigFloat rational_as_float = AlgoConversion.RationalToFloat(value);
 
                         if (rational_as_float > long.MaxValue)
                         {
