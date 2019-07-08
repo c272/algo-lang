@@ -177,6 +177,9 @@ namespace Algo
                     break;
                 }
 
+                //Create a scope.
+                Scopes.AddScope();
+
                 //Loop over all the statements.
                 foreach (var statement in context.statement())
                 {
@@ -192,6 +195,9 @@ namespace Algo
                         return returned;
                     }
                 }
+
+                //Destroy the scope.
+                Scopes.RemoveScope();
             }
 
             return null;

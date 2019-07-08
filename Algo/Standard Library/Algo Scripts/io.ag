@@ -8,4 +8,15 @@ library input
     //Get input directly from the console.
     external get <- std_io.input_get;
 
+	//Get input from file.
+	external fromFile <- std_io.input_fromFile;
+
+}
+
+library output
+{
+
+	//Write string output to file.
+	external toFile <- std_io.output_toFile;
+
 }

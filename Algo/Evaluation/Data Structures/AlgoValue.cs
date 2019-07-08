@@ -46,6 +46,25 @@ namespace Algo
                     return false;
             }
         }
+
+        //The Null AlgoValue.
+        public static AlgoValue Null = new AlgoValue()
+        {
+            Type = AlgoValueType.Null,
+            Value = null
+        };
+
+        //True and false.
+        public static AlgoValue True = new AlgoValue()
+        {
+            Type = AlgoValueType.Boolean,
+            Value = true
+        };
+        public static AlgoValue False = new AlgoValue()
+        {
+            Type = AlgoValueType.Boolean,
+            Value = false
+        };
     }
 
     public enum AlgoValueType

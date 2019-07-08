@@ -1,0 +1,7 @@
+//Import standard libraries IO and Core.
+import "io";
+import "core";
+
+//Attempt to read from self (quine!)666
+let self = input.fromFile("io_testing.ag");
+print self;

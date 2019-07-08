@@ -22,4 +22,10 @@ library string
 	//Returns a boolean of whether a string ends with a substring.
 	external endsWith <- std_string.endsWith;
 
+	//Returns a boolean of whether a string represents an integer.
+	external isInteger <- std_string.isInteger;
+
+	//Returns a boolean of whether a string represents a float.
+	external isFloat <- std_string.isFloat;
+
 }

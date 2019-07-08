@@ -1,4 +1,5 @@
 ﻿using Antlr4.Runtime;
+using ExtendedNumerics;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
@@ -57,6 +58,22 @@ namespace Algo.StandardLibrary
                 Name = "endsWith",
                 ParameterCount = 2,
                 Function = StringEndsWith
+            },
+
+            //IsInteger
+            new AlgoPluginFunction()
+            {
+                Name = "isInteger",
+                ParameterCount = 1,
+                Function = IsInteger
+            },
+
+            //IsFloat
+            new AlgoPluginFunction()
+            {
+                Name = "isFloat",
+                ParameterCount = 1,
+                Function = IsFloat
             }
         };
 
@@ -235,6 +252,43 @@ namespace Algo.StandardLibrary
                 Type = AlgoValueType.Boolean,
                 Value = source.EndsWith(end)
             };
+        }
+
+        //Check if a string is a valid integer.
+        public static AlgoValue IsInteger(ParserRuleContext context, params AlgoValue[] args)
+        {
+            //Check input type.
+            if (args[0].Type == AlgoValueType.Integer) { return AlgoValue.True; }
+            if (args[0].Type != AlgoValueType.String) { return AlgoValue.False; }
+
+            //It's a string, check if it can be parsed to an integer.
+            try
+            {
+                BigInteger b = BigInteger.Parse((string)args[0].Value);
+                return AlgoValue.True;
+            } catch
+            {
+                return AlgoValue.False;
+            }
+        }
+
+        //Check if a string is a valid float.
+        public static AlgoValue IsFloat(ParserRuleContext context, params AlgoValue[] args)
+        {
+            //Check input type.
+            if (args[0].Type == AlgoValueType.Float) { return AlgoValue.True; }
+            if (args[0].Type != AlgoValueType.String) { return AlgoValue.False; }
+
+            //It's a string, check if it can be parsed to an integer.
+            try
+            {
+                BigFloat b = BigFloat.Parse((string)args[0].Value);
+                return AlgoValue.True;
+            }
+            catch
+            {
+                return AlgoValue.False;
+            }
         }
     }
 }

@@ -66,8 +66,6 @@ library array
     {
         for (i in arr) 
         {
-            print arr[i];
-            print item;
             if (arr[i] == item) 
             {
                 return i;

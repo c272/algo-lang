@@ -1,0 +1,23 @@
+//Fizz Buzz, written in Algo.
+//by Larry Tang, 2019
+
+//Import required libraries.
+import "core";
+import "io";
+
+//Get the limit to print to.
+print "Enter what value you wish to print up to.";
+while (true) 
+{
+    let limit = input.get();
+    if (!string.isInteger(limit)) 
+    {
+        print "Invalid limit, please enter again.";
+    }
+    else 
+    {
+        break;
+    }
+}
+
+print "The limit is " + limit;
