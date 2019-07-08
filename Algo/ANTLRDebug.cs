@@ -22,7 +22,8 @@ namespace Algo
             Console.WriteLine("ANTLR Lexed Tokens:");
             foreach (var tok in tokens)
             {
-                Console.WriteLine("[" + vocab.GetSymbolicName(tok.Type) + ", " + tok.Text + ", channel=" + tok.Channel + "]");
+                if (vocab.GetSymbolicName(tok.Type) != "WS")
+                    Console.WriteLine("[" + vocab.GetSymbolicName(tok.Type) + ", " + tok.Text.Replace("\n","") + ", channel=" + tok.Channel + "]");
             }
             Console.WriteLine("");
 

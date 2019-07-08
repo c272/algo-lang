@@ -81,6 +81,7 @@ namespace Algo
 
             if (AlgoRuntimeInformation.DeveloperMode)
             {
+                Console.ForegroundColor = ConsoleColor.Gray;
                 Console.WriteLine("\n ------------------\n | END EVALUATION |\n ------------------\n");
 
                 //Print variables.

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Numerics;
 using Antlr4.Runtime;
 
 namespace Algo.StandardLibrary
@@ -35,6 +36,14 @@ namespace Algo.StandardLibrary
                 Name = "output_toFile",
                 Function = OutputToFile,
                 ParameterCount = 2
+            },
+
+            //output.changeConsoleColour();
+            new AlgoPluginFunction()
+            {
+                Name = "output_changeConsoleColour",
+                Function = ChangeConsoleColour,
+                ParameterCount = 1
             }
         };
 
@@ -87,6 +96,29 @@ namespace Algo.StandardLibrary
                 Type = AlgoValueType.Null,
                 Value = null
             };
+        }
+
+        //Change the colour of the console.
+        public static AlgoValue ChangeConsoleColour(ParserRuleContext context, params AlgoValue[] args)
+        {
+            //Check the first argument.
+            if (args[0].Type != AlgoValueType.Integer)
+            {
+                Error.Fatal(context, "Invalid colour given (colour must be an enum value).");
+                return null;
+            }
+
+            //It's an integer, check it's not too large.
+            if ((BigInteger)args[0].Value > 14)
+            {
+                //Too large.
+                Error.Fatal(context, "Invalid colour given (enum value is too large)");
+                return null;
+            }
+
+            //Cast to integer.
+            Console.ForegroundColor = (ConsoleColor)int.Parse(((BigInteger)args[0].Value).ToString());
+            return AlgoValue.Null;
         }
     }
 }

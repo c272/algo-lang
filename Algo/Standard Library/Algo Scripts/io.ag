@@ -19,4 +19,28 @@ library output
 	//Write string output to file.
 	external toFile <- std_io.output_toFile;
 
+	//Change the colour of the console output.
+	external setConsoleColour <- std_io.output_changeConsoleColour;
+
 }
+
+//Console colours for the Output library.
+let consoleColour = enum 
+{
+	Black,
+    DarkBlue,
+    DarkGreen,
+    DarkCyan,
+    DarkRed,
+    DarkMagenta,
+    DarkYellow,
+    Gray,
+    DarkGray,
+    Blue,
+    Green,
+    Cyan,
+    Red,
+    Magenta,
+    Yellow,
+    White
+};
