@@ -53,15 +53,16 @@ namespace Algo
                     //Enumerate all statements.
                     foreach (var statement in context.statement())
                     {
-                        //If it's a break statement, then just return null, not a value.
-                        if (statement.stat_break() != null)
-                        {
-                            return null;
-                        }
-
                         AlgoValue returned = (AlgoValue)VisitStatement(statement);
                         if (returned != null)
                         {
+                            //Delete scope, we're done with looping.
+                            Scopes.RemoveScope();
+
+                            //Check if it's a break.
+                            if (returned == AlgoValue.Break) { return null; }
+
+                            //No, return normally.
                             return returned;
                         }
                     }
@@ -138,17 +139,18 @@ namespace Algo
                 //Executing all statements in loop.
                 foreach (var statement in context.statement())
                 {
-                    //If it's a break statement, then just return null, not a value.
-                    if (statement.stat_break() != null)
-                    {
-                        return null;
-                    }
-
                     //For statements executing other statements, it must be remembered to return results from
                     //those statements.
                     AlgoValue returned = (AlgoValue)VisitStatement(statement);
                     if (returned != null)
                     {
+                        //Delete scope, we're done with looping.
+                        Scopes.RemoveScope();
+
+                        //Check if it's a break.
+                        if (returned == AlgoValue.Break) { return null; }
+
+                        //No, return normally.
                         return returned;
                     }
                 }
@@ -183,15 +185,16 @@ namespace Algo
                 //Loop over all the statements.
                 foreach (var statement in context.statement())
                 {
-                    //If it's a break statement, then just return null, not a value.
-                    if (statement.stat_break() != null)
-                    {
-                        return null;
-                    }
-
                     AlgoValue returned = (AlgoValue)VisitStatement(statement);
                     if (returned != null)
                     {
+                        //Delete scope, we're done with looping.
+                        Scopes.RemoveScope();
+
+                        //Check if it's a break.
+                        if (returned == AlgoValue.Break) { return null; }
+
+                        //No, return normally.
                         return returned;
                     }
                 }
@@ -206,7 +209,7 @@ namespace Algo
         //A break statement in Algo.
         public override object VisitStat_break([NotNull] algoParser.Stat_breakContext context)
         {
-            return null;
+            return AlgoValue.Break;
         }
     }
 }

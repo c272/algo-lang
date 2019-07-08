@@ -65,6 +65,13 @@ namespace Algo
             Type = AlgoValueType.Boolean,
             Value = false
         };
+
+        //Break value.
+        public static AlgoValue Break = new AlgoValue()
+        {
+            Type = AlgoValueType.Break,
+            Value = null
+        };
     }
 
     public enum AlgoValueType
@@ -78,6 +85,7 @@ namespace Algo
         Function,
         EmulatedFunction,
         Object,
+        Break,
         Null
     }
 }

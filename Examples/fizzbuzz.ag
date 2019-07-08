@@ -7,9 +7,10 @@ import "io";
 
 //Get the limit to print to.
 print "Enter what value you wish to print up to.";
+let limit = null;
 while (true) 
 {
-    let limit = input.get();
+    limit = input.get();
     if (!string.isInteger(limit)) 
     {
         print "Invalid limit, please enter again.";
@@ -20,4 +21,7 @@ while (true)
     }
 }
 
-print "The limit is " + limit;
+//Got the limit.
+limit = int(limit);
+
+//Now, FizzBuzz.

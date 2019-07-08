@@ -132,8 +132,8 @@ namespace Algo
             }
             else if (context.stat_break() != null)
             {
-                //Break statement, ignore this, this is detected by loops.
-                return null;
+                //Break statement, return a break value.
+                return AlgoValue.Break;
             }
             else
             {

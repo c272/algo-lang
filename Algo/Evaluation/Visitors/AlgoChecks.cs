@@ -31,6 +31,7 @@ namespace Algo
                     AlgoValue returned = (AlgoValue)VisitStatement(statement);
                     if (returned != null)
                     {
+                        Scopes.RemoveScope();
                         return returned;
                     }
                 }
@@ -63,6 +64,7 @@ namespace Algo
                             AlgoValue returned = (AlgoValue)VisitStatement(statement);
                             if (returned != null)
                             {
+                                Scopes.RemoveScope();
                                 return returned;
                             }
                         }
@@ -88,6 +90,7 @@ namespace Algo
                     AlgoValue returned = (AlgoValue)VisitStatement(statement);
                     if (returned != null)
                     {
+                        Scopes.RemoveScope();
                         return returned;
                     }
                 }
