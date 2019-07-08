@@ -28,6 +28,9 @@ limit = int(limit);
 print "\nPrinting...\n---";
 for (i up to limit) 
 {
+    //Make sure it's 1 and up, not 0 and up.
+    if (i < 1) { continue; }
+
     let out = "";
     if (i % 3 == 0) {
         out += "Fizz";

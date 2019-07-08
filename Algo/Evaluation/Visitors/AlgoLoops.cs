@@ -56,12 +56,14 @@ namespace Algo
                         AlgoValue returned = (AlgoValue)VisitStatement(statement);
                         if (returned != null)
                         {
+                            //Continue statement?
+                            if (returned == AlgoValue.Continue) { break; }
+
                             //Delete scope, we're done with looping.
                             Scopes.RemoveScope();
 
-                            //Check if it's a break or continue.
+                            //Check if it's a break.
                             if (returned == AlgoValue.Break) { return null; }
-                            if (returned == AlgoValue.Continue) { break; }
 
                             //No, return normally.
                             return returned;
@@ -145,12 +147,14 @@ namespace Algo
                     AlgoValue returned = (AlgoValue)VisitStatement(statement);
                     if (returned != null)
                     {
+                        //Continue statement?
+                        if (returned == AlgoValue.Continue) { break; }
+
                         //Delete scope, we're done with looping.
                         Scopes.RemoveScope();
 
-                        //Check if it's a break or continue.
+                        //Check if it's a break.
                         if (returned == AlgoValue.Break) { return null; }
-                        if (returned == AlgoValue.Continue) { break; }
 
                         //No, return normally.
                         return returned;
@@ -190,12 +194,14 @@ namespace Algo
                     AlgoValue returned = (AlgoValue)VisitStatement(statement);
                     if (returned != null)
                     {
+                        //Continue statement?
+                        if (returned == AlgoValue.Continue) { break; }
+
                         //Delete scope, we're done with looping.
                         Scopes.RemoveScope();
 
-                        //Check if it's a break or continue.
+                        //Check if it's a break.
                         if (returned == AlgoValue.Break) { return null; }
-                        if (returned == AlgoValue.Continue) { break; }
 
                         //No, return normally.
                         return returned;
