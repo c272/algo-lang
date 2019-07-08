@@ -72,6 +72,13 @@ namespace Algo
             Type = AlgoValueType.Break,
             Value = null
         };
+
+        //Continue value.
+        public static AlgoValue Continue = new AlgoValue()
+        {
+            Type = AlgoValueType.Continue,
+            Value = null
+        };
     }
 
     public enum AlgoValueType
@@ -86,6 +93,7 @@ namespace Algo
         EmulatedFunction,
         Object,
         Break,
+        Continue,
         Null
     }
 }

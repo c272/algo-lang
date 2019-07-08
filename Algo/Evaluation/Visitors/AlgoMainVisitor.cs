@@ -135,6 +135,11 @@ namespace Algo
                 //Break statement, return a break value.
                 return AlgoValue.Break;
             }
+            else if (context.stat_continue() != null)
+            {
+                //Continue statement, return a continue value.
+                return AlgoValue.Continue;
+            }
             else
             {
                 Error.Fatal(context, "Syntax error, unrecognized statement.");

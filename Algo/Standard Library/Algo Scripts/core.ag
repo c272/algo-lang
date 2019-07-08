@@ -48,6 +48,8 @@ library core
         Function,
         EmulatedFunction,
         Object,
+        Break,
+        Continue,
         Null
     };
 }

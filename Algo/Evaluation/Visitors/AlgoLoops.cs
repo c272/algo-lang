@@ -59,8 +59,9 @@ namespace Algo
                             //Delete scope, we're done with looping.
                             Scopes.RemoveScope();
 
-                            //Check if it's a break.
+                            //Check if it's a break or continue.
                             if (returned == AlgoValue.Break) { return null; }
+                            if (returned == AlgoValue.Continue) { break; }
 
                             //No, return normally.
                             return returned;
@@ -147,8 +148,9 @@ namespace Algo
                         //Delete scope, we're done with looping.
                         Scopes.RemoveScope();
 
-                        //Check if it's a break.
+                        //Check if it's a break or continue.
                         if (returned == AlgoValue.Break) { return null; }
+                        if (returned == AlgoValue.Continue) { break; }
 
                         //No, return normally.
                         return returned;
@@ -191,8 +193,9 @@ namespace Algo
                         //Delete scope, we're done with looping.
                         Scopes.RemoveScope();
 
-                        //Check if it's a break.
+                        //Check if it's a break or continue.
                         if (returned == AlgoValue.Break) { return null; }
+                        if (returned == AlgoValue.Continue) { break; }
 
                         //No, return normally.
                         return returned;
@@ -204,12 +207,6 @@ namespace Algo
             }
 
             return null;
-        }
-
-        //A break statement in Algo.
-        public override object VisitStat_break([NotNull] algoParser.Stat_breakContext context)
-        {
-            return AlgoValue.Break;
         }
     }
 }

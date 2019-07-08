@@ -25,6 +25,7 @@ statement: (  stat_define
             | stat_list_add
             | stat_list_remove
 			| stat_break
+			| stat_continue
 		   )  ENDLINE
 		   
 			|  ( stat_forLoop
@@ -54,6 +55,7 @@ stat_import: IMPORT_SYM expr (AS_SYM IDENTIFIER)?;
 stat_list_add: ADD_SYM expr TO_SYM (IDENTIFIER | obj_access) (AT_SYM expr)?;
 stat_list_remove: REMOVE_SYM expr (FROM_SYM | IN_SYM) (IDENTIFIER | obj_access);
 stat_break: BREAK_SYM;
+stat_continue: CONTINUE_SYM;
 
 //Elif and else statements, not directly available, only by proxy.
 stat_elif: ELSE_SYM IF_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE;
@@ -150,6 +152,7 @@ FOR_SYM: 'for';
 FOREACH_SYM: 'foreach';
 ADD_SYM: 'add';
 BREAK_SYM: 'break';
+CONTINUE_SYM: 'continue';
 AT_SYM: 'at';
 REMOVE_SYM: 'remove';
 FROM_SYM: 'from';
