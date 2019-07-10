@@ -10,7 +10,7 @@ library input
 
 	//Get input from file.
 	external fromFile <- std_io.input_fromFile;
-
+	
 }
 
 library output
@@ -21,6 +21,17 @@ library output
 
 	//Change the colour of the console output.
 	external setConsoleColour <- std_io.output_changeConsoleColour;
+
+	//Create a file on disk.
+	external createFile <- std_io.output_createFile;
+
+}
+
+library file
+{
+
+	//Check whether a file exists or not.
+	external exists <- std_io.file_exists;
 
 }
 

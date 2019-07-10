@@ -1,0 +1,79 @@
+// Functions for the to-do app in Algo.
+// by Larry Tang, 2019
+
+//Import required libraries.
+import "core";
+import "io";
+
+//Create a new to-do note.
+let createNote(noteMessage) =
+{
+    //Open the current to-do file.
+}
+
+///////////////////////
+// UTILITY FUNCTIONS //
+///////////////////////
+
+//Open the to-do notes file.
+let getNotes()  =
+{
+    //Get file text.
+    let todoText = input.fromFile("todo.txt");
+
+    //Split by line.
+    let todoItems = string.split(todoText, "\n");
+
+    //For each of the items, convert them to item info.
+    for (i in todoItems) 
+    {
+        let item = todoItems[i];
+        item = string.split(items, "|");
+        item = object {
+            let id = int(items[0]);
+            let text = items[1];
+        };
+        
+        todoItems[i] = item;
+    }
+
+    return todoItems;
+}
+
+//Get information about a to-do with a given ID.
+let getByID(x) =
+{
+    //Get file.
+    let todoItems = getNotes();
+    
+    //Loop over items.
+    foreach (item in todoItems) 
+    {
+        if (item.id == x) { return item; }
+    }
+
+    //Didn't find it :(
+    return null;
+}
+
+//Create a new note in the to-do notes file.
+let createItem(x) =
+{
+    let todoText = getNotes();
+    
+    //Get maximum used ID.
+    let maxID = 0;
+    foreach (item in todoText)
+    {
+        if (item.id > maxID)
+        {
+            maxID = item.id;
+        }
+    }
+
+    //Add to todo text.
+    todoText += "\n" + maxID + "|" + x;
+
+    //Save todo file.
+    output.toFile("todo.txt", todoText);
+}

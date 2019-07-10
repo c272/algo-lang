@@ -1,5 +1,5 @@
-import "std/io";
-import "std/core";
+import "io";
+import "core";
 
 //Get the desired operator.
 print "Enter your operator (*, +, - or /):";

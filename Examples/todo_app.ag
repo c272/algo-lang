@@ -1,0 +1,51 @@
+// Persistent To-Do List in Algo
+// by Larry Tang, 2019
+
+//Require the needed libraries.
+import "core";
+import "io";
+
+//Import the functions for the to-do application.
+import "todo_functions" as todo;
+
+//Create to-do file as required.
+if (!file.exists("todo.txt"))
+{
+    output.createFile("todo.txt");
+}
+
+//Check what action should be performed.
+print "Welcome to the Algo to-do application.";
+print "---------";
+print "What action would you like to perform?";
+print "1: Create a new to-do item.";
+print "2: Remove a to-do item.";
+print "3: List the current to-do items.";
+print "---------";
+
+//Get the action.
+let action = input.get();
+
+//Switch on the action.
+if (action == "1")
+{
+    print "What note would you like to add?";
+    let noteText = input.get();
+    todo.createItem(noteText);
+}
+else if (action == "2")
+{
+    print "not done";
+}
+else if (action == "3")
+{
+    //Get notes.
+    let notes = todo.getNotes();
+
+    //Enumerate, print.
+    print "ID | Text";
+    foreach (item in notes)
+    {
+        print item.id + " | " + item.text;
+    }
+}

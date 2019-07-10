@@ -30,6 +30,14 @@ namespace Algo.StandardLibrary
                 ParameterCount = 1
             },
 
+            //input.fileExists();
+            new AlgoPluginFunction()
+            {
+                Name = "file_exists",
+                Function = DoesFileExist,
+                ParameterCount = 1
+            },
+
             //output.toFile();
             new AlgoPluginFunction()
             {
@@ -43,6 +51,14 @@ namespace Algo.StandardLibrary
             {
                 Name = "output_changeConsoleColour",
                 Function = ChangeConsoleColour,
+                ParameterCount = 1
+            },
+
+            //output.createFile();
+            new AlgoPluginFunction()
+            {
+                Name = "output_createFile",
+                Function = DoesFileExist,
                 ParameterCount = 1
             }
         };
@@ -119,6 +135,47 @@ namespace Algo.StandardLibrary
             //Cast to integer.
             Console.ForegroundColor = (ConsoleColor)int.Parse(((BigInteger)args[0].Value).ToString());
             return AlgoValue.Null;
+        }
+
+        //Check if a file exists.
+        public static AlgoValue DoesFileExist(ParserRuleContext context, params AlgoValue[] args)
+        {
+            if (args[0].Type != AlgoValueType.String)
+            {
+                Error.Fatal(context, "Argument for file must be a string.");
+                return null;
+            }
+
+            //Check whether file exists.
+            if (File.Exists((string)args[0].Value))
+            {
+                return AlgoValue.True;
+            }
+
+            return AlgoValue.False;
+        }
+
+        //Create a file at a given path.
+        public static AlgoValue CreateFile(ParserRuleContext context, params AlgoValue[] args)
+        {
+            Console.WriteLine("create file");
+            if (args[0].Type != AlgoValueType.String)
+            {
+                Error.Fatal(context, "Name of file to create must be a string.");
+                return null;
+            }
+
+            //Attempt to create a file.
+            try
+            {
+                File.Create((string)args[0].Value);
+                return AlgoValue.True;
+            }
+            catch(Exception e)
+            {
+                Error.Warning(context, "Failed to create file '" + (string)args[0].Value + "' (" + e.Message + ").");
+                return AlgoValue.False;
+            }
         }
     }
 }
