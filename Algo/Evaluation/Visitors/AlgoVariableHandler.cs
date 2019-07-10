@@ -84,9 +84,21 @@ namespace Algo
             if (context.IDENTIFIER() != null)
             {
                 objString = context.IDENTIFIER().GetText();
-            } else
+            }
+            else if (context.obj_access() != null)
             {
                 objString = context.obj_access().GetText();
+            }
+            else
+            {
+                if (context.array_access().IDENTIFIER() != null)
+                {
+                    objString = context.array_access().IDENTIFIER().GetText();
+                }
+                else
+                {
+                    objString = context.array_access().obj_access().GetText();
+                }
             }
 
             //Validate it.
@@ -125,7 +137,16 @@ namespace Algo
             }
 
             //Set variable.
-            Scopes.SetVariable(objString, value);
+            if (context.array_access() == null)
+            {
+                Scopes.SetVariable(objString, value);
+            }
+            else
+            {
+                //It's an array, so set the list value instead.
+                Scopes.SetListValue(context, objString, context.array_access(), value);
+            }
+
             return null;
         }
 

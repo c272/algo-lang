@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -286,6 +287,71 @@ namespace Algo
                 //Set value of variable.
                 currentObj.ObjectScopes.SetVariable(objParts[objParts.Length - 1], value);
             }
+        }
+
+        //Set list value.
+        public void SetListValue(ParserRuleContext context, string objString, algoParser.Array_accessContext array_access, AlgoValue value)
+        {
+            //Array access, so get the variable, and then set the list element, then set.
+            AlgoValue list = GetVariable(objString);
+            
+            //Get array indexes.
+            List<int> indexes = new List<int>();
+            foreach (var index in array_access.literal_params().expr())
+            {
+                var indexVal = (AlgoValue)Program.visitor.VisitExpr(index);
+                if (indexVal.Type != AlgoValueType.Integer)
+                {
+                    Error.Fatal(context, "Invalid type for indexing value.");
+                }
+
+                if ((BigInteger)indexVal.Value > int.MaxValue)
+                {
+                    Error.Fatal(context, "Indexing value is too large for array index.");
+                }
+
+                indexes.Add(int.Parse(((BigInteger)indexVal.Value).ToString()));
+            }
+
+            //Access indexes.
+            List<AlgoValue> listMemberArray = new List<AlgoValue>();
+            listMemberArray.Add(list);
+            for (int i = 0; i < indexes.Count - 1; i++)
+            {
+                //Get AlgoValue for this index, check it's a list.
+                if (listMemberArray.Last().Type != AlgoValueType.List)
+                {
+                    Error.Fatal(context, "Cannot index into a non-list value.");
+                }
+
+                //Index into it, add to list member array.
+                listMemberArray.Add(((List<AlgoValue>)listMemberArray.Last().Value)[indexes[i]]);
+            }
+
+            //Check if the final member is a list.
+            if (listMemberArray.Last().Type != AlgoValueType.List)
+            {
+                Error.Fatal(context, "Cannot index into a non-list value.");
+            }
+
+            //Change the index.
+            ((List<AlgoValue>)listMemberArray.Last().Value)[indexes.Last()] = value;
+
+            //Propogate the change back up the list tree.
+            if (indexes.Count > 1)
+            {
+                for (int i = indexes.Count - 2; i < 0; i--)
+                {
+                    //Set the value to the next one along, until finish.
+                    List<AlgoValue> val = (List<AlgoValue>)listMemberArray[i].Value;
+                    val[indexes[i]] = listMemberArray[i + 1];
+
+                    listMemberArray[i].Value = val;
+                }
+            }
+
+            //Set the value.
+            SetVariable(objString, listMemberArray.First());
         }
         
         //Checks whether a variable exists.

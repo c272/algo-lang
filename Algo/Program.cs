@@ -15,6 +15,9 @@ namespace Algo
 {
     class Program
     {
+        //The tree traversal class for Algo.
+        public static algoVisitor visitor;
+
         static void Main(string[] args)
         {
             //Check that all the necessary directories exist.
@@ -76,7 +79,7 @@ namespace Algo
             }
 
             //Walking the tree.
-            var visitor = new algoVisitor();
+            visitor = new algoVisitor();
             visitor.VisitCompileUnit(tree);
 
             if (AlgoRuntimeInformation.DeveloperMode)

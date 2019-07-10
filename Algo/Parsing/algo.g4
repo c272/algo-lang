@@ -37,9 +37,9 @@ statement: (  stat_define
 
 //Types of statement.
 stat_define: LET_SYM IDENTIFIER EQUALS expr;
-stat_setvar: (IDENTIFIER | obj_access) EQUALS expr rounding_expr?;
-stat_setvar_op: (IDENTIFIER | obj_access) selfmod_op expr;
-stat_setvar_postfix: (IDENTIFIER | obj_access) postfix_op;
+stat_setvar: (IDENTIFIER | obj_access | array_access) EQUALS expr rounding_expr?;
+stat_setvar_op: (IDENTIFIER | obj_access | array_access) selfmod_op expr;
+stat_setvar_postfix: (IDENTIFIER | obj_access | array_access) postfix_op;
 stat_deletevar: DISREGARD_SYM (IDENTIFIER | obj_access | MUL_OP);
 stat_enumDef: LET_SYM IDENTIFIER EQUALS ENUM_SYM LBRACE abstract_params? RBRACE;
 stat_functionCall: (IDENTIFIER | obj_access) LBRACKET literal_params? RBRACKET;
