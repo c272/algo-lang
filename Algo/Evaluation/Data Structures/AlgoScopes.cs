@@ -21,7 +21,7 @@ namespace Algo
         }
 
         //Add a scope.
-        public void AddScope(Dictionary<string, AlgoValue> scope=null)
+        public void AddScope(Dictionary<string, AlgoValue> scope = null)
         {
             if (scope == null)
             {
@@ -35,7 +35,7 @@ namespace Algo
         //Remove a scope.
         public void RemoveScope()
         {
-            if (Scopes.Count==1)
+            if (Scopes.Count == 1)
             {
                 throw new Exception("Cannot remove scope, have already reached the top of the scope.");
             }
@@ -65,10 +65,10 @@ namespace Algo
         }
 
         //Remove a library.
-        public void RemoveLibrary(string name) 
+        public void RemoveLibrary(string name)
         {
             //Does the library exist?
-            if (!Libraries.ContainsKey(name)) 
+            if (!Libraries.ContainsKey(name))
             {
                 Error.FatalNoContext("A library with the name '" + name + "' does not exist to remove.");
                 return;
@@ -107,7 +107,7 @@ namespace Algo
         public AlgoScopeCollection GetScopeFromLibAccess(algoParser.Obj_accessContext lib_accessContext)
         {
             AlgoScopeCollection toReturn = this;
-            for (int i=0; i<lib_accessContext.IDENTIFIER().Length-1; i++)
+            for (int i = 0; i < lib_accessContext.IDENTIFIER().Length - 1; i++)
             {
                 //Library?
                 string vname = lib_accessContext.IDENTIFIER()[i].GetText();
@@ -164,7 +164,7 @@ namespace Algo
             //Getting the deepest scope.
             AlgoObject currentObj = (AlgoObject)currentObjValue.Value;
 
-            for (int i=1; i<objParts.Length-1; i++)
+            for (int i = 1; i < objParts.Length - 1; i++)
             {
                 //Attempt to get the child.
                 if (!currentObj.ObjectScopes.VariableExists(objParts[i]))
@@ -184,7 +184,7 @@ namespace Algo
             }
 
             //Getting the variable referenced at the deepest scope.
-            if (!currentObj.ObjectScopes.VariableExists(objParts[objParts.Length-1]))
+            if (!currentObj.ObjectScopes.VariableExists(objParts[objParts.Length - 1]))
             {
                 return null;
             }
@@ -289,12 +289,69 @@ namespace Algo
             }
         }
 
+        //Get a list value.
+        public AlgoValue GetListValue(ParserRuleContext context, string objString, algoParser.Array_accessContext array_access)
+        {
+            //Grab list member array and index array.
+            var memIndexes = GetArrayAccessMembers(context, objString, array_access);
+            var listMemberArray = memIndexes.Item2;
+            var indexes = memIndexes.Item1;
+
+            //Check if the final member is a list.
+            if (listMemberArray.Last().Type != AlgoValueType.List)
+            {
+                Error.Fatal(context, "Cannot index into a non-list value.");
+            }
+
+            //Get the final index, return it.
+            return ((List<AlgoValue>)listMemberArray.Last().Value)[indexes.Last()];
+        }
+
         //Set list value.
         public void SetListValue(ParserRuleContext context, string objString, algoParser.Array_accessContext array_access, AlgoValue value)
         {
+            //Get list member array and index array.
+            var memIndexes = GetArrayAccessMembers(context, objString, array_access);
+            var listMemberArray = memIndexes.Item2;
+            var indexes = memIndexes.Item1;
+
+            //Check if the final member is a list.
+            if (listMemberArray.Last().Type != AlgoValueType.List)
+            {
+                Error.Fatal(context, "Cannot index into a non-list value.");
+            }
+
+            //Change the index.
+            ((List<AlgoValue>)listMemberArray.Last().Value)[indexes.Last()] = value;
+
+            //Propogate the change back up the list tree.
+            if (indexes.Count > 1)
+            {
+                for (int i = indexes.Count - 2; i < 0; i--)
+                {
+                    //Set the value to the next one along, until finish.
+                    List<AlgoValue> val = (List<AlgoValue>)listMemberArray[i].Value;
+                    val[indexes[i]] = listMemberArray[i + 1];
+
+                    listMemberArray[i].Value = val;
+                }
+            }
+
+            //Set the value.
+            SetVariable(objString, listMemberArray.First());
+        }
+
+        //Gets the indexes and list member tree for a given array access.
+        public Tuple<List<int>, List<AlgoValue>> GetArrayAccessMembers(ParserRuleContext context, string objString, algoParser.Array_accessContext array_access)
+        {
             //Array access, so get the variable, and then set the list element, then set.
             AlgoValue list = GetVariable(objString);
-            
+            if (list.Type != AlgoValueType.List)
+            {
+                Error.Fatal(context, "The value to enumerate into is not a list.");
+                return null;
+            }
+
             //Get array indexes.
             List<int> indexes = new List<int>();
             foreach (var index in array_access.literal_params().expr())
@@ -328,30 +385,7 @@ namespace Algo
                 listMemberArray.Add(((List<AlgoValue>)listMemberArray.Last().Value)[indexes[i]]);
             }
 
-            //Check if the final member is a list.
-            if (listMemberArray.Last().Type != AlgoValueType.List)
-            {
-                Error.Fatal(context, "Cannot index into a non-list value.");
-            }
-
-            //Change the index.
-            ((List<AlgoValue>)listMemberArray.Last().Value)[indexes.Last()] = value;
-
-            //Propogate the change back up the list tree.
-            if (indexes.Count > 1)
-            {
-                for (int i = indexes.Count - 2; i < 0; i--)
-                {
-                    //Set the value to the next one along, until finish.
-                    List<AlgoValue> val = (List<AlgoValue>)listMemberArray[i].Value;
-                    val[indexes[i]] = listMemberArray[i + 1];
-
-                    listMemberArray[i].Value = val;
-                }
-            }
-
-            //Set the value.
-            SetVariable(objString, listMemberArray.First());
+            return new Tuple<List<int>, List<AlgoValue>>(indexes, listMemberArray);
         }
         
         //Checks whether a variable exists.

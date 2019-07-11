@@ -159,9 +159,20 @@ namespace Algo
             {
                 varname = context.IDENTIFIER().GetText();
             }
-            else
+            else if (context.obj_access() != null)
             {
                 varname = context.obj_access().GetText();
+            }
+            else
+            {
+                if (context.array_access().IDENTIFIER() != null)
+                {
+                    varname = context.array_access().IDENTIFIER().GetText();
+                }
+                else
+                {
+                    varname = context.array_access().obj_access().GetText();
+                }
             }
 
             //Check if the variable already exists.
@@ -172,7 +183,15 @@ namespace Algo
             }
 
             //It does, get the variable.
-            AlgoValue oldValue = Scopes.GetVariable(varname);
+            AlgoValue oldValue = null;
+            if (context.array_access() == null)
+            {
+                oldValue = Scopes.GetVariable(varname);
+            }
+            else
+            {
+                oldValue = Scopes.GetListValue(context, varname, context.array_access());
+            }
 
             //Does, evaluate the expression to set the value.
             AlgoValue value = (AlgoValue)VisitExpr(context.expr());
@@ -207,7 +226,15 @@ namespace Algo
             }
 
             //Set the value of the variable.
-            Scopes.SetVariable(varname, newValue);
+            if (context.array_access() == null)
+            {
+                Scopes.SetVariable(varname, newValue);
+            }
+            else
+            {
+                Scopes.SetListValue(context, varname, context.array_access(), newValue);
+            }
+
             return null;
         }
 
@@ -220,9 +247,20 @@ namespace Algo
             {
                 varname = context.IDENTIFIER().GetText();
             }
-            else
+            else if (context.obj_access() != null)
             {
                 varname = context.obj_access().GetText();
+            }
+            else
+            {
+                if (context.array_access().IDENTIFIER() != null)
+                {
+                    varname = context.array_access().IDENTIFIER().GetText();
+                }
+                else
+                {
+                    varname = context.array_access().obj_access().GetText();
+                }
             }
 
             //Check if the variable already exists.
@@ -233,7 +271,15 @@ namespace Algo
             }
 
             //It does, get the variable.
-            AlgoValue oldValue = Scopes.GetVariable(varname);
+            AlgoValue oldValue = null;
+            if (context.array_access() == null)
+            {
+                oldValue = Scopes.GetVariable(varname);
+            }
+            else
+            {
+                oldValue = Scopes.GetListValue(context, varname, context.array_access());
+            }
 
             //Switch on the operator type.
             int toAdd = 0;
@@ -269,7 +315,14 @@ namespace Algo
             }
 
             //Set the variable value.
-            Scopes.SetVariable(varname, newValue);
+            if (context.array_access() == null)
+            {
+                Scopes.SetVariable(varname, newValue);
+            } else
+            {
+                Scopes.SetListValue(context, varname, context.array_access(), newValue);
+            }
+
             return null;
         }
 
