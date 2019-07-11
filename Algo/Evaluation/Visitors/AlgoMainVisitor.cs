@@ -43,27 +43,27 @@ namespace Algo
             if (context.stat_define() != null)
             {
                 //Define statement.
-                VisitStat_define(context.stat_define());
+                return VisitStat_define(context.stat_define());
             }
             else if (context.stat_setvar() != null)
             {
                 //Set a variable after its definition.
-                VisitStat_setvar(context.stat_setvar());
+                return VisitStat_setvar(context.stat_setvar());
             }
             else if (context.stat_setvar_op() != null)
             {
                 //Set a variable using a self modifying operator.
-                VisitStat_setvar_op(context.stat_setvar_op());
+                return VisitStat_setvar_op(context.stat_setvar_op());
             }
             else if (context.stat_setvar_postfix() != null)
             {
                 //Set a variable using a postfix operator.
-                VisitStat_setvar_postfix(context.stat_setvar_postfix());
+                return VisitStat_setvar_postfix(context.stat_setvar_postfix());
             }
             else if (context.stat_deletevar() != null)
             {
                 //Delete a variable from scope.
-                VisitStat_deletevar(context.stat_deletevar());
+                return VisitStat_deletevar(context.stat_deletevar());
             }
             else if (context.stat_if() != null)
             {
@@ -83,7 +83,7 @@ namespace Algo
             else if (context.stat_enumDef() != null)
             {
                 //Definition of an enum.
-                VisitStat_enumDef(context.stat_enumDef());
+                return VisitStat_enumDef(context.stat_enumDef());
             }
             else if (context.stat_functionCall() != null)
             {
@@ -93,7 +93,7 @@ namespace Algo
             else if (context.stat_functionDef() != null)
             {
                 //A function definition.
-                VisitStat_functionDef(context.stat_functionDef());
+                return VisitStat_functionDef(context.stat_functionDef());
             }
             else if (context.stat_return() != null)
             {
@@ -103,32 +103,32 @@ namespace Algo
             else if (context.stat_print() != null)
             {
                 //A print statement.
-                VisitStat_print(context.stat_print());
+                return VisitStat_print(context.stat_print());
             }
             else if (context.stat_library() != null)
             {
                 //Defining a library.
-                VisitStat_library(context.stat_library());
+                return VisitStat_library(context.stat_library());
             }
             else if (context.stat_import() != null)
             {
                 //Importing an Algo script.
-                VisitStat_import(context.stat_import());
+                return VisitStat_import(context.stat_import());
             }
             else if (context.stat_loadFuncExt() != null)
             {
                 //Load an external or internal plugin function.
-                VisitStat_loadFuncExt(context.stat_loadFuncExt());
+                return VisitStat_loadFuncExt(context.stat_loadFuncExt());
             }
             else if (context.stat_list_add() != null)
             {
                 //Add a value to a list.
-                VisitStat_list_add(context.stat_list_add());
+                return VisitStat_list_add(context.stat_list_add());
             }
             else if (context.stat_list_remove() != null)
             {
                 //Remove a value from a list.
-                VisitStat_list_remove(context.stat_list_remove());
+                return VisitStat_list_remove(context.stat_list_remove());
             }
             else if (context.stat_break() != null)
             {

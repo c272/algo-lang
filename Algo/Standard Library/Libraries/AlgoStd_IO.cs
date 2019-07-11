@@ -58,7 +58,7 @@ namespace Algo.StandardLibrary
             new AlgoPluginFunction()
             {
                 Name = "output_createFile",
-                Function = DoesFileExist,
+                Function = CreateFile,
                 ParameterCount = 1
             }
         };
@@ -158,7 +158,6 @@ namespace Algo.StandardLibrary
         //Create a file at a given path.
         public static AlgoValue CreateFile(ParserRuleContext context, params AlgoValue[] args)
         {
-            Console.WriteLine("create file");
             if (args[0].Type != AlgoValueType.String)
             {
                 Error.Fatal(context, "Name of file to create must be a string.");
@@ -168,7 +167,7 @@ namespace Algo.StandardLibrary
             //Attempt to create a file.
             try
             {
-                File.Create((string)args[0].Value);
+                File.WriteAllText((string)args[0].Value, "");
                 return AlgoValue.True;
             }
             catch(Exception e)

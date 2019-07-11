@@ -23,21 +23,27 @@ let getNotes()  =
 
     //Split by line.
     let todoItems = string.split(todoText, "\n");
+    let parsedItems = [];
 
     //For each of the items, convert them to item info.
     for (i in todoItems) 
     {
         let item = todoItems[i];
-        item = string.split(items, "|");
+
+        //Don't read a blank item.
+        if (item == "") { continue; }
+
+        //Not blank, so parse it and add!
+        item = string.split(item, "|");
         item = object {
-            let id = int(items[0]);
-            let text = items[1];
+            let id = int(item[0]);
+            let text = item[1];
         };
         
-        todoItems[i] = item;
+        add item to parsedItems;
     }
 
-    return todoItems;
+    return parsedItems;
 }
 
 //Get information about a to-do with a given ID.
@@ -59,11 +65,12 @@ let getByID(x) =
 //Create a new note in the to-do notes file.
 let createItem(x) =
 {
-    let todoText = getNotes();
+    let todoText = input.fromFile("todo.txt");
+    let todoItems = getNotes();
     
     //Get maximum used ID.
     let maxID = 0;
-    foreach (item in todoText)
+    foreach (item in todoItems)
     {
         if (item.id > maxID)
         {
