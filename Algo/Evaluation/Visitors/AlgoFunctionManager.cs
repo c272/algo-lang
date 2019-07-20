@@ -63,7 +63,6 @@ namespace Algo
 
             //Check if it's a nested variable.
             bool isVariable = false;
-            AlgoScopeCollection objScope = null;
             if (context.obj_access() != null && Scopes.VariableExists(context.obj_access().IDENTIFIER()[0].GetText()))
             {
                 //Yes, it's a variable.
@@ -152,16 +151,12 @@ namespace Algo
                     }
                 }
 
-                //If the function is a library, swap out the current scope for the library's scope
+                //If the function is a library, swap out the current scope for the library's scope.
                 AlgoScopeCollection oldScope = null;
                 if (!isVariable)
                 {
                     oldScope = Scopes;
                     Scopes = scopes_local;
-                }
-                if (objScope != null)
-                {
-                    Scopes.AddScope(objScope.Scopes.First());
                 }
 
                 //Adding a scope, and creating the parameters inside it.
@@ -177,18 +172,22 @@ namespace Algo
                     AlgoValue returned = (AlgoValue)VisitStatement(statement);
                     if (returned != null)
                     {
-                        //Remove the function's scope, return.
-                        Scopes.RemoveScope();
+                        //Switch back to original scope if required.
+                        if (!isVariable)
+                        {
+                            Scopes = oldScope;
+                        } else
+                        {
+                            //Normal function, remove scope and return.
+                            Scopes.RemoveScope();
+                        }
+                        
                         return returned;
                     }
                 }
 
                 //Remove the function's scope, we're done!
                 Scopes.RemoveScope();
-                if (objScope != null)
-                {
-                    Scopes.RemoveScope();
-                }
 
                 //If it was a library, return to old scope.
                 if (!isVariable)
@@ -231,14 +230,18 @@ namespace Algo
                 }
 
                 //Return the result of the delegate.
+                AlgoValue returned = null;
                 try
                 {
-                    return func.Function(context, paramvalues.ToArray());
+                    returned = func.Function(context, paramvalues.ToArray());
                 }
                 catch(Exception e)
                 {
                     Error.Fatal(context, "External function returned an error, " + e.Message);
+                    return null;
                 }
+
+                return returned;
             }
             else
             {
