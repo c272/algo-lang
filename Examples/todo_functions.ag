@@ -5,18 +5,12 @@
 import "core";
 import "io";
 
-//Create a new to-do note.
-let createNote(noteMessage) =
-{
-    //Open the current to-do file.
-}
-
 ///////////////////////
 // UTILITY FUNCTIONS //
 ///////////////////////
 
 //Open the to-do notes file.
-let getNotes()  =
+let getNotes() =
 {
     //Get file text.
     let todoText = input.fromFile("todo.txt");

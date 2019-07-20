@@ -76,24 +76,25 @@ namespace Algo
                 funcToCall = value;
             }
 
-            //No, it's a library.
+            //No, it's a library or identifier.
             else {
 
                 //Getting the correct scope to grab the function from.
                 //Is it just the current one?
                 if (context.IDENTIFIER() != null)
                 {
-                    scopes_local = Scopes;
+                    isVariable = true;
+                    //scopes_local = Scopes;
 
                     //Check if a function variable exists with this name.
-                    if (!scopes_local.VariableExists(context.IDENTIFIER().GetText()))
+                    if (!Scopes.VariableExists(context.IDENTIFIER().GetText()))
                     {
                         Error.Fatal(context, "No function with name '" + context.IDENTIFIER().GetText() + "' exists.");
                         return null;
                     }
 
                     //Get the variable.
-                    AlgoValue value = scopes_local.GetVariable(context.IDENTIFIER().GetText());
+                    AlgoValue value = Scopes.GetVariable(context.IDENTIFIER().GetText());
 
 
                     //Set function to call.
