@@ -35,7 +35,25 @@ if (action == "1")
 }
 else if (action == "2")
 {
-    print "not done";
+    print "Which item would you like to remove?";
+
+    //Get ID, check it's a valid integer.
+    let idStr = null;
+    while (true)
+    {
+        idStr = input.get();
+        if (!string.isInteger(idStr))
+        {
+            print "That is not a valid ID. Please try again.";
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    //Get the integer ID.
+    let id = int(idStr);
 }
 else if (action == "3")
 {

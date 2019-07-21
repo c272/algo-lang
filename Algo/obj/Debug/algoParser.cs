@@ -73,7 +73,7 @@ public partial class algoParser : Parser {
 		null, null, null, null, null, null, "'null'", "'let'", "'for'", "'foreach'", 
 		"'add'", "'break'", "'continue'", "'at'", "'remove'", "'from'", "'while'", 
 		"'in'", "'if'", "'up'", "'to'", "'as'", "'enum'", "'library'", "'sf'", 
-		"'object'", "'else'", "'import'", "'return'", "'print'", "'disregard'", 
+		"'object'", "'else'", "'import'", "'return'", "'print '", "'disregard'", 
 		"'external'", "';'", "'='", "','", "'{'", "'}'", "'['", "']'", "'!'", 
 		"'<-'", "'('", "')'", "'+'", "'-'", "'*'", "'/'", "'^'", "'%'", "'.'", 
 		"'+='", "'-='", "'/='", "'*='", "'++'", "'--'", "'|'", "'&'", "'!='", 

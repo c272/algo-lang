@@ -169,7 +169,7 @@ OBJ_SYM: 'object';
 ELSE_SYM: 'else';
 IMPORT_SYM: 'import';
 RETURN_SYM: 'return';
-PRINT_SYM: 'print';
+PRINT_SYM: 'print ';
 DISREGARD_SYM: 'disregard';
 EXTERNAL_SYM: 'external';
 
