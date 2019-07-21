@@ -71,6 +71,7 @@ let createItem(x) =
             maxID = item.id;
         }
     }
+    maxID++;
 
     //Add to todo text.
     todoText += "\n" + maxID + "|" + x;

@@ -27,8 +27,7 @@
       <CustomCommands>
         <Command>
           <type>BeforeBuild</type>
-          <command>
-          </command>
+          <command></command>
         </Command>
       </CustomCommands>
     </CustomCommands>
