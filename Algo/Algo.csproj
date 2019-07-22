@@ -107,6 +107,8 @@
     <Compile Include="Standard Library\Libraries\AlgoStd_String.cs" />
     <Compile Include="Standard Library\Libraries\AlgoStd_IO.cs" />
     <Compile Include="Evaluation\Visitors\AlgoListManager.cs" />
+    <Compile Include="Standard Library\Libraries\SimpleHTTP.cs" />
+    <Compile Include="Standard Library\Libraries\AlgoStd_WebService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Antlr4 Include="Parsing\algo.g4">

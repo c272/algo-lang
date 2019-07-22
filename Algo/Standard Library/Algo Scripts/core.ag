@@ -55,7 +55,7 @@ library core
 }
 
 //Function to check the type of a variable.
-external type <- std_core.get_type;
+external typeof <- std_core.get_type;
 
 //////////////////////////////////////////////////////
 // Standard array library, in core for ease of use. //

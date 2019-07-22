@@ -79,3 +79,41 @@ let createItem(x) =
     //Save todo file.
     output.toFile("todo.txt", todoText);
 }
+
+let removeItem(x) =
+{
+    if (typeof(x) != core.types.Integer)
+    {
+        return "Invalid type for ID (not integer).";
+    }
+    
+    //Get all notes.
+    let notes = getNotes();
+
+    //Enumerate through items, see if any are the right ID.
+    let found = -1;
+    for (i in notes)
+    {
+        let note = notes[i];
+        if (note.id == x) {
+            found = i;
+        }
+    }
+
+    //Check if it was found.
+    if (found == -1)
+    {
+        return "Invalid note ID (not found).";
+    }
+
+    //Remove the note, rewrite the note file.
+    remove found in notes;
+    let todo = "";
+    foreach (note in notes)
+    {
+        todo += note.id + "|" + note.text + "\n";
+    }
+    
+    output.toFile("todo.txt", todo);
+    return "Successfully removed note.";
+}

@@ -43,27 +43,27 @@ namespace Algo
             if (context.stat_define() != null)
             {
                 //Define statement.
-                return VisitStat_define(context.stat_define());
+                VisitStat_define(context.stat_define());
             }
             else if (context.stat_setvar() != null)
             {
                 //Set a variable after its definition.
-                return VisitStat_setvar(context.stat_setvar());
+                VisitStat_setvar(context.stat_setvar());
             }
             else if (context.stat_setvar_op() != null)
             {
                 //Set a variable using a self modifying operator.
-                return VisitStat_setvar_op(context.stat_setvar_op());
+                VisitStat_setvar_op(context.stat_setvar_op());
             }
             else if (context.stat_setvar_postfix() != null)
             {
                 //Set a variable using a postfix operator.
-                return VisitStat_setvar_postfix(context.stat_setvar_postfix());
+                VisitStat_setvar_postfix(context.stat_setvar_postfix());
             }
             else if (context.stat_deletevar() != null)
             {
                 //Delete a variable from scope.
-                return VisitStat_deletevar(context.stat_deletevar());
+                VisitStat_deletevar(context.stat_deletevar());
             }
             else if (context.stat_if() != null)
             {
@@ -83,17 +83,18 @@ namespace Algo
             else if (context.stat_enumDef() != null)
             {
                 //Definition of an enum.
-                return VisitStat_enumDef(context.stat_enumDef());
+                VisitStat_enumDef(context.stat_enumDef());
             }
             else if (context.stat_functionCall() != null)
             {
                 //A function call.
-                return VisitStat_functionCall(context.stat_functionCall());
+                //This should NOT return, it's a top level single function call.
+                VisitStat_functionCall(context.stat_functionCall());
             }
             else if (context.stat_functionDef() != null)
             {
                 //A function definition.
-                return VisitStat_functionDef(context.stat_functionDef());
+                VisitStat_functionDef(context.stat_functionDef());
             }
             else if (context.stat_return() != null)
             {
@@ -103,32 +104,32 @@ namespace Algo
             else if (context.stat_print() != null)
             {
                 //A print statement.
-                return VisitStat_print(context.stat_print());
+                VisitStat_print(context.stat_print());
             }
             else if (context.stat_library() != null)
             {
                 //Defining a library.
-                return VisitStat_library(context.stat_library());
+                VisitStat_library(context.stat_library());
             }
             else if (context.stat_import() != null)
             {
                 //Importing an Algo script.
-                return VisitStat_import(context.stat_import());
+                VisitStat_import(context.stat_import());
             }
             else if (context.stat_loadFuncExt() != null)
             {
                 //Load an external or internal plugin function.
-                return VisitStat_loadFuncExt(context.stat_loadFuncExt());
+                VisitStat_loadFuncExt(context.stat_loadFuncExt());
             }
             else if (context.stat_list_add() != null)
             {
                 //Add a value to a list.
-                return VisitStat_list_add(context.stat_list_add());
+                VisitStat_list_add(context.stat_list_add());
             }
             else if (context.stat_list_remove() != null)
             {
                 //Remove a value from a list.
-                return VisitStat_list_remove(context.stat_list_remove());
+                VisitStat_list_remove(context.stat_list_remove());
             }
             else if (context.stat_break() != null)
             {

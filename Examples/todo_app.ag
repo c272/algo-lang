@@ -54,6 +54,9 @@ else if (action == "2")
 
     //Get the integer ID.
     let id = int(idStr);
+
+    //Attempt to remove item.
+    print todo.removeItem(id);
 }
 else if (action == "3")
 {

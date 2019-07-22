@@ -107,11 +107,7 @@ namespace Algo.StandardLibrary
 
             //Attempt to write to file.
             File.WriteAllText((string)args[0].Value, (string)args[1].Value);
-            return new AlgoValue()
-            {
-                Type = AlgoValueType.Null,
-                Value = null
-            };
+            return AlgoValue.Null;
         }
 
         //Change the colour of the console.
