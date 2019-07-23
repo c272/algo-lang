@@ -17,7 +17,8 @@ namespace Algo.StandardLibrary
             new AlgoPluginFunction()
             {
                 Function = GET,
-                Name = "get"
+                Name = "get",
+                ParameterCount = 1
             }
         };
 
