@@ -1,6 +1,6 @@
 ﻿// The "io" standard library, provided by Algo.
 // Contains two namespaces, "input" and "output".
-// v0.0.1, revision 0.
+// v0.1.2, revision 2.
 
 library input 
 {

@@ -1,6 +1,6 @@
 ﻿// The "core" standard library, provided by Algo.
 // NOTE: THESE FUNCTIONS ARE NOT IN A LIBRARY.
-// v0.0.3, revision 2.
+// v0.0.4, revision 5.
 
 //Returns the length of an array or string.
 external len <- std_core.len;

@@ -1,0 +1,10 @@
+﻿//The "web"" standard library provided by Algo.
+//v0.0.1, revision 0.
+
+library web
+{
+
+    //Perform a GET request to a URL.
+    external get <- std_web.get;
+
+}

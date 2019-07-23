@@ -4,14 +4,9 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using Antlr4.Runtime;
 
-// offered to the public domain for any use with no restriction
-// and also with no warranty of any kind, please enjoy. - David Jeske. 
-
-// simple HTTP explanation
-// http://www.jmarshall.com/easy/http/
-
-namespace Bend.Util
+namespace Algo
 {
 
     public class HttpProcessor
@@ -25,15 +20,17 @@ namespace Bend.Util
         public String http_method;
         public String http_url;
         public String http_protocol_versionstring;
+        public ParserRuleContext ctx;
         public Hashtable httpHeaders = new Hashtable();
 
 
         private static int MAX_POST_SIZE = 10 * 1024 * 1024; // 10MB
 
-        public HttpProcessor(TcpClient s, HttpServer srv)
+        public HttpProcessor(TcpClient s, HttpServer srv, ParserRuleContext context)
         {
             this.socket = s;
             this.srv = srv;
+            this.ctx = context;
         }
 
 
@@ -74,8 +71,7 @@ namespace Bend.Util
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception: " + e.ToString());
-                writeFailure();
+                writeFailure(e);
             }
             outputStream.Flush();
             // bs.Flush(); // flush any remaining output
@@ -89,24 +85,21 @@ namespace Bend.Util
             string[] tokens = request.Split(' ');
             if (tokens.Length != 3)
             {
-                throw new Exception("invalid http request line");
+                throw new Exception("Invalid HTTP request line.");
             }
             http_method = tokens[0].ToUpper();
             http_url = tokens[1];
             http_protocol_versionstring = tokens[2];
 
-            Console.WriteLine("starting: " + request);
         }
 
         public void readHeaders()
         {
-            Console.WriteLine("readHeaders()");
             String line;
             while ((line = streamReadLine(inputStream)) != null)
             {
                 if (line.Equals(""))
                 {
-                    Console.WriteLine("got headers");
                     return;
                 }
 
@@ -170,7 +163,7 @@ namespace Bend.Util
                         }
                         else
                         {
-                            throw new Exception("client disconnected during post");
+                            throw new Exception("Client disconnected during post.");
                         }
                     }
                     to_read -= numread;
@@ -178,23 +171,23 @@ namespace Bend.Util
                 }
                 ms.Seek(0, SeekOrigin.Begin);
             }
-            Console.WriteLine("get post data end");
+
             srv.handlePOSTRequest(this, new StreamReader(ms));
 
         }
 
         public void writeSuccess(string content_type = "text/html")
         {
-            outputStream.WriteLine("HTTP/1.0 200 OK");
+            outputStream.WriteLine("HTTP/1.0 200 OK.");
             outputStream.WriteLine("Content-Type: " + content_type);
-            outputStream.WriteLine("Connection: close");
+            outputStream.WriteLine("Connection: close.");
             outputStream.WriteLine("");
         }
 
-        public void writeFailure()
+        public void writeFailure(Exception e)
         {
-            outputStream.WriteLine("HTTP/1.0 404 File not found");
-            outputStream.WriteLine("Connection: close");
+            outputStream.WriteLine("HTTP/1.0 404 File not found.");
+            outputStream.WriteLine("Connection: close.");
             outputStream.WriteLine("");
         }
     }
@@ -204,11 +197,13 @@ namespace Bend.Util
 
         protected int port;
         TcpListener listener;
+        ParserRuleContext ctx;
         bool is_active = true;
 
-        public HttpServer(int port)
+        public HttpServer(ParserRuleContext context, int port)
         {
             this.port = port;
+            this.ctx = context;
         }
 
         public void listen()
@@ -218,7 +213,7 @@ namespace Bend.Util
             while (is_active)
             {
                 TcpClient s = listener.AcceptTcpClient();
-                HttpProcessor processor = new HttpProcessor(s, this);
+                HttpProcessor processor = new HttpProcessor(s, this, ctx);
                 Thread thread = new Thread(new ThreadStart(processor.process));
                 thread.Start();
                 Thread.Sleep(1);
@@ -231,44 +226,18 @@ namespace Bend.Util
 
     public class MyHttpServer : HttpServer
     {
-        public MyHttpServer(int port)
-            : base(port)
+        public MyHttpServer(int port, ParserRuleContext ctx)
+            : base(ctx, port)
         {
         }
+
         public override void handleGETRequest(HttpProcessor p)
         {
 
-            if (p.http_url.Equals("/Test.png"))
-            {
-                Stream fs = File.Open("../../Test.png", FileMode.Open);
-
-                p.writeSuccess("image/png");
-                fs.CopyTo(p.outputStream.BaseStream);
-                p.outputStream.BaseStream.Flush();
-            }
-
-            Console.WriteLine("request: {0}", p.http_url);
-            p.writeSuccess();
-            p.outputStream.WriteLine("<html><body><h1>test server</h1>");
-            p.outputStream.WriteLine("Current Time: " + DateTime.Now.ToString());
-            p.outputStream.WriteLine("url : {0}", p.http_url);
-
-            p.outputStream.WriteLine("<form method=post action=/form>");
-            p.outputStream.WriteLine("<input type=text name=foo value=foovalue>");
-            p.outputStream.WriteLine("<input type=submit name=bar value=barvalue>");
-            p.outputStream.WriteLine("</form>");
         }
 
         public override void handlePOSTRequest(HttpProcessor p, StreamReader inputData)
         {
-            Console.WriteLine("POST request: {0}", p.http_url);
-            string data = inputData.ReadToEnd();
-
-            p.writeSuccess();
-            p.outputStream.WriteLine("<html><body><h1>test server</h1>");
-            p.outputStream.WriteLine("<a href=/test>return</a><p>");
-            p.outputStream.WriteLine("postbody: <pre>{0}</pre>", data);
-
 
         }
     }
