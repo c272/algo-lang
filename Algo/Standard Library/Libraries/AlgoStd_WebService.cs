@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace Algo.StandardLibrary
 {
     /// <summary>
@@ -6,6 +8,7 @@ namespace Algo.StandardLibrary
     /// </summary>
     public class AlgoStd_Web : IFunctionPlugin
     {
-
+        public string Name { get; set; }
+        public List<AlgoPluginFunction> Functions { get; set; }
     }
 }
