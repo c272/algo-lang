@@ -163,10 +163,11 @@ namespace Algo
                 {
                     Type = AlgoValueType.String,
                     Value = context.STRING().GetText().Substring(1, context.STRING().GetText().Length - 2)
+                                    //text escape codes
                                    .Replace("\\n", "\n")
                                    .Replace("\\t", "\t")
                                    .Replace("\\r", "\r")
-                                   .Replace("\\\"", "\"")
+                                   .Replace("\\q", "\"")
                 };
             }
             else if (context.RATIONAL() != null)

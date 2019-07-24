@@ -1,5 +1,6 @@
 ﻿using Antlr4.Runtime;
 using ExtendedNumerics;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +42,16 @@ namespace Algo
                     printString += ']';
                     break;
 
+                case AlgoValueType.Object:
+                    printString += "{ ";
+                    foreach (var prop in (Dictionary<string, AlgoValue>)((AlgoObject)(toPrint.Value)).ObjectScopes.GetScopes().Last())
+                    {
+                        printString += prop.Key + ": " + GetStringRepresentation(context, prop.Value) + ", ";
+                    }
+                    printString = printString.Trim(',', ' ');
+                    printString += " }";
+                    return printString;
+
                 default:
                     Error.Fatal(context, "Invalid type, cannot convert a value of type '" + toPrint.Type + "' to string.");
                     return null;
@@ -49,6 +60,7 @@ namespace Algo
             return printString;
         }
 
+        //Converts an Algo Rational to an Algo Float.
         public static BigFloat RationalToFloat(AlgoValue rational)
         {
             BigInteger numerator = ((BigRational)rational.Value).FractionalPart.Numerator;

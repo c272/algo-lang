@@ -109,6 +109,7 @@
     <Compile Include="Evaluation\Visitors\AlgoListManager.cs" />
     <Compile Include="Standard Library\Libraries\SimpleHTTP.cs" />
     <Compile Include="Standard Library\Libraries\AlgoStd_Web.cs" />
+    <Compile Include="Standard Library\Libraries\AlgoStd_JSON.cs" />
   </ItemGroup>
   <ItemGroup>
     <Antlr4 Include="Parsing\algo.g4">
@@ -121,6 +122,7 @@
     <None Include="Standard Library\Algo Scripts\string.ag" />
     <None Include="Standard Library\Algo Scripts\io.ag" />
     <None Include="Standard Library\Algo Scripts\web.ag" />
+    <None Include="Standard Library\Algo Scripts\json.ag" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AlgoSDK\AlgoSDK.csproj">

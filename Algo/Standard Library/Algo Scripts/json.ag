@@ -1,0 +1,8 @@
+﻿//The "json" standard library provided by Algo.
+//v0.0.1, revision 1.
+
+library json
+{
+    //Parse an Algo value from a JSON string.
+    external parse <- std_json.parse;
+}
