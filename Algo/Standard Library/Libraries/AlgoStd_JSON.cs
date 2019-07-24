@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 using Antlr4.Runtime;
+using ExtendedNumerics;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
@@ -68,16 +69,67 @@ namespace Algo.StandardLibrary
             }
             else
             {
-                returned = ParseJsonArray(deserialized);
+                returned = ParseJsonArray(context, deserialized);
             }
 
             return returned;
         }
 
         //Turns a JArray deserialized object into an AlgoValue.
-        private static AlgoValue ParseJsonArray(dynamic deserialized)
+        private static AlgoValue ParseJsonArray(ParserRuleContext context, dynamic deserialized)
         {
-            throw new NotImplementedException();
+            //Enumerate over values.
+            List<AlgoValue> list = new List<AlgoValue>();
+            foreach (JToken token in ((JArray)deserialized).Children())
+            {
+                switch (token.Type)
+                {
+                    //Same parsing as below, but for a list.
+                    case JTokenType.Integer:
+                        list.Add(new AlgoValue()
+                        {
+                            Type = AlgoValueType.Integer,
+                            Value = BigInteger.Parse(token.ToString())
+                        });
+                        break;
+                    case JTokenType.String:
+                        list.Add(new AlgoValue()
+                        {
+                            Type = AlgoValueType.String,
+                            Value = token.ToString()
+                        });
+                        break;
+                    case JTokenType.Array:
+                        list.Add(ParseJsonArray(context, (JArray)token));
+                        break;
+                    case JTokenType.Boolean:
+                        list.Add(new AlgoValue()
+                        {
+                            Type = AlgoValueType.Boolean,
+                            Value = bool.Parse(token.ToString())
+                        });
+                        break;
+                    case JTokenType.Float:
+                        list.Add(new AlgoValue()
+                        {
+                            Type = AlgoValueType.Float,
+                            Value = BigFloat.Parse(token.ToString())
+                        });
+                        break;
+                    case JTokenType.Null:
+                        list.Add(AlgoValue.Null);
+                        break;
+                    case JTokenType.Object:
+                        list.Add(ParseJsonObject(context, (JObject)token));
+                        break;
+                }
+            }
+
+            return new AlgoValue()
+            {
+                Type = AlgoValueType.List,
+                Value = list
+            };
         }
 
         //Turns a JObject deserialized object into an AlgoValue.
@@ -89,6 +141,7 @@ namespace Algo.StandardLibrary
             {
                 switch (token.Value.Type)
                 {
+                    //JSON Integer Representation
                     case JTokenType.Integer:
                         obj.ObjectScopes.AddVariable(token.Name, new AlgoValue()
                         {
@@ -97,12 +150,46 @@ namespace Algo.StandardLibrary
                         });
                         break;
 
+                    //JSON String Representation
                     case JTokenType.String:
                         obj.ObjectScopes.AddVariable(token.Name, new AlgoValue()
                         {
                             Type = AlgoValueType.String,
                             Value = token.Value.ToString()
                         });
+                        break;
+
+                    //JSON Array Representation
+                    case JTokenType.Array:
+                        obj.ObjectScopes.AddVariable(token.Name, ParseJsonArray(context, (JArray)token.Value));
+                        break;
+
+                    //JSON Boolean Representation
+                    case JTokenType.Boolean:
+                        obj.ObjectScopes.AddVariable(token.Name, new AlgoValue()
+                        {
+                            Type = AlgoValueType.Boolean,
+                            Value = bool.Parse(token.Value.ToString())
+                        });
+                        break;
+
+                    //JSON Float Representation
+                    case JTokenType.Float:
+                        obj.ObjectScopes.AddVariable(token.Name, new AlgoValue()
+                        {
+                            Type = AlgoValueType.Float,
+                            Value = BigFloat.Parse(token.Value.ToString())
+                        });
+                        break;
+
+                    //JSON Null Representation
+                    case JTokenType.Null:
+                        obj.ObjectScopes.AddVariable(token.Name, AlgoValue.Null);
+                        break;
+
+                    //JSON Object Representation
+                    case JTokenType.Object:
+                        obj.ObjectScopes.AddVariable(token.Name, ParseJsonObject(context, (JObject)token.Value));
                         break;
 
                     default:

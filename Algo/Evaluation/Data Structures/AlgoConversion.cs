@@ -18,6 +18,9 @@ namespace Algo
             string printString = "";
             switch (toPrint.Type)
             {
+                case AlgoValueType.Null:
+                    printString = "null";
+                    break;
                 case AlgoValueType.Float:
                     printString = ((BigFloat)toPrint.Value).ToString();
                     break;
