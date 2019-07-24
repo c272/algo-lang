@@ -63,6 +63,76 @@ namespace Algo
             return printString;
         }
 
+        //Converts an Algo Object to JSON string.
+        public static string ObjToJsonStr(ParserRuleContext context, AlgoValue objVal)
+        {
+            //Enumerate over object members, and add them to the string.
+            string json = "{ ";
+            foreach (var prop in ((AlgoObject)objVal.Value).ObjectScopes.GetDeepestScope())
+            {
+                json += "\"" + prop.Key + "\": ";
+                AppendValueString(context, prop.Value, ref json);
+                json += ", ";
+            }
+            json = json.Trim(',', ' ') + " }";
+
+            //Fix empty objects having a double space.
+            if (json == "{  }") { json = "{}"; }
+
+            //Return.
+            return json;
+        }
+
+        public static void AppendValueString(ParserRuleContext context, AlgoValue prop, ref string json)
+        {
+            switch (prop.Type)
+            {
+                case AlgoValueType.Boolean:
+                    json += ((bool)prop.Value).ToString();
+                    break;
+                case AlgoValueType.Float:
+                    json += ((BigFloat)prop.Value).ToString();
+                    break;
+                case AlgoValueType.Integer:
+                    json += ((BigInteger)prop.Value).ToString();
+                    break;
+                case AlgoValueType.List:
+                    json += ListToJsonStr(context, prop);
+                    break;
+                case AlgoValueType.Null:
+                    json += "null";
+                    break;
+                case AlgoValueType.Object:
+                    json += ObjToJsonStr(context, prop);
+                    break;
+                case AlgoValueType.Rational:
+                    AlgoValue rational_as_float = new AlgoValue()
+                    {
+                        Type = AlgoValueType.Float,
+                        Value = RationalToFloat(prop)
+                    };
+                    json += rational_as_float.ToString();
+                    break;
+                case AlgoValueType.String:
+                    json += "\"" + (string)prop.Value + "\"";
+                    break;
+            }
+        }
+
+        //Convert an Algo list to JSON.
+        public static string ListToJsonStr(ParserRuleContext context, AlgoValue listVal)
+        {
+            //Enumerate over object members, and add them to the string.
+            string json = "[";
+            foreach (var prop in (List<AlgoValue>)listVal.Value)
+            {
+                AppendValueString(context, prop, ref json);
+                json += ", ";
+            }
+            json = json.Trim(',', ' ') + "]";
+            return json;
+        }
+
         //Converts an Algo Rational to an Algo Float.
         public static BigFloat RationalToFloat(AlgoValue rational)
         {

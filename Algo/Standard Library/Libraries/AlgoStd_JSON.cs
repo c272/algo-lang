@@ -20,19 +20,51 @@ namespace Algo.StandardLibrary
                 Name = "parse",
                 Function = FromJson,
                 ParameterCount = 1
+            },
+
+            //json.make();
+            new AlgoPluginFunction()
+            {
+                Name = "make",
+                Function = ToJson,
+                ParameterCount = 1
             }
         };
 
         /// <summary>
-        /// Converts an Algo value to JSON format (string).
+        /// Converts an Algo object to JSON format (string).
         /// </summary>
         public static AlgoValue ToJson(ParserRuleContext context, params AlgoValue[] args)
         {
-            return null;
+    	    //Check the argument given is an object.
+    	    if (args[0].Type != AlgoValueType.Object && args[0].Type != AlgoValueType.List)
+    	    {
+    		    Error.Fatal(context, "Value to serialize to JSON must be an object or list.");
+    		    return null;
+    	    }
+
+            if (args[0].Type != AlgoValueType.List)
+            {
+                //Returning the object parsed string.
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.String,
+                    Value = AlgoConversion.ObjToJsonStr(context, args[0])
+                };
+            }
+            else
+            {
+                //Returning the list parsed string.
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.String,
+                    Value = AlgoConversion.ListToJsonStr(context, args[0])
+                };
+            }
         }
 
         /// <summary>
-        /// Converts a string in JSON format to an Algo value.
+        /// Converts a string in JSON format to an Algo object.
         /// </summary>
         public static AlgoValue FromJson(ParserRuleContext context, params AlgoValue[] args)
         {

@@ -5,4 +5,7 @@ library json
 {
     //Parse an Algo value from a JSON string.
     external parse <- std_json.parse;
+    
+    //Create a JSON string from an Algo object or list.
+    external make <- std_json.make;
 }

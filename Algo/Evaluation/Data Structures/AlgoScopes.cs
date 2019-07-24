@@ -26,7 +26,8 @@ namespace Algo
             if (scope == null)
             {
                 Scopes.Add(new Dictionary<string, AlgoValue>());
-            } else
+            }
+            else
             {
                 Scopes.Add(scope);
             }
@@ -41,6 +42,11 @@ namespace Algo
             }
 
             Scopes.Remove(Scopes.Last());
+        }
+
+        public Dictionary<string, AlgoValue> GetDeepestScope()
+        {
+            return Scopes.Last();
         }
 
         //Reset all scopes.
@@ -241,7 +247,8 @@ namespace Algo
 
                 //Uncaught missing variable.
                 Error.FatalNoContext("No variable found with name '" + varname + "' to set.");
-            } else
+            }
+            else
             {
                 string[] objParts = varname.Split('.');
 
@@ -387,7 +394,7 @@ namespace Algo
 
             return new Tuple<List<int>, List<AlgoValue>>(indexes, listMemberArray);
         }
-        
+
         //Checks whether a variable exists.
         public bool VariableExists(string varname)
         {
@@ -396,13 +403,13 @@ namespace Algo
                 //Validate it by fake value grabbing.
                 List<string> parts = varname.Split('.').ToList();
                 AlgoValue partParent = GetVariable(parts[0]);
-                if (partParent == null || (partParent.Type != AlgoValueType.Object && parts.Count>1))
+                if (partParent == null || (partParent.Type != AlgoValueType.Object && parts.Count > 1))
                 {
                     return false;
                 }
 
                 //If the variable is known to exist and no points, this is just a sanity check to make sure nothing slips through.
-                if (parts.Count==1) { return true; }
+                if (parts.Count == 1) { return true; }
 
                 //Iterate through children recursively to check they all exist.
                 AlgoObject currentObj = (AlgoObject)partParent.Value;
