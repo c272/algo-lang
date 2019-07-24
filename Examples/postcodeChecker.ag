@@ -1,0 +1,28 @@
+
+//Import the required libraries.
+import "json";
+import "io";
+import "web";
+import "core";
+
+//Ask the user for a postcode.
+print "What postcode would you like information for?";
+let postcode = input.get();
+
+//Call the API for info.
+print "Getting postcode info...";
+let res_raw = web.get("http://api.postcodes.io/postcodes/" + string.replace(postcode, " ", "%20"));
+print "STATUS " + res_raw.status + ": " + res_raw.status_desc + "\n";
+
+//Deserialize the info to an object.
+let res = json.parse(res_raw.content);
+
+//Print the information.
+res = res.result;
+print "POSTCODE INFORMATION\n--------";
+print "Country: " + res.country;
+print "County: " + res.admin_county;
+print "Longitude: " + res.longitude;
+print "Latitude: " + res.latitude;
+print "Primary Care Trust: " + res.primary_care_trust;
+print "--------";
