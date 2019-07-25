@@ -74,8 +74,56 @@ namespace Algo.StandardLibrary
                 Name = "isFloat",
                 ParameterCount = 1,
                 Function = IsFloat
+            },
+
+            //ToLower
+            new AlgoPluginFunction()
+            {
+                Name = "toLower",
+                ParameterCount = 1,
+                Function = ToLower
+            },
+
+            //ToUpper
+            new AlgoPluginFunction()
+            {
+                Name = "toUpper",
+                ParameterCount = 1,
+                Function = ToUpper
             }
         };
+
+        //Returns the string given, but lowered with no caps.
+        public static AlgoValue ToLower(ParserRuleContext context, params AlgoValue[] args)
+        {
+            if (args[0].Type != AlgoValueType.String)
+            {
+                Error.Fatal(context, "Value to make lower case must be a string.");
+                return null;
+            }
+
+            return new AlgoValue()
+            {
+                Type = AlgoValueType.String,
+                Value = ((string)args[0].Value).ToLower()
+            };
+        }
+
+        //Returns the string given, but in allcaps.
+        public static AlgoValue ToUpper(ParserRuleContext context, params AlgoValue[] args)
+        {
+            if (args[0].Type != AlgoValueType.String)
+            {
+                Error.Fatal(context, "Value to make lower case must be a string.");
+                return null;
+            }
+
+            return new AlgoValue()
+            {
+                Type = AlgoValueType.String,
+                Value = ((string)args[0].Value).ToUpper()
+            };
+        }
 
         //Returns a character array of the string.
         public static AlgoValue ToCharArray(ParserRuleContext context, params AlgoValue[] args)

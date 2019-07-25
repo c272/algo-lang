@@ -6,5 +6,7 @@ library web
 
     //Perform a GET request to a URL.
     external get <- std_web.get;
-
+    
+    //Perform a POST request to a URL.
+    external post <- std_web.post;
 }

@@ -27,5 +27,11 @@ library string
 
 	//Returns a boolean of whether a string represents a float.
 	external isFloat <- std_string.isFloat;
+    
+    //Returns a string, converted to allcaps.
+    external toUpper <- std_string.toUpper;
+    
+    //Returns a string, converted to nocaps.
+    external toLower <- std_string.toLower;
 
 }

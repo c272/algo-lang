@@ -398,7 +398,7 @@ namespace Algo
                     var objValue = Scopes.GetVariable(ids[0].GetText());
                     if (objValue.Type != AlgoValueType.Object)
                     {
-                        Error.Fatal(context, "You attempted to get a child from value '" + ids[0].GetText() + ", but it's not an object.");
+                        Error.Fatal(context, "You attempted to get a child from value '" + ids[0].GetText() + "', but it's not an object.");
                         return null;
                     }
 
@@ -409,7 +409,7 @@ namespace Algo
                     for (var i = 1; i < ids.Length - 1; i++)
                     {
                         if (!currentObj.ObjectScopes.VariableExists(ids[i].GetText())) {
-                            Error.Fatal(context, "You attempted to get child '" + ids[i].GetText() + " from an object, but it was not found.");
+                            Error.Fatal(context, "You attempted to get child '" + ids[i].GetText() + "' from an object, but it was not found.");
                             return null;
                         }
 
@@ -418,7 +418,7 @@ namespace Algo
                         //Check it's an object.
                         if (childValue.Type != AlgoValueType.Object)
                         {
-                            Error.Fatal(context, "You attempted to get a child from value '" + ids[0].GetText() + ", but it's not an object.");
+                            Error.Fatal(context, "You attempted to get a child from value '" + ids[0].GetText() + "', but it's not an object.");
                             return null;
                         }
 
