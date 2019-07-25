@@ -16,9 +16,13 @@ namespace Algo
     class Program
     {
         //The tree traversal class for Algo.
-        public static algoVisitor visitor;
+        public static algoVisitor visitor = null;
 
-        static void Main(string[] args)
+        //The current version of algo. (vX.X.BUILD)
+        private const int MAJOR_VER = 0;
+        private const int MINOR_VER = 3;
+
+        public static void Main(string[] args)
         {
             //Check that all the necessary directories exist.
             CPFilePath.CreateDefaultDirectories();
@@ -32,10 +36,53 @@ namespace Algo
             //Check the command line arguments are valid.
             if (args.Length < 1)
             {
-                //Nah, just print the version number.
-                Console.WriteLine("Algo Language Interpreter v" + typeof(Program).Assembly.GetName().Version.ToString() + ".");
-                Console.WriteLine("(c) Larry Tang, 2019-" + DateTime.Now.Year);
-                Console.WriteLine("\nFor information on how to use this interpreter, enter 'algo help'.");
+                //Print version info.
+                PrintVersionInfo();
+                Console.WriteLine("Starting interpreter...\n");
+
+                //Create a visitor.
+                if (visitor == null)
+                {
+                    visitor = new algoVisitor();
+                }
+
+                //Interactive interpreter.
+                while (true)
+                {
+                    Console.Write(">> ");
+                    string line = Console.ReadLine();
+
+                    //Catch keywords and null strings.
+                    if (line == "quit" || line == "exit") { break; }
+                    if (line == "algo help") { PrintHelp(); continue; }
+                    if (line == "") { continue; }
+
+                    //Parse line.
+                    var s_chars = new AntlrInputStream(line);
+                    var s_lexer = new algoLexer(s_chars);
+                    var s_tokens = new CommonTokenStream(s_lexer);
+                    var s_parse = new algoParser(s_tokens);
+
+                    //Turn on continuous mode.
+                    AlgoRuntimeInformation.ContinuousMode = true;
+
+                    //Execute.
+                    s_parse.BuildParseTree = true;
+                    var s_tree = s_parse.compileUnit();
+
+                    try
+                    {
+                        visitor.VisitCompileUnit(s_tree);
+                    }
+                    catch {}
+                }
+
+                return;
+            }
+            else if (args[0] == "-v")
+            {
+                //Print the version number.
+                PrintVersionInfo();
                 return;
             }
             else if (args[0] == "pkg")
@@ -90,6 +137,22 @@ namespace Algo
                 //Print variables.
                 ANTLRDebug.PrintScopes();
             }
+        }
+
+        //Prints the current version info of Algo.
+        private static void PrintVersionInfo()
+        {
+            string[] verInfo = typeof(Program).Assembly.GetName().Version.ToString().Split('.');
+            Console.WriteLine("Algo Language Interpreter v" + MAJOR_VER + "." + MINOR_VER + "." + verInfo[2] + ", build " + verInfo[3] + ".");
+            Console.WriteLine("(c) Larry Tang, 2019-" + DateTime.Now.Year);
+            Console.WriteLine("\nFor information on how to use this interpreter, enter 'algo help'.");
+        }
+
+        //Prints the help page for Algo.
+        private static void PrintHelp()
+        {
+            //todo
+            Console.WriteLine("For detailed help information, please see https://github.com/c272/algo-lang/wiki/.");
         }
     }
 }

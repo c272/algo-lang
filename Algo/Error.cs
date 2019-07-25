@@ -28,7 +28,10 @@ namespace Algo
                 ANTLRDebug.PrintScopes();
             }
 
-            Environment.Exit(-1);
+            if (!AlgoRuntimeInformation.ContinuousMode)
+            {
+                Environment.Exit(-1);
+            }
         }
 
         //Fatal error, with no token context.
@@ -46,7 +49,15 @@ namespace Algo
             {
                 ANTLRDebug.PrintScopes();
             }
-            Environment.Exit(-1);
+
+            if (!AlgoRuntimeInformation.ContinuousMode)
+            {
+                Environment.Exit(-1);
+            }
+            else
+            {
+                Program.Main(new string[] { });
+            }
         }
 
         //Warning.

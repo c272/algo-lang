@@ -13,5 +13,8 @@ namespace Algo
 
         //Whether the current runtime is in developer mode or not.
         public static bool DeveloperMode = false;
+
+        //Whether the current runtime should ignore fatal errors and continue running.
+        public static bool ContinuousMode = false;
     }
 }
