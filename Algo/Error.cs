@@ -9,6 +9,7 @@ namespace Algo
     /// </summary>
     public class Error
     {
+
         //Fatal error, with token context.
         public static void Fatal(ParserRuleContext context, string errMessage)
         {
@@ -19,8 +20,7 @@ namespace Algo
             Console.BackgroundColor = ConsoleColor.Red;
             if (AlgoRuntimeInformation.FileLoaded == "") { AlgoRuntimeInformation.FileLoaded = "No File"; }
             Console.WriteLine("Algo Runtime Error: " + AlgoRuntimeInformation.FileLoaded + ", Line " + context.Start.Line + ":" + context.Start.StartIndex + " - " + errMessage);
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ResetColor();
 
             //Only print the scopes in developer mode.
             if (AlgoRuntimeInformation.DeveloperMode)
@@ -41,8 +41,7 @@ namespace Algo
             Console.BackgroundColor = ConsoleColor.Red;
             if (AlgoRuntimeInformation.FileLoaded == "") { AlgoRuntimeInformation.FileLoaded = "No File"; }
             Console.WriteLine("Algo Runtime Error: " + AlgoRuntimeInformation.FileLoaded + ", NOCONTEXT - " + errMessage);
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ResetColor();
 
             //Only print scopes if we're in developer mode.
             if (AlgoRuntimeInformation.DeveloperMode)
@@ -69,7 +68,7 @@ namespace Algo
             if (AlgoRuntimeInformation.FileLoaded == "") { AlgoRuntimeInformation.FileLoaded = "No File"; }
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Algo Warning: " + AlgoRuntimeInformation.FileLoaded + ", line " + context.Start.Line + ":" + context.Start.StartIndex + " - " + errMessage);
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ResetColor();
         }
 
         //Warning, but where rule contexts are unavailable.
@@ -78,7 +77,7 @@ namespace Algo
             if (AlgoRuntimeInformation.FileLoaded == "") { AlgoRuntimeInformation.FileLoaded = "No File"; }
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Algo Warning: " + AlgoRuntimeInformation.FileLoaded + ", NOCONTEXT - " + errMessage);
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.ResetColor();
         }
     }
 }
