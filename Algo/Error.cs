@@ -36,6 +36,7 @@ namespace Algo
             {
                 //If in continuous mode, just keep going and run the interpreter again.
                 Program.Main(new string[] { "--nohead" });
+                Environment.Exit(0);
             }
         }
 
