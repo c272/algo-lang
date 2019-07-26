@@ -65,14 +65,6 @@ namespace Algo.StandardLibrary
                 Function = ConvertBool
             },
 
-            //var(x)
-            new AlgoPluginFunction()
-            {
-                Name = "var",
-                ParameterCount = 1,
-                Function = GetVarByName
-            },
-
             //type(x)
             new AlgoPluginFunction()
             {
@@ -198,27 +190,6 @@ namespace Algo.StandardLibrary
                 Type = AlgoValueType.Boolean,
                 Value = AlgoComparators.GetBooleanValue(args[0], context)
             };
-        }
-
-        //Var
-        public static AlgoValue GetVarByName(ParserRuleContext context, params AlgoValue[] args)
-        {
-            //Check variable name is a string.
-            if (args[0].Type != AlgoValueType.String)
-            {
-                Error.Fatal(context, "Cannot get variable with name of type '" + args[0].Type.ToString() + "', must be of type String.");
-                return null;
-            }
-
-            //Check it exists.
-            if (!algoVisitor.Scopes.VariableExists((string)args[0].Value))
-            {
-                //It doesn't, return null.
-                return AlgoValue.Null;
-            }
-
-            //It does, return the variable.
-            return algoVisitor.Scopes.GetVariable((string)args[0].Value);
         }
 
         //Returns the type of the variable.

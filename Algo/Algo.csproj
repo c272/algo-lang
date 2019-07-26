@@ -111,6 +111,7 @@
     <Compile Include="Standard Library\Libraries\AlgoStd_Web.cs" />
     <Compile Include="Standard Library\Libraries\AlgoStd_JSON.cs" />
     <Compile Include="Extensions &amp; Libraries\StringExtensions.cs" />
+    <Compile Include="Standard Library\Libraries\AlgoStd_Reflection.cs" />
   </ItemGroup>
   <ItemGroup>
     <Antlr4 Include="Parsing\algo.g4">
@@ -124,6 +125,7 @@
     <None Include="Standard Library\Algo Scripts\io.ag" />
     <None Include="Standard Library\Algo Scripts\web.ag" />
     <None Include="Standard Library\Algo Scripts\json.ag" />
+    <None Include="Standard Library\Algo Scripts\reflection.ag" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AlgoSDK\AlgoSDK.csproj">

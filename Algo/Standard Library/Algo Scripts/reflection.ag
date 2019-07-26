@@ -1,0 +1,12 @@
+﻿// The "reflection" standard library, provided by Algo.
+// Contains no namespaces.
+// v0.0.1, revision 0.
+
+// Get Variable (generic cast from String to Variable)
+external gvar <- std_reflection.gvar;
+
+// Create Variable (from string)
+external cvar <- std_reflection.cvar;
+
+// Set Variable (from string)
+external svar <- std_reflection.svar;
