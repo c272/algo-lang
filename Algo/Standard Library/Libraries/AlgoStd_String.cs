@@ -90,8 +90,32 @@ namespace Algo.StandardLibrary
                 Name = "toUpper",
                 ParameterCount = 1,
                 Function = ToUpper
+            },
+
+            //Reverse
+            new AlgoPluginFunction()
+            {
+                Name = "reverse",
+                ParameterCount = 1,
+                Function = Reverse
             }
         };
+
+        //Returns a reverse of the given string.
+        public static AlgoValue Reverse(ParserRuleContext context, params AlgoValue[] args)
+        {
+            if (args[0].Type != AlgoValueType.String)
+            {
+                Error.Fatal(context, "Value to reverse must be a string.");
+                return null;
+            }
+
+            return new AlgoValue()
+            {
+                Type = AlgoValueType.String,
+                Value = ((string)args[0].Value).Reverse()
+            };
+        }
 
         //Returns the string given, but lowered with no caps.
         public static AlgoValue ToLower(ParserRuleContext context, params AlgoValue[] args)

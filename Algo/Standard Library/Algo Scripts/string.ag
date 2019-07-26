@@ -15,6 +15,9 @@ library string
 
 	//Replace all instances of a substring with another substring.
 	external replace <- std_string.replace;
+    
+    //Reverse a string.
+    external reverse <- std_string.reverse;
 	
 	//Get a substring of a string.
 	external substring <- std_string.substring;
