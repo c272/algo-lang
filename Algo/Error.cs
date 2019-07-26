@@ -32,6 +32,11 @@ namespace Algo
             {
                 Environment.Exit(-1);
             }
+            else
+            {
+                //If in continuous mode, just keep going and run the interpreter again.
+                Program.Main(new string[] { "--nohead" });
+            }
         }
 
         //Fatal error, with no token context.

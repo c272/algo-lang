@@ -428,9 +428,8 @@ namespace Algo
                     //Get the value from this final object scope.
                     if (!currentObj.ObjectScopes.VariableExists(ids[ids.Length - 1].GetText()))
                     {
-                        //Value doesn't exist.
-                        Error.Fatal(context, "No value with the name '" + ids[ids.Length - 1].GetText() + "' exists in the given object.");
-                        return null;
+                        //Value doesn't exist, so return null.
+                        return AlgoValue.Null;
                     }
 
                     //Return.

@@ -110,6 +110,7 @@
     <Compile Include="Standard Library\Libraries\SimpleHTTP.cs" />
     <Compile Include="Standard Library\Libraries\AlgoStd_Web.cs" />
     <Compile Include="Standard Library\Libraries\AlgoStd_JSON.cs" />
+    <Compile Include="Extensions &amp; Libraries\StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Antlr4 Include="Parsing\algo.g4">
@@ -129,6 +130,9 @@
       <Project>{f4512291-4c2f-48be-bf80-21f0b980ca38}</Project>
       <Name>AlgoSDK</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Extensions &amp; Libraries\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

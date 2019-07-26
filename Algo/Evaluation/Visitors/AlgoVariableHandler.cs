@@ -15,19 +15,70 @@ namespace Algo
         //When a variable is first defined.
         public override object VisitStat_define([NotNull] algoParser.Stat_defineContext context)
         {
-            //Check if the variable already exists at the local scope.
-            if (Scopes.VariableExistsLowest(context.IDENTIFIER().GetText()))
+            //NORMAL IDENTIFIER DEFINE
+            if (context.IDENTIFIER() != null)
             {
-                Error.Fatal(context, "A variable with the name '" + context.IDENTIFIER().GetText() + "' already exists, cannot create a duplicate.");
+                //Check if the variable already exists at the local scope.
+                if (Scopes.VariableExistsLowest(context.IDENTIFIER().GetText()))
+                {
+                    Error.Fatal(context, "A variable with the name '" + context.IDENTIFIER().GetText() + "' already exists, cannot create a duplicate.");
+                    return null;
+                }
+
+                //Evaluate the expression on the right side of the define.
+                AlgoValue value = (AlgoValue)VisitExpr(context.expr());
+
+                //Create the variable at the current scope.
+                Scopes.AddVariable(context.IDENTIFIER().GetText(), value);
                 return null;
             }
+            else
+            {
+                //OBJECT MEMBER DEFINE
 
-            //Evaluate the expression on the right side of the define.
-            AlgoValue value = (AlgoValue)VisitExpr(context.expr());
+                //Get the parent object that the member is being assigned to.
+                string objTxt = context.obj_access().GetText();
+                List<string> objParts = objTxt.Split('.').ToList();
+                string final = objParts.Last();
+                objParts.RemoveAt(objParts.Count - 1);
+                objTxt = string.Join(".", objParts.ToArray());
 
-            //Create the variable at the current scope.
-            Scopes.AddVariable(context.IDENTIFIER().GetText(), value);
-            return null;
+                if (!Scopes.VariableExists(objTxt))
+                {
+                    Error.Fatal(context, "Cannot create an object member for nonexistant object '" + objTxt + "'.");
+                    return null;
+                }
+
+                //Check if the variable is an object.
+                AlgoValue objVal = Scopes.GetVariable(objTxt);
+                if (objVal.Type != AlgoValueType.Object)
+                {
+                    Error.Fatal(context, "Cannot create an object member of non-object value '" + objTxt + "'.");
+                    return null;
+                }
+                AlgoObject obj = (AlgoObject)objVal.Value;
+
+                //Check if the variable has the new member already defined.
+                if (obj.ObjectScopes.VariableExists(final))
+                {
+                    Error.Fatal(context,"An object member with that name already exists.");
+                    return null;
+                }
+
+                //Evaluate the expression on the right side of the define.
+                AlgoValue value = (AlgoValue)VisitExpr(context.expr());
+
+                //Create the variable.
+                obj.ObjectScopes.AddVariable(final, value);
+
+                //Set the object parent.
+                Scopes.SetVariable(objTxt, new AlgoValue()
+                {
+                    Type = AlgoValueType.Object,
+                    Value = obj
+                });
+                return null;
+            }
         }
 
         //When an enum is first defined.

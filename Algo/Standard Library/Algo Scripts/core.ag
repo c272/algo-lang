@@ -30,6 +30,9 @@ external flt <- std_core.flt;
 //Boolean.
 external bool <- std_core.bool;
 
+//Variable (generic cast from String to Variable)
+external var <- std_core.var;
+
 //////////////////////////////////
 // Check the type of variables. //
 //////////////////////////////////

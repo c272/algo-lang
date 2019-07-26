@@ -33,12 +33,15 @@ namespace Algo
                 AlgoRuntimeInformation.DeveloperMode = true;
             }
 
-            //Check the command line arguments are valid.
-            if (args.Length < 1)
+            //Check the command line arguments.
+            if (args.Length < 1 || (args.Length == 1 && args[0] == "--nohead"))
             {
-                //Print version info.
-                PrintVersionInfo();
-                Console.WriteLine("Starting interpreter...\n");
+                //Print version info. If --nohead is on, then the header info for the interpreter is skipped.
+                if (args.Length < 1)
+                {
+                    PrintVersionInfo();
+                    Console.WriteLine("Starting interpreter...\n");
+                }
 
                 //Create a visitor.
                 if (visitor == null)
@@ -53,7 +56,7 @@ namespace Algo
                     string line = Console.ReadLine();
 
                     //Catch keywords and null strings.
-                    if (line == "quit" || line == "exit") { break; }
+                    if (line == "quit" || line == "exit" || line == "stop") { break; }
                     if (line == "algo help") { PrintHelp(); continue; }
                     if (line == "") { continue; }
 
@@ -89,6 +92,19 @@ namespace Algo
             {
                 //Package management.
                 Sharpie sharpie = new Sharpie(args.Slice(1, -1));
+                return;
+            }
+            else if (args[0] == "help")
+            {
+                //Print help, with the rest of the arguments.
+                if (args.Length > 1)
+                {
+                    PrintHelp(args.Slice(1, args.Length));
+                }
+                else
+                {
+                    PrintHelp();
+                }
                 return;
             }
 
@@ -149,10 +165,65 @@ namespace Algo
         }
 
         //Prints the help page for Algo.
-        private static void PrintHelp()
+        private static void PrintHelp(string[] args = null)
         {
-            //todo
-            Console.WriteLine("For detailed help information, please see https://github.com/c272/algo-lang/wiki/.");
+            //If there's an argument, just pass along and return.
+            if (args != null && args.Length > 0)
+            {
+                switch (args[0])
+                {
+                    case "1":
+                        break;
+                    case "2":
+                        Console.WriteLine("For detailed information on a command, visit \"algo man [cmd]\".");
+                        Console.WriteLine("------------");
+                        Console.WriteLine("BASIC SYNTAX");
+                        Console.WriteLine("let x = y; - Sets the variable x to value y.");
+                        Console.WriteLine("x = y; - Changes the existing value of x to y.");
+                        Console.WriteLine("disregard [x | *]; - Deletes one or all variables from memory.");
+                        Console.WriteLine("print x; - Prints the value of x to console.");
+                        Console.WriteLine("x++; - Increments the value of x.");
+                        Console.WriteLine("x--; - Decrements the value of x.");
+                        Console.WriteLine("x(); - Call the function x.");
+                        Console.WriteLine("let x() = { ... } - Creates a function x, running what's inside the braces.");
+                        Console.WriteLine("let x = enum { val1, val2, ... } - Creates an enum x, with set values.");
+                        Console.WriteLine("let x = object { }; - Create an object with values defined inside the braces.");
+                        Console.WriteLine("------------");
+                        Console.WriteLine("THIS IS NOT A COMPLETE LIST OF SYNTAX!");
+                        Console.WriteLine("SEE THE WIKI BELOW FOR A COMPREHENSIVE GUIDE.");
+                        Console.WriteLine("http://github.com/c272/algo-lang/wiki/");
+                        return;
+                    default:
+                        Console.WriteLine("Invalid page number for help.");
+                        return;
+                }
+            }
+
+            //Print the default help page.
+            Console.WriteLine("For detailed information on a command, visit \"algo man [cmd]\".");
+            Console.WriteLine("------------");
+            Console.WriteLine("CLI FLAGS");
+            Console.WriteLine("[I] = Independent (Must be used on its own)");
+            Console.WriteLine();
+            Console.WriteLine("--nohead : [I] Removes the version information when running the interpreter.");
+            Console.WriteLine("-v : Displays the version information for this build of Algo.");
+            Console.WriteLine("------------");
+            Console.WriteLine("PACKAGE MANAGER");
+            Console.WriteLine();
+            Console.WriteLine("pkg : Displays the package manager's version information."); 
+            Console.WriteLine("pkg add [x] : Installs a package for global use.");
+            Console.WriteLine("pkg remove [x] : Removes an installed package from global use.");
+            Console.WriteLine("pkg sources : Lists the current package sources.");
+            Console.WriteLine("pkg sources add [x] : Adds a package source to the master list.");
+            Console.WriteLine("pkg sources remove [x] : Removes a package source from the master list.");
+            Console.WriteLine("------------");
+            Console.WriteLine("To display more pages, use algo help [num].");
+        }
+
+        //Prints the manual for a specific command.
+        private static void PrintManual(string man)
+        {
+            throw new NotImplementedException();
         }
     }
 }
