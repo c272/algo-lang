@@ -230,7 +230,7 @@ namespace Algo
 
         //Set a variable within the scopes.
         //Start from deepest depth.
-        public void SetVariable(string varname, AlgoValue value)
+        public void SetVariable(string varname, AlgoValue value, ParserRuleContext context=null)
         {
             //Is it a normal variable or an object?
             if (!varname.Contains('.'))
@@ -246,7 +246,7 @@ namespace Algo
                 }
 
                 //Uncaught missing variable.
-                Error.FatalNoContext("No variable found with name '" + varname + "' to set.");
+                Error.Fatal(context, "No variable found with name '" + varname + "' to set.");
             }
             else
             {
@@ -255,13 +255,13 @@ namespace Algo
                 //Loop and get value.
                 if (!VariableExists(objParts[0]))
                 {
-                    Error.FatalNoContext("No parent variable '" + objParts[0] + "' exists.");
+                    Error.Fatal(context, "No parent variable '" + objParts[0] + "' exists.");
                 }
 
                 AlgoValue currentObjValue = GetVariable(objParts[0]);
                 if (currentObjValue.Type != AlgoValueType.Object)
                 {
-                    Error.FatalNoContext("Parent variable is not an object, so cannot access children.");
+                    Error.Fatal(context, "Parent variable is not an object, so cannot access children.");
                 }
 
                 //Getting the deepest scope.
@@ -271,14 +271,14 @@ namespace Algo
                     //Attempt to get the child.
                     if (!currentObj.ObjectScopes.VariableExists(objParts[i]))
                     {
-                        Error.FatalNoContext("A child property '" + objParts[i] + "' does not exist.");
+                        Error.Fatal(context, "A child property '" + objParts[i] + "' does not exist.");
                     }
                     currentObjValue = currentObj.ObjectScopes.GetVariable(objParts[i]);
 
                     //Check if it's an object.
                     if (currentObjValue.Type != AlgoValueType.Object)
                     {
-                        Error.FatalNoContext("A child property '" + objParts[i] + "' is not an object, so can't access further children.");
+                        Error.Fatal(context, "A child property '" + objParts[i] + "' is not an object, so can't access further children.");
                     }
 
                     //Set current object.
@@ -288,7 +288,7 @@ namespace Algo
                 //Getting the variable referenced at the deepest scope.
                 if (!currentObj.ObjectScopes.VariableExists(objParts[objParts.Length - 1]))
                 {
-                    Error.FatalNoContext("No variable exists at the deepest scope with name '" + objParts[objParts.Length - 1] + "'.");
+                    Error.Fatal(context, "No variable exists at the deepest scope with name '" + objParts[objParts.Length - 1] + "'.");
                 }
 
                 //Set value of variable.
@@ -429,17 +429,60 @@ namespace Algo
         }
 
         //Add a variable to the scope.
-        public void AddVariable(string name, AlgoValue value)
+        public void AddVariable(string name, AlgoValue value, ParserRuleContext context=null)
         {
-            //Check if a variable with this name already exists.
-            if (VariableExistsLowest(name))
+            //Is it an object member?
+            if (!name.Contains("."))
             {
-                Error.FatalNoContext("A variable with this name already exists, cannot create one.");
-                return;
-            }
+                //Check if a variable with this name already exists.
+                if (VariableExistsLowest(name))
+                {
+                    Error.Fatal(context, "A variable with this name already exists, cannot create one.");
+                    return;
+                }
 
-            //Okay, it doesn't. Add it to the lowest scope.
-            Scopes[Scopes.Count - 1].Add(name, value);
+                //Nope, add it to the lowest scope.
+                Scopes[Scopes.Count - 1].Add(name, value);
+            }
+            else
+            {
+                //Object member, a more complicated procedure.
+                //Get the parent object that the member is being assigned to.
+                string objTxt = name;
+                List<string> objParts = objTxt.Split('.').ToList();
+                string final = objParts.Last();
+                objParts.RemoveAt(objParts.Count - 1);
+                objTxt = string.Join(".", objParts.ToArray());
+
+                if (!VariableExists(objTxt))
+                {
+                    Error.Fatal(context, "Cannot create an object member for nonexistant object '" + objTxt + "'.");
+                }
+
+                //Check if the variable is an object.
+                AlgoValue objVal = GetVariable(objTxt);
+                if (objVal.Type != AlgoValueType.Object)
+                {
+                    Error.Fatal(context, "Cannot create an object member of non-object value '" + objTxt + "'.");
+                }
+                AlgoObject obj = (AlgoObject)objVal.Value;
+
+                //Check if the variable has the new member already defined.
+                if (obj.ObjectScopes.VariableExists(final))
+                {
+                    Error.Fatal(context, "An object member with that name already exists.");
+                }
+
+                //Create the variable.
+                obj.ObjectScopes.AddVariable(final, value);
+
+                //Set the object parent.
+                SetVariable(objTxt, new AlgoValue()
+                {
+                    Type = AlgoValueType.Object,
+                    Value = obj
+                });
+            }
         }
 
         //Remove a variable from the scope.

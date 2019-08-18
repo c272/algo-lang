@@ -22,18 +22,52 @@ namespace Algo.StandardLibrary
                 Name = "gvar",
                 ParameterCount = 1,
                 Function = GetVarByName
+            },
+
+            //cvar(x, y)
+            new AlgoPluginFunction()
+            {
+                Name = "cvar",
+                ParameterCount = 2,
+                Function = CreateVarByName
+            },
+
+            //svar(x, y)
+            new AlgoPluginFunction()
+            {
+                Name = "svar",
+                ParameterCount = 2,
+                Function = SetVarByName
             }
         };
 
         //Create a variable given a string name.
         public static AlgoValue CreateVarByName(ParserRuleContext context, params AlgoValue[] args)
         {
+            //Check first argument is string.
+            if (args[0].Type != AlgoValueType.String)
+            {
+                Error.Fatal(context, "Name for variable to create must be of type String, not of type " + args[0].Type.ToString() +".");
+                return null;
+            }
+
+            //Create the variable.
+            algoVisitor.Scopes.AddVariable((string)args[0].Value, args[1], context);
             return null;
         }
 
         //Set a variable given a string name.
-        public AlgoValue SetVarByName(ParserRuleContext context, params AlgoValue[] args)
+        public static AlgoValue SetVarByName(ParserRuleContext context, params AlgoValue[] args)
         {
+            //Check first argument is string.
+            if (args[0].Type != AlgoValueType.String)
+            {
+                Error.Fatal(context, "Name for variable to create must be of type String, not of type " + args[0].Type.ToString() + ".");
+                return null;
+            }
+
+            //Set the variable.
+            algoVisitor.Scopes.SetVariable((string)args[0].Value, args[1], context);
             return null;
         }
 
