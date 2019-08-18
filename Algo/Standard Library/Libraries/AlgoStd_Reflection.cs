@@ -38,6 +38,14 @@ namespace Algo.StandardLibrary
                 Name = "svar",
                 ParameterCount = 2,
                 Function = SetVarByName
+            },
+
+            //dvar(x)
+            new AlgoPluginFunction()
+            {
+                Name = "dvar",
+                ParameterCount = 1,
+                Function = DeleteVarByName
             }
         };
 
@@ -90,6 +98,29 @@ namespace Algo.StandardLibrary
 
             //It does, return the variable.
             return algoVisitor.Scopes.GetVariable((string)args[0].Value);
+        }
+
+        //Delete a variable with a given string name.
+        public static AlgoValue DeleteVarByName(ParserRuleContext context, params AlgoValue[] args)
+        {
+            //Check variable name is a string.
+            if (args[0].Type != AlgoValueType.String)
+            {
+                Error.Fatal(context, "Cannot get variable with name of type '" + args[0].Type.ToString() + "', must be of type String.");
+                return null;
+            }
+
+            //Check it exists.
+            if (!algoVisitor.Scopes.VariableExists((string)args[0].Value))
+            {
+                //It doesn't, error.
+                Error.Fatal(context, "The variable '" + args[0].Value.ToString() + "' does not exist to delete.");
+                return null;
+            }
+
+            //Delete variable.
+            algoVisitor.Scopes.RemoveVariable((string)args[0].Value);
+            return null;
         }
     }
 }

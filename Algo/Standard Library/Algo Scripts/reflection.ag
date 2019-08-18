@@ -10,3 +10,6 @@ external cvar <- std_reflection.cvar;
 
 // Set Variable (from string)
 external svar <- std_reflection.svar;
+
+// Delete Variable (from string)
+external dvar <- std_reflection.dvar;
