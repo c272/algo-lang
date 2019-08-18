@@ -22,7 +22,7 @@ algo (filename) [--dev]
 ```
 Including the `--dev` flag makes the interpreter print all lexed tokens, and show the parse tree before executing. After execution or errors, it will also dump the variables into console.
 
-Simply running `algo` in console will display your current version, including the build number and revision. **Please state your build and revision when reporting bugs in the issues section.**
+Simply running `algo -v` in console will display your current version, including the build number and revision. **Please state your build and revision when reporting bugs in the issues section.**
 
 For more information on language syntax and usage, see the GitHub wiki, [here.](https://github.com/c272/algo-lang/wiki)
 
