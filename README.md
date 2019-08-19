@@ -9,9 +9,9 @@ Algo is a programming language designed to look similar to mathematical notation
 The language is currently not ready for general use. If, however, you want to contribute to the standard library or language itself, feel free to fork and make a pull request, which are considered on a case-by-case basis. Please remember to check the pull request templates beforehand.
 
 **Plugins for Popular Text Editors:**
-[Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=c272.Algo)
-Atom (**Coming v0.0.4**)
-Sublime Text 3 (**Coming v0.0.4**)
+* [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=c272.Algo)
+* Atom (*Coming v0.0.4*)
+* Sublime Text 3 (*Coming v0.0.4*)
 
 
 ## Building Algo
