@@ -11,7 +11,7 @@ The language is currently not ready for general use. If, however, you want to co
 ## Building Algo
 To build the interpreter for Algo, you need at least Visual Studio 2017 or higher. Since Algo uses .NET Framework, this is only compileable on Linux through the use of Mono. The actual interpreter is platform agnostic, so works on Linux, Mac and Windows.
 
-*Note: The only officially tested versions are elementary OS Loki (Linux) and Windows 10 1903+.*
+*Note: The only officially tested versions are elementary OS Loki/Juno (Ubuntu Linux & Forks) and Windows 10 Creator Update 1903+.*
 
 Building in "Debug" mode is recommended for all contributions to the update branch, but if you are using it for a personal modification, using "Release" is a better option, for size and compute efficiency.
 
