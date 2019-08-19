@@ -2,9 +2,10 @@
     "name": "Algo",
     "displayName": "Algo Language Support",
     "description": "Support for the \"Algo\" programming language, by c272.",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "c272",
     "repository": "https://github.com/c272/algo-lang",
+    "icon": "logo.png",
     "engines": {
         "vscode": "^1.37.0"
     },
