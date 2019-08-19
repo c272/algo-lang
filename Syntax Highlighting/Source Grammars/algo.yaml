@@ -8,70 +8,70 @@ contexts:
   main:
     - match: '(let)'
       captures:
-        0: text.Algo
+        0: keyword.Algo
     - match: '(//)'
       captures:
-        0: text.Algo
+        0: comment.Algo
       push: 
         - match: '(^(?=.{0,1})(?:|))'
           pop: true
           captures:
-            0: text.Algo
+            0: keyword.Algo
         - match: '(.)'
           captures:
-            0: text.Algo
+            0: comment.Algo
     - match: '(\")'
       captures:
-        0: text.Algo
+        0: string.Algo
       push: 
         - match: '(\")'
           pop: true
           captures:
-            0: text.Algo
+            0: string.Algo
         - match: '(\\.)'
           captures:
-            0: text.Algo
+            0: none.Algo
         - match: '(.*?(?!\\.).)'
           captures:
-            0: text.Algo
+            0: string.Algo
         - match: '(.)'
           captures:
             0: text.Algo
     - match: '(-?[1-9][0-9]*|0)'
       captures:
-        0: text.Algo
+        0: constant.numeric.Algo
     - match: '(-?[1-9]*[0-9]\.[0-9]+)'
       captures:
-        0: text.Algo
+        0: constant.numeric.Algo
     - match: '(true|false)'
       captures:
-        0: text.Algo
+        0: constant.other.Algo
     - match: '((-?[1-9][0-9]*|0)[\x{0020}]*/[\x{0020}]*(-?[1-9][0-9]*|0))'
       captures:
-        0: text.Algo
+        0: constant.numeric.Algo
     - match: '(null|let|for|foreach|add|break|continue|at|remove|from|while| in |if|up to|as |enum|library|sf|object|else|import|return|print|disregard|external)'
       captures:
-        0: text.Algo
+        0: keyword.Algo
     - match: '(([a-zA-Z_0-9]+\.[a-zA-Z_0-9]+)+)'
       captures:
-        0: text.Algo
+        0: variable.Algo
     - match: '([a-zA-Z_0-9]+)'
       captures:
-        0: text.Algo
+        0: variable.Algo
     - match: '([a-zA-Z_0-9]\()'
       captures:
-        0: text.Algo
+        0: none.Algo
       push: 
         - match: '(\))'
           pop: true
           captures:
-            0: text.Algo
+            0: none.Algo
         - match: '(,)'
           captures:
-            0: text.Algo
+            0: none.Algo
         - match: '([a-zA-Z_0-9]+)'
           captures:
-            0: text.Algo
+            0: variable.parameter.Algo
         - match: '(.)'
           captures:
             0: text.Algo

@@ -118,15 +118,15 @@ contexts [] {
 }
 
 styles [] {
-   .algo_define : style color = "light_blue";
-   .algo_string : style color = "green";
-   .algo_escaped_char : style color = "light_green";
-   .algo_number : style color = "gold";
-   .algo_boolean : style color = "purple";
-   .algo_keyword : style color = "orange";
-   .algo_comment : style color = "grey";
-   .algo_objref : style color = "cyan";
-   .algo_identifier : style color = "cyan";
-   .algo_nostyle : style color = "white";
-   .algo_parameter : style color = "light_green";
+   .algo_define : style color = "light_blue" textmate_scope = "keyword";
+   .algo_string : style color = "green" textmate_scope = "string";
+   .algo_escaped_char : style color = "light_green" textmate_scope = "none";
+   .algo_number : style color = "gold" textmate_scope = "constant.numeric";
+   .algo_boolean : style color = "purple" textmate_scope = "constant.other";
+   .algo_keyword : style color = "orange" textmate_scope = "keyword";
+   .algo_comment : style color = "grey" textmate_scope = "comment";
+   .algo_objref : style color = "cyan" textmate_scope = "variable";
+   .algo_identifier : style color = "cyan" textmate_scope = "variable";
+   .algo_nostyle : style color = "white" textmate_scope = "none";
+   .algo_parameter : style color = "light_green" textmate_scope = "variable.parameter";
 }

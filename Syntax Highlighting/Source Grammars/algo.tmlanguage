@@ -30,7 +30,7 @@
           <key>match</key>
           <string>(let)</string>
           <key>name</key>
-          <string>text.Algo</string>
+          <string>keyword.Algo</string>
         </dict>
         <dict>
           <key>begin</key>
@@ -40,11 +40,11 @@
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>text.Algo</string>
+              <string>comment.Algo</string>
             </dict>
           </dict>
           <key>contentName</key>
-          <string>text.Algo</string>
+          <string>comment.Algo</string>
           <key>end</key>
           <string>(^(?=.{0,1})(?:|))</string>
           <key>endCaptures</key>
@@ -52,7 +52,7 @@
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>text.Algo</string>
+              <string>keyword.Algo</string>
             </dict>
           </dict>
         </dict>
@@ -64,7 +64,7 @@
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>text.Algo</string>
+              <string>string.Algo</string>
             </dict>
           </dict>
           <key>patterns</key>
@@ -81,7 +81,7 @@
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>text.Algo</string>
+              <string>string.Algo</string>
             </dict>
           </dict>
         </dict>
@@ -89,43 +89,43 @@
           <key>match</key>
           <string>(-?[1-9][0-9]*|0)</string>
           <key>name</key>
-          <string>text.Algo</string>
+          <string>constant.numeric.Algo</string>
         </dict>
         <dict>
           <key>match</key>
           <string>(-?[1-9]*[0-9]\.[0-9]+)</string>
           <key>name</key>
-          <string>text.Algo</string>
+          <string>constant.numeric.Algo</string>
         </dict>
         <dict>
           <key>match</key>
           <string>(true|false)</string>
           <key>name</key>
-          <string>text.Algo</string>
+          <string>constant.other.Algo</string>
         </dict>
         <dict>
           <key>match</key>
           <string>((-?[1-9][0-9]*|0)[\x{0020}]*/[\x{0020}]*(-?[1-9][0-9]*|0))</string>
           <key>name</key>
-          <string>text.Algo</string>
+          <string>constant.numeric.Algo</string>
         </dict>
         <dict>
           <key>match</key>
           <string>(null|let|for|foreach|add|break|continue|at|remove|from|while| in |if|up to|as |enum|library|sf|object|else|import|return|print|disregard|external)</string>
           <key>name</key>
-          <string>text.Algo</string>
+          <string>keyword.Algo</string>
         </dict>
         <dict>
           <key>match</key>
           <string>(([a-zA-Z_0-9]+\.[a-zA-Z_0-9]+)+)</string>
           <key>name</key>
-          <string>text.Algo</string>
+          <string>variable.Algo</string>
         </dict>
         <dict>
           <key>match</key>
           <string>([a-zA-Z_0-9]+)</string>
           <key>name</key>
-          <string>text.Algo</string>
+          <string>variable.Algo</string>
         </dict>
         <dict>
           <key>begin</key>
@@ -135,7 +135,7 @@
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>text.Algo</string>
+              <string>none.Algo</string>
             </dict>
           </dict>
           <key>patterns</key>
@@ -152,7 +152,7 @@
             <key>1</key>
             <dict>
               <key>name</key>
-              <string>text.Algo</string>
+              <string>none.Algo</string>
             </dict>
           </dict>
         </dict>
@@ -172,13 +172,13 @@
           <key>match</key>
           <string>(\\.)</string>
           <key>name</key>
-          <string>text.Algo</string>
+          <string>none.Algo</string>
         </dict>
         <dict>
           <key>match</key>
           <string>(.*?(?!\\.).)</string>
           <key>name</key>
-          <string>text.Algo</string>
+          <string>string.Algo</string>
         </dict>
        </array>
     </dict>
@@ -190,13 +190,13 @@
           <key>match</key>
           <string>(,)</string>
           <key>name</key>
-          <string>text.Algo</string>
+          <string>none.Algo</string>
         </dict>
         <dict>
           <key>match</key>
           <string>([a-zA-Z_0-9]+)</string>
           <key>name</key>
-          <string>text.Algo</string>
+          <string>variable.parameter.Algo</string>
         </dict>
        </array>
     </dict>

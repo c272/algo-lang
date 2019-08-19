@@ -1,0 +1,27 @@
+{
+    "name": "Algo",
+    "displayName": "Algo Language Support",
+    "description": "Support for the \"Algo\" programming language, by c272.",
+    "version": "0.0.1",
+    "publisher": "c272",
+    "repository": "https://github.com/c272/algo-lang",
+    "engines": {
+        "vscode": "^1.37.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "algo",
+            "aliases": ["Algo", "algo"],
+            "extensions": [".ag"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "algo",
+            "scopeName": "source.Algo",
+            "path": "./syntaxes/algo.tmlanguage"
+        }]
+    }
+}
