@@ -61,7 +61,7 @@ namespace Algo
             }
             else
             {
-                Program.Main(new string[] { });
+                Program.Main(new string[] { "--nohead" });
             }
         }
 
