@@ -1,2 +1,5 @@
 language: csharp
 solution: Algo.sln
+os:
+  - linux
+  - windows
