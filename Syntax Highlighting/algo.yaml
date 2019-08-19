@@ -1,0 +1,80 @@
+%YAML 1.2
+---
+name: Algo
+scope: source.Algo
+file_extensions: [ ag ]
+
+contexts:
+  main:
+    - match: '(let)'
+      captures:
+        0: text.Algo
+    - match: '(//)'
+      captures:
+        0: text.Algo
+      push: 
+        - match: '(^(?=.{0,1})(?:|))'
+          pop: true
+          captures:
+            0: text.Algo
+        - match: '(.)'
+          captures:
+            0: text.Algo
+    - match: '(\")'
+      captures:
+        0: text.Algo
+      push: 
+        - match: '(\")'
+          pop: true
+          captures:
+            0: text.Algo
+        - match: '(\\.)'
+          captures:
+            0: text.Algo
+        - match: '(.*?(?!\\.).)'
+          captures:
+            0: text.Algo
+        - match: '(.)'
+          captures:
+            0: text.Algo
+    - match: '(-?[1-9][0-9]*|0)'
+      captures:
+        0: text.Algo
+    - match: '(-?[1-9]*[0-9]\.[0-9]+)'
+      captures:
+        0: text.Algo
+    - match: '(true|false)'
+      captures:
+        0: text.Algo
+    - match: '((-?[1-9][0-9]*|0)[\x{0020}]*/[\x{0020}]*(-?[1-9][0-9]*|0))'
+      captures:
+        0: text.Algo
+    - match: '(null|let|for|foreach|add|break|continue|at|remove|from|while| in |if|up to|as |enum|library|sf|object|else|import|return|print|disregard|external)'
+      captures:
+        0: text.Algo
+    - match: '(([a-zA-Z_0-9]+\.[a-zA-Z_0-9]+)+)'
+      captures:
+        0: text.Algo
+    - match: '([a-zA-Z_0-9]+)'
+      captures:
+        0: text.Algo
+    - match: '([a-zA-Z_0-9]\()'
+      captures:
+        0: text.Algo
+      push: 
+        - match: '(\))'
+          pop: true
+          captures:
+            0: text.Algo
+        - match: '(,)'
+          captures:
+            0: text.Algo
+        - match: '([a-zA-Z_0-9]+)'
+          captures:
+            0: text.Algo
+        - match: '(.)'
+          captures:
+            0: text.Algo
+    - match: '(.)'
+      captures:
+        0: text.Algo
