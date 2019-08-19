@@ -1,0 +1,132 @@
+# Algo IRO Grammar, for syntax highlighting on
+# VS, Atom and Sublime.
+# (c) Larry Tang, 2019
+# https://eeyo.io/iro/
+
+# Define name and associated extensions.
+name = Algo
+file_extensions [] = ag;
+
+# Contexts associated with Algo.
+contexts [] {
+   main : context {
+   
+      # Definition statement. (stat_define)
+      : pattern {
+         regex \= (let)
+         styles [] = .algo_define;
+      }
+      
+      # Comment.
+      : inline_push {
+         regex \= (//)
+         styles [] = .algo_comment;
+         default_style = .algo_comment
+         : eol_pop {}
+      }
+      
+      # STRING (string)
+      : inline_push {
+         regex \= (\")
+         styles [] = .algo_string;
+         
+         # When to stop the string.
+         : pop {
+            regex \= (\")
+            styles [] = .algo_string;
+         }
+         
+         # When an escaped character is used.
+         : pattern {
+            regex \= (\\.)
+            styles [] = .algo_escaped_char;
+         }
+         
+         # Everything but escape characters.
+         : pattern {
+            regex \= (.*?(?!\\.).)
+            styles [] = .algo_string;
+         }
+      }
+      
+      # INTEGER (integer)
+      : pattern {
+         regex \= (-?[1-9][0-9]*|0)
+         styles [] = .algo_number;
+      }
+      
+      # FLOAT (float)
+      : pattern {
+         regex \= (-?[1-9]*[0-9]\.[0-9]+)
+         styles [] = .algo_number;
+      }
+      
+      # BOOLEAN (bool)
+      : pattern {
+         regex \= (true|false)
+         styles [] = .algo_boolean;
+      }
+      
+      # RATIONAL (fraction)
+      : pattern {
+         regex \= ((-?[1-9][0-9]*|0)[ ]*/[ ]*(-?[1-9][0-9]*|0))
+         styles [] = .algo_number;
+      }
+      
+      # COMMON KEYWORDS
+      : pattern {
+         regex \= (null|let|for|foreach|add|break|continue|at|remove|from|while| in |if|up to|as |enum|library|sf|object|else|import|return|print|disregard|external)
+         styles [] = .algo_keyword;
+      }
+      
+      # Object reference.
+      : pattern {
+         regex \= (([a-zA-Z_0-9]+\.[a-zA-Z_0-9]+)+)
+         styles [] = .algo_identifier;
+      }
+      
+      # Identifier.
+      : pattern {
+         regex \= ([a-zA-Z_0-9]+)
+         styles [] = .algo_objref;
+      }
+      
+      # Parameters.
+      : inline_push {
+         regex \= ([a-zA-Z_0-9]\()
+         styles [] = .algo_nostyle;
+         
+         # When to stop params.
+         : pop {
+            regex \= (\))
+            styles [] = .algo_nostyle;
+         }
+         
+         # Comma.
+         : pattern {
+            regex \= (,)
+            styles [] = .algo_nostyle;
+         }
+         
+         # Identifier.
+         : pattern {
+            regex \= ([a-zA-Z_0-9]+)
+            styles [] = .algo_parameter;
+         }
+      }
+   }
+}
+
+styles [] {
+   .algo_define : style color = "light_blue";
+   .algo_string : style color = "green";
+   .algo_escaped_char : style color = "light_green";
+   .algo_number : style color = "gold";
+   .algo_boolean : style color = "purple";
+   .algo_keyword : style color = "orange";
+   .algo_comment : style color = "grey";
+   .algo_objref : style color = "cyan";
+   .algo_identifier : style color = "cyan";
+   .algo_nostyle : style color = "white";
+   .algo_parameter : style color = "light_green";
+}
