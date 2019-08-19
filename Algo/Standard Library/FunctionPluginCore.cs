@@ -29,6 +29,8 @@ namespace Algo
             Plugins.Add(new StandardLibrary.AlgoStd_JSON());
             //*.* (reflection)
             Plugins.Add(new StandardLibrary.AlgoStd_Reflection());
+            //random.* (maths)
+            Plugins.Add(new StandardLibrary.AlgoStd_Maths());
 
             //Are there any plugin files in the /packages/ directory?
             string[] files = Directory.GetFiles(CPFilePath.GetPlatformFilePath(DefaultDirectories.PackagesDirectory));

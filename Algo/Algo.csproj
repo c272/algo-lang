@@ -27,7 +27,8 @@
       <CustomCommands>
         <Command>
           <type>BeforeBuild</type>
-          <command></command>
+          <command>
+          </command>
         </Command>
       </CustomCommands>
     </CustomCommands>
@@ -104,6 +105,7 @@
     <Compile Include="Standard Library\FunctionPluginCore.cs" />
     <Compile Include="Standard Library\FunctionPluginInterface.cs" />
     <Compile Include="Standard Library\Libraries\AlgoStd_Core.cs" />
+    <Compile Include="Standard Library\Libraries\AlgoStd_Maths.cs" />
     <Compile Include="Standard Library\Libraries\AlgoStd_String.cs" />
     <Compile Include="Standard Library\Libraries\AlgoStd_IO.cs" />
     <Compile Include="Evaluation\Visitors\AlgoListManager.cs" />
@@ -121,6 +123,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Standard Library\Algo Scripts\core.ag" />
+    <None Include="Standard Library\Algo Scripts\maths.ag" />
     <None Include="Standard Library\Algo Scripts\string.ag" />
     <None Include="Standard Library\Algo Scripts\io.ag" />
     <None Include="Standard Library\Algo Scripts\web.ag" />
@@ -133,9 +136,7 @@
       <Name>AlgoSDK</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Extensions &amp; Libraries\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
