@@ -1,0 +1,46 @@
+//Script to check whether a number is prime, using the
+//Miller-Rabin primality test.
+//(c) Larry T, 2019
+
+//Import dependencies.
+import "core";
+import "io";
+
+//Define the function.
+let rabinMiller(num) = {
+
+    //Filter out basic primes.
+    if (num == 2 | num == 3)
+    {
+        return true;
+    }
+
+    //Below 2 and % 0? Not prime.
+    if (source < 2 | source % 2 == 0)
+    {
+        return false;
+    }
+
+    //Find the even integer below the number.
+    let even_num = num - 1;
+    let i = 0;
+
+    //Find lowest odd divisor.
+    while (even_num % 2 == 0)
+    {
+        even_num /= 2;
+        i++;
+    }
+
+    //Generate a random integer.
+    let rand = 0;
+    //...
+}
+
+
+//Get the number to check.
+print "Enter the number you wish to check for primality.";
+let num = int(input.get());
+
+//Check.
+let isPrime = rabinMiller(num);

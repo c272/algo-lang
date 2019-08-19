@@ -118,6 +118,23 @@ namespace Algo
             return null;
         }
 
+        //Loads the "core.ag" standard library.
+        public void LoadCoreLibrary()
+        {
+            //Check the file exists.
+            var dirParts = new string[] { AppDomain.CurrentDomain.BaseDirectory, "std", "core.ag" };
+            var corePath = CPFilePath.GetPlatformFilePath(dirParts);
+
+            if (!File.Exists(corePath))
+            {
+                Error.FatalNoContext("Failed loading the core library. No core functions could be loaded, Algo cannot run. Please reinstall Algo, or redownload the 'core.ag' standard library.");
+                return;
+            }
+
+            //Load it.
+            RunAlgoScript(corePath);
+        }
+
         //Runs an Algo script, given a file path.
         public void RunAlgoScript(string path, string newScopeName="")
         {

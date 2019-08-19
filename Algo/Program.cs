@@ -20,7 +20,7 @@ namespace Algo
 
         //The current version of algo. (vX.X.BUILD)
         private const int MAJOR_VER = 0;
-        private const int MINOR_VER = 3;
+        private const int MINOR_VER = 4;
 
         public static void Main(string[] args)
         {
@@ -47,6 +47,9 @@ namespace Algo
                 if (visitor == null)
                 {
                     visitor = new algoVisitor();
+
+                    //Load core library.
+                    visitor.LoadCoreLibrary();
                 }
 
                 //Interactive interpreter.
@@ -143,6 +146,7 @@ namespace Algo
 
             //Walking the tree.
             visitor = new algoVisitor();
+            visitor.LoadCoreLibrary();
             visitor.VisitCompileUnit(tree);
 
             if (AlgoRuntimeInformation.DeveloperMode)
