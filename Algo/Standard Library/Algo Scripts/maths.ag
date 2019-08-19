@@ -1,0 +1,11 @@
+﻿// The "maths" standard library, provided by Algo.
+// Contains one namespace, "random".
+// v0.0.2, revision 3.
+
+library random
+{
+
+	//Generates a random non-negative integer from 1 to int32 maximum.
+	external int <- std_maths.random_int;
+
+}
