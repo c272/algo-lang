@@ -33,6 +33,7 @@ statement: (  stat_define
 			   | stat_if
 			   | stat_library
 			   | stat_whileLoop
+			   | stat_try_catch
 			   );
 
 //Types of statement.
@@ -54,6 +55,7 @@ stat_library: LIB_SYM IDENTIFIER LBRACE statement* RBRACE;
 stat_import: IMPORT_SYM expr (AS_SYM IDENTIFIER)?;
 stat_list_add: ADD_SYM expr TO_SYM (IDENTIFIER | obj_access) (AT_SYM expr)?;
 stat_list_remove: REMOVE_SYM expr (FROM_SYM | IN_SYM) (IDENTIFIER | obj_access);
+stat_try_catch: TRY_SYM LBRACE block RBRACE CATCH_SYM LBRACKET IDENTIFIER RBRACKET LBRACE block RBRACE;
 stat_break: BREAK_SYM;
 stat_continue: CONTINUE_SYM;
 
@@ -172,6 +174,8 @@ RETURN_SYM: 'return';
 PRINT_SYM: 'print ';
 DISREGARD_SYM: 'disregard';
 EXTERNAL_SYM: 'external';
+TRY_SYM: 'try';
+CATCH_SYM: 'catch';
 
 //NON-MATHEMATICAL SYMBOLS
 ENDLINE: ';';

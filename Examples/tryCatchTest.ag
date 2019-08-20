@@ -1,0 +1,8 @@
+try 
+{
+    let x = int(null);
+}
+catch(e)
+{
+    print "Caught error! '" + e + "'.";
+}

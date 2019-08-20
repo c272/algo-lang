@@ -16,5 +16,32 @@ namespace Algo
 
         //Whether the current runtime should ignore fatal errors and continue running.
         public static bool ContinuousMode = false;
+
+        //Whether the current runtime should catch fatal errors and return up the heirarchy.
+        public static bool CatchExceptions = false;
+
+        //The caught exception message.
+        private static string ExceptionMessage = "";
+
+        //Checks whether an exception has been caught.
+        public static bool ExceptionCaught()
+        {
+            if (ExceptionMessage == "") { return false; }
+            return true;
+        }
+
+        //Gets the exception message that was caught. Wipes the exception afterward.
+        public static string GetExceptionMessage()
+        {
+            string caught = ExceptionMessage;
+            ExceptionMessage = "";
+            return caught;
+        }
+
+        //Sets the exception message.
+        public static void SetExceptionMessage(string msg)
+        {
+            ExceptionMessage = msg;
+        }
     }
 }

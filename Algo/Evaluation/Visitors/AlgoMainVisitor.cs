@@ -141,6 +141,11 @@ namespace Algo
                 //Continue statement, return a continue value.
                 return AlgoValue.Continue;
             }
+            else if (context.stat_try_catch() != null)
+            {
+                //Try/catch block.
+                return VisitStat_try_catch(context.stat_try_catch());
+            }
             else
             {
                 Error.Fatal(context, "Syntax error, unrecognized statement.");

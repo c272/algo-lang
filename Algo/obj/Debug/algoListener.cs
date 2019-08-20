@@ -263,6 +263,17 @@ public interface IalgoListener : IParseTreeListener {
 	void ExitStat_list_remove([NotNull] algoParser.Stat_list_removeContext context);
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.stat_try_catch"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterStat_try_catch([NotNull] algoParser.Stat_try_catchContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.stat_try_catch"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitStat_try_catch([NotNull] algoParser.Stat_try_catchContext context);
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.stat_break"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

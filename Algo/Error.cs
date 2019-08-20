@@ -13,13 +13,30 @@ namespace Algo
         //Fatal error, with token context.
         public static void Fatal(ParserRuleContext context, string errMessage)
         {
-            //Check context isn't broken before attempting to use it, don't want the error message throwing an error.
-            if (context == null) { FatalNoContext(errMessage); return; }
-
+            //Is error catching on?
+            if (AlgoRuntimeInformation.CatchExceptions)
+            {
+                //Don't actually perform any error tasks, just set the caught message.
+                AlgoRuntimeInformation.SetExceptionMessage(errMessage);
+                return;
+            }
+            
+            //Set console colours.
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Red;
+
+            //Check the loaded file is right.
             if (AlgoRuntimeInformation.FileLoaded == "") { AlgoRuntimeInformation.FileLoaded = "No File"; }
-            Console.WriteLine("Algo Runtime Error: " + AlgoRuntimeInformation.FileLoaded + ", Line " + context.Start.Line + ":" + context.Start.StartIndex + " - " + errMessage);
+
+            //Print the actual error message.
+            if (context == null)
+            {
+                Console.WriteLine("Algo Runtime Error: " + AlgoRuntimeInformation.FileLoaded + ", NOCONTEXT - " + errMessage);
+            }
+            else
+            {
+                Console.WriteLine("Algo Runtime Error: " + AlgoRuntimeInformation.FileLoaded + ", Line " + context.Start.Line + ":" + context.Start.StartIndex + " - " + errMessage);
+            }
             Console.ResetColor();
 
             //Only print the scopes in developer mode.
@@ -28,41 +45,24 @@ namespace Algo
                 ANTLRDebug.PrintScopes();
             }
 
-            if (!AlgoRuntimeInformation.ContinuousMode)
-            {
-                Environment.Exit(-1);
-            }
-            else
+            //Check if we're in continuous mode. If so, just restart (no header).
+            if (AlgoRuntimeInformation.ContinuousMode)
             {
                 //If in continuous mode, just keep going and run the interpreter again.
                 Program.Main(new string[] { "--nohead" });
                 Environment.Exit(0);
             }
-        }
-
-        //Fatal error, with no token context.
-        public static void FatalNoContext(string errMessage)
-        {
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.BackgroundColor = ConsoleColor.Red;
-            if (AlgoRuntimeInformation.FileLoaded == "") { AlgoRuntimeInformation.FileLoaded = "No File"; }
-            Console.WriteLine("Algo Runtime Error: " + AlgoRuntimeInformation.FileLoaded + ", NOCONTEXT - " + errMessage);
-            Console.ResetColor();
-
-            //Only print scopes if we're in developer mode.
-            if (AlgoRuntimeInformation.DeveloperMode)
-            {
-                ANTLRDebug.PrintScopes();
-            }
-
-            if (!AlgoRuntimeInformation.ContinuousMode)
-            {
-                Environment.Exit(-1);
-            }
             else
             {
-                Program.Main(new string[] { "--nohead" });
+                //Normal mode, just exit.
+                Environment.Exit(-1);
             }
+        }
+
+        //Fatal error, with no token context. Deprecated, now a wrapper for Fatal(null, msg).
+        public static void FatalNoContext(string errMessage)
+        {
+            Fatal(null, errMessage);
         }
 
         //Warning.
