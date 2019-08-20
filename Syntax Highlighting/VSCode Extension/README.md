@@ -14,6 +14,9 @@ https://github.com/c272/algo-lang/issues/
 
 ## Release Notes
 
+### 1.0.3
+Updated the grammar to include the new "try" and "catch" keywords, and some more contextual actions.
+
 ### 1.0.0
 
 Initial release of the extension, added contextual grammar support for Algo 0.0.4.

@@ -111,7 +111,7 @@
         </dict>
         <dict>
           <key>match</key>
-          <string>(null|let|for|foreach|add|break|continue|at|remove|from|while| in |if|up to|as |enum|library|sf|object|else|import|return|print|disregard|external)</string>
+          <string>(null|let|for|foreach|add|break|continue|at|remove|from|while| in |if|up to|as |enum|library|sf|object|else|import|return|print|disregard|external|try|catch)</string>
           <key>name</key>
           <string>keyword.Algo</string>
         </dict>
