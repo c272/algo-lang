@@ -1,0 +1,82 @@
+//Checks whether a number is prime or composite. Takes a number to check, and a level of certainty (5 is usually fine).
+let isPrime(num, certainty) = {
+
+    //Import core functions (only for function scope).
+    external randInt <- std_maths.random_int;
+
+    //Filter out basic primes.
+    let smallPrimes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97];
+    if (array.contains(num, smallPrimes))
+    {
+        print "got here";
+        return true;
+    }
+
+    print "got here";
+
+    //Below 2 and % 0? Not prime.
+    if (num < 2 | num % 2 == 0)
+    {
+        return false;
+    }
+
+    //Find the even integer below the number.
+    let even_num = num - 1;
+    let s = 0;
+
+    //Find lowest odd divisor.
+    while (even_num % 2 == 0)
+    {
+        even_num /= 2;
+        s++;
+    }
+
+    //Generate a random integer.
+    let rand = 0;
+    for (i up to certainty - 1) 
+    {
+        while (true)
+        {
+            rand = randInt(0);
+            if (rand >= 2 & rand < even_num - 2)
+            {
+                break;
+            }
+        }
+
+        //Done, check for x=1 or x=even-1.
+        let modPow = maths.modPow(rand, even_num, num);
+        if (modPow == 1 | modPow == num - 1)
+        {
+            continue;
+        }
+
+        //Iterating to check for prime.
+        for (i up to s - 1)
+        {
+            //From 1 upwards.
+            if (i < 1) { continue; }
+
+            modPow = maths.modPow(modPow, 2, num);
+            if (modPow == 1)
+            {
+                return false;
+            }
+            else if (modPow == num - 1)
+            {
+                break;
+            }
+        }
+
+        if (modPow != num - 1)
+        {
+            return false;
+        }
+        
+    }
+
+    //All tests have failed to prove composite, so return "probably prime".
+    return true;
+}
+
+print isPrime(13, 5);

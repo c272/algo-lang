@@ -21,6 +21,9 @@ namespace Algo
                 case AlgoValueType.Null:
                     printString = "null";
                     break;
+                case AlgoValueType.Boolean:
+                    printString = ((bool)toPrint.Value).ToString();
+                    break;
                 case AlgoValueType.Float:
                     printString = ((BigFloat)toPrint.Value).ToString();
                     break;

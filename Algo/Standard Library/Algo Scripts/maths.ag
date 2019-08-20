@@ -2,6 +2,15 @@
 // Contains two namespaces, "maths" and "random".
 // v0.0.2, revision 3.
 
+//The "Random" library. Seeds are defaultly based on Environment.TickCount.
+library random
+{
+
+	//Generates a random non-negative integer from 1 to int32 maximum.
+	external int <- std_maths.random_int;
+
+}
+
 //The base maths library.
 library maths
 {
@@ -9,13 +18,6 @@ library maths
 	//Performs modPow on integers. Useful when the power is too large to normally compute. 
 	external modPow <- std_maths.modPow;
 
-}
-
-//The "Random" library. Seeds are defaultly based on Environment.TickCount.
-library random
-{
-
-	//Generates a random non-negative integer from 1 to int32 maximum.
-	external int <- std_maths.random_int;
+	
 
 }
