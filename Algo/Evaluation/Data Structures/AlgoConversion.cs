@@ -22,7 +22,7 @@ namespace Algo
                     printString = "null";
                     break;
                 case AlgoValueType.Boolean:
-                    printString = ((bool)toPrint.Value).ToString();
+                    printString = ((bool)toPrint.Value).ToString().ToLower();
                     break;
                 case AlgoValueType.Float:
                     printString = ((BigFloat)toPrint.Value).ToString();

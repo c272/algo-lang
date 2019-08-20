@@ -2,17 +2,15 @@
 let isPrime(num, certainty) = {
 
     //Import core functions (only for function scope).
+    //import "core";
     external randInt <- std_maths.random_int;
 
     //Filter out basic primes.
     let smallPrimes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97];
     if (array.contains(num, smallPrimes))
     {
-        print "got here";
         return true;
     }
-
-    print "got here";
 
     //Below 2 and % 0? Not prime.
     if (num < 2 | num % 2 == 0)
