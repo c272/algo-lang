@@ -18,11 +18,8 @@ library maths
 	//Performs modPow on integers. Useful when the power is too large to normally compute. 
 	external modPow <- std_maths.modPow;
 
-	//Checks whether a number is prime or composite. Takes a number to check, and a level of certainty (5 is usually fine).
-	let isPrime(num, certainty) = {
-
-		//Import core functions (only for function scope).
-		external randInt <- std_maths.random_int;
+	//Checks whether a number is prime or composite. Takes a number to check, a level of certainty (5 is usually fine), and a random number generator.
+	let isPrime(num, certainty, randFunc) = {
 
 		//Filter out basic primes.
 		let smallPrimes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97];
