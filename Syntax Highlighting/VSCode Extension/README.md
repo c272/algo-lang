@@ -14,8 +14,11 @@ https://github.com/c272/algo-lang/issues/
 
 ## Release Notes
 
+### 1.0.5
+Fixed a small scoping bug pertaining to operator keywords.
+
 ### 1.0.4
-Added more detailed TextMate contexts instead of grouping keywords into one rule. Operators are now also proeprly detected as operators, and not invalid symbols, along with logical checks. Import statements now show an automatically generated path.
+Added more detailed TextMate contexts instead of grouping keywords into one rule. Operators are now also properly detected as operators, and not invalid symbols, along with logical checks. Import statements now show an automatically generated path.
 
 ### 1.0.3
 Updated the grammar to include the new "try" and "catch" keywords, and some more contextual actions.

@@ -129,7 +129,7 @@
         </dict>
         <dict>
           <key>match</key>
-          <string>(up to|as|in|from|at|sf)</string>
+          <string>(up to| as | in | from | at | sf)</string>
           <key>name</key>
           <string>keyword.operator.word.Algo</string>
         </dict>

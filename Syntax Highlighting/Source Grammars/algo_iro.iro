@@ -93,7 +93,7 @@ contexts [] {
       
       # OPERATOR KEYWORDS
       : pattern {
-         regex \= (up to|as|in|from|at|sf)
+         regex \= (up to| as | in | from | at | sf)
          styles [] = .algo_keyword_operator;
       }
 

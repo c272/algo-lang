@@ -16,3 +16,7 @@ Changes to the Algo Language Support Extension are documented here.
 - Operators are now detected as operators, and not invalid symbols.
 - Logical checks are now detected by the grammar.
 - Import statements now show an automatically generated path.
+
+## 1.0.5
+
+- Fixed a scoping bug affecting keyword.operator.word patterns.
