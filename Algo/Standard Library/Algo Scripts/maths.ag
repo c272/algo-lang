@@ -54,7 +54,7 @@ library maths
 		{
 			while (true)
 			{
-				rand = randInt(0);
+				rand = randFunc(0);
 				if (rand >= 2 & rand < even_num - 2)
 				{
 					break;
