@@ -17,6 +17,10 @@
         'name' : 'keyword.Algo'
       }
       {
+        'match' : '(import)'
+        'name' : 'keyword.control.import.Algo'
+      }
+      {
         'begin' : '(//)'
         'beginCaptures' : {
           '1' : {
@@ -67,8 +71,36 @@
         'name' : 'constant.numeric.Algo'
       }
       {
-        'match' : '(null|let|for|foreach|add|break|continue|at|remove|from|while| in |if|up to|as |enum|library|sf|object|else|import|return|print|disregard|external|try|catch)'
+        'match' : '(if|else)'
+        'name' : 'keyword.control.conditional.Algo'
+      }
+      {
+        'match' : '(for|foreach|while|try|catch)'
+        'name' : 'keyword.control.Algo'
+      }
+      {
+        'match' : '(up to|as|in|from|at|sf)'
+        'name' : 'keyword.operator.word.Algo'
+      }
+      {
+        'match' : '(null|true|false)'
+        'name' : 'constant.language.Algo'
+      }
+      {
+        'match' : '(let|break|continue|enum|library|object|return|print|disregard|external|add|remove)'
         'name' : 'keyword.Algo'
+      }
+      {
+        'match' : '(\\+\\=|\\-\\=|\\/\\=|\\*\\=|\\+\\+|\\-\\-|\\+|\\-|\\/|\\*|\\^)'
+        'name' : 'keyword.operator.arithmetic.Algo'
+      }
+      {
+        'match' : '(\\||\\&|==)'
+        'name' : 'keyword.operator.logical.Algo'
+      }
+      {
+        'match' : '(\\=)'
+        'name' : 'keyword.operator.assignment.Algo'
       }
       {
         'match' : '(([a-zA-Z_0-9]+\\.[a-zA-Z_0-9]+)+)'
@@ -107,7 +139,7 @@
     'patterns' : [
       {
         'match' : '(\\\\.)'
-        'name' : 'none.Algo'
+        'name' : 'constant.character.escape.Algo'
       }
       {
         'match' : '(.*?(?!\\\\.).)'

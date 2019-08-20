@@ -16,6 +16,12 @@ contexts [] {
          regex \= (let)
          styles [] = .algo_define;
       }
+
+      # Import statement. (stat_import)
+      : pattern {
+         regex \= (import)
+         styles [] = .algo_import;
+      }
       
       # Comment.
       : inline_push {
@@ -72,13 +78,55 @@ contexts [] {
          regex \= ((-?[1-9][0-9]*|0)[ ]*/[ ]*(-?[1-9][0-9]*|0))
          styles [] = .algo_number;
       }
-      
-      # COMMON KEYWORDS
+
+      # CONDITIONAL CONTROL KEYWORDS
       : pattern {
-         regex \= (null|let|for|foreach|add|break|continue|at|remove|from|while| in |if|up to|as |enum|library|sf|object|else|import|return|print|disregard|external|try|catch)
-         styles [] = .algo_keyword;
+         regex \= (if|else)
+         styles [] = .algo_keyword_conditional;
+      }
+
+      # CONTROL KEYWORDS
+      : pattern {
+         regex \= (for|foreach|while|try|catch)
+         styles [] = .algo_keyword_control;
       }
       
+      # OPERATOR KEYWORDS
+      : pattern {
+         regex \= (up to|as|in|from|at|sf)
+         styles [] = .algo_keyword_operator;
+      }
+
+      # LANGUAGE CONSTANTS (const keywords)
+      : pattern {
+         regex \= (null|true|false)
+         styles [] = .algo_keyword_constant;
+      }
+
+      # KEYWORDS (MISC)
+      : pattern {
+         regex \= (let|break|continue|enum|library|object|return|print|disregard|external|add|remove)
+         styles [] = .algo_keyword_generic;
+      }
+
+      # Arithmetic operators.
+      : pattern {
+         regex \= (\+\=|\-\=|\/\=|\*\=|\+\+|\-\-|\+|\-|\/|\*|\^)
+         styles [] = .algo_operator_arithmetic;
+      }
+      
+      # Logical operators.
+      : pattern {
+         regex \= (\||\&|==)
+         styles [] = .algo_operator_logical;
+      }
+      
+      # Assignment operator(s) (just =)
+      : pattern {
+         regex \= (\=)
+         styles [] = .algo_operator_assignment;
+      }
+
       # Object reference.
       : pattern {
          regex \= (([a-zA-Z_0-9]+\.[a-zA-Z_0-9]+)+)
@@ -119,11 +167,19 @@ contexts [] {
 
 styles [] {
    .algo_define : style color = "light_blue" textmate_scope = "keyword";
+   .algo_import : style color = "light_blue" textmate_scope = "keyword.control.import";
    .algo_string : style color = "green" textmate_scope = "string";
-   .algo_escaped_char : style color = "light_green" textmate_scope = "none";
+   .algo_escaped_char : style color = "light_green" textmate_scope = "constant.character.escape";
    .algo_number : style color = "gold" textmate_scope = "constant.numeric";
    .algo_boolean : style color = "purple" textmate_scope = "constant.other";
-   .algo_keyword : style color = "orange" textmate_scope = "keyword";
+   .algo_keyword_generic : style color = "orange" textmate_scope = "keyword";
+   .algo_keyword_constant : style color = "orange" textmate_scope = "constant.language";
+   .algo_keyword_operator : style color = "orange" textmate_scope = "keyword.operator.word";
+   .algo_keyword_control : style color = "orange" textmate_scope = "keyword.control";
+   .algo_keyword_conditional : style color = "orange" textmate_scope = "keyword.control.conditional";
+   .algo_operator_arithmetic : style color = "white" textmate_scope = "keyword.operator.arithmetic";
+   .algo_operator_assignment : style color = "white" textmate_scope = "keyword.operator.assignment";
+   .algo_operator_logical : style color = "white" textmate_scope = "keyword.operator.logical";
    .algo_comment : style color = "grey" textmate_scope = "comment";
    .algo_objref : style color = "cyan" textmate_scope = "variable";
    .algo_identifier : style color = "cyan" textmate_scope = "variable";
