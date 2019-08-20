@@ -123,7 +123,7 @@
         </dict>
         <dict>
           <key>match</key>
-          <string>(for|foreach|while|try|catch)</string>
+          <string>(foreach|for|while|try|catch)</string>
           <key>name</key>
           <string>keyword.control.Algo</string>
         </dict>

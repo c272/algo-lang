@@ -87,7 +87,7 @@ contexts [] {
 
       # CONTROL KEYWORDS
       : pattern {
-         regex \= (for|foreach|while|try|catch)
+         regex \= (foreach|for|while|try|catch)
          styles [] = .algo_keyword_control;
       }
       

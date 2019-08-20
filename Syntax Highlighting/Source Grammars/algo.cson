@@ -75,7 +75,7 @@
         'name' : 'keyword.control.conditional.Algo'
       }
       {
-        'match' : '(for|foreach|while|try|catch)'
+        'match' : '(foreach|for|while|try|catch)'
         'name' : 'keyword.control.Algo'
       }
       {

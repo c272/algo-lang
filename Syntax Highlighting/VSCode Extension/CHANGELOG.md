@@ -18,5 +18,7 @@ Changes to the Algo Language Support Extension are documented here.
 - Import statements now show an automatically generated path.
 
 ## 1.0.5
-
 - Fixed a scoping bug affecting keyword.operator.word patterns.
+
+## 1.0.6
+- Fixed a precedence bug involving for and foreach keywords.

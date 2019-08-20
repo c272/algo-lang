@@ -14,6 +14,9 @@ https://github.com/c272/algo-lang/issues/
 
 ## Release Notes
 
+### 1.0.6
+Addressed a small bug where "for" would take precedence over "foreach".
+
 ### 1.0.5
 Fixed a small scoping bug pertaining to operator keywords.
 
