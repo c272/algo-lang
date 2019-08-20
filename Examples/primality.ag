@@ -7,30 +7,17 @@ import "io";
 import "maths";
 
 //Define the function.
-let rabinMiller(num, certainty, debugMode) = {
+let rabinMiller(num, certainty) = {
 
     //Filter out basic primes.
     if (num == 2 | num == 3)
     {
-        if (debugMode)
-        {
-            print "Number is 2 or 3, prime.";
-        }
         return true;
-    }
-
-    if (debugMode)
-    {
-        print "Number is not 2 or 3.";
     }
 
     //Below 2 and % 0? Not prime.
     if (num < 2 | num % 2 == 0)
     {
-        if (debugMode)
-        {
-            print "Number is divisible by 2 or below 2, not prime.";
-        }
         return false;
     }
 
@@ -45,12 +32,6 @@ let rabinMiller(num, certainty, debugMode) = {
         s++;
     }
 
-    if (debugMode)
-    {
-        print "Lowest divisor is " + even_num + ".";
-        print "S Value calculated as " + s;
-    }
-
     //Generate a random integer.
     let rand = 0;
     for (i up to certainty - 1) 
@@ -62,11 +43,6 @@ let rabinMiller(num, certainty, debugMode) = {
             {
                 break;
             }
-        }
-
-        if (debugMode)
-        {
-            print "Cycle " + (i+1) + ": Generated random number as " + rand;
         }
 
         //Done, check for x=1 or x=even-1.
@@ -110,7 +86,7 @@ print "Enter the number you wish to check for primality.";
 let num = int(input.get());
 
 //Check.
-let isPrime = rabinMiller(num, 5, true);
+let isPrime = rabinMiller(num, 5);
 if (isPrime)
 {
     print "Your number is prime (probably)!";
