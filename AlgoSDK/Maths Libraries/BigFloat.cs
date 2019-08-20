@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
 
+//Disable "Hiding member 'Equals'" warning.
+#pragma warning disable 0108
+
 /// <summary>
 /// This code was not written by me, and was written at http://github.com/Osinko/BigFloat/.
 /// </summary>

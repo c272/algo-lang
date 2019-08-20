@@ -2,24 +2,24 @@
 // Contains two namespaces, "maths" and "random".
 // v0.0.2, revision 3.
 
-//The "Random" library. Seeds are defaultly based on Environment.TickCount.
-library random
-{
-
-	//Generates a random non-negative integer from 1 to int32 maximum.
-	external int <- std_maths.random_int;
-
-}
-
 //The base maths library.
 library maths
 {
+	//The "Random" library. Seeds are defaultly based on Environment.TickCount.
+	library random
+	{
+
+		//Generates a random non-negative integer from 1 to int32 maximum.
+		external int <- std_maths.random_int;
+		external intRange <- std_maths.random_intRange;
+
+	}
 
 	//Performs modPow on integers. Useful when the power is too large to normally compute. 
 	external modPow <- std_maths.modPow;
 
 	//Checks whether a number is prime or composite. Takes a number to check, a level of certainty (5 is usually fine), and a random number generator.
-	let isPrime(num, certainty, randFunc) = {
+	let isPrime(num, certainty) = {
 
 		//Filter out basic primes.
 		let smallPrimes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97];
@@ -52,18 +52,12 @@ library maths
 		let rand = 0;
 		for (i up to certainty - 1) 
 		{
-			while (true)
-			{
-				rand = randFunc(0);
-				if (rand >= 2 & rand < even_num - 2)
-				{
-					break;
-				}
-			}
+			//Get a random number.
+			rand = random.intRange(2, even_num - 3);
 
 			//Done, check for x=1 or x=even-1.
-			let modPow = maths.modPow(rand, even_num, num);
-			if (modPow == 1 | modPow == num - 1)
+			let modPow_ = modPow(rand, even_num, num);
+			if (modPow_ == 1 | modPow_ == num - 1)
 			{
 				continue;
 			}
@@ -74,18 +68,18 @@ library maths
 				//From 1 upwards.
 				if (i < 1) { continue; }
 
-				modPow = maths.modPow(modPow, 2, num);
-				if (modPow == 1)
+				modPow_ = modPow(modPow_, 2, num);
+				if (modPow_ == 1)
 				{
 					return false;
 				}
-				else if (modPow == num - 1)
+				else if (modPow_ == num - 1)
 				{
 					break;
 				}
 			}
 
-			if (modPow != num - 1)
+			if (modPow_ != num - 1)
 			{
 				return false;
 			}
