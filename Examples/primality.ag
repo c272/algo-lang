@@ -3,38 +3,105 @@
 //(c) Larry T, 2019
 
 //Import dependencies.
-import "core";
 import "io";
+import "maths";
 
 //Define the function.
-let rabinMiller(num) = {
+let rabinMiller(num, certainty, debugMode) = {
 
     //Filter out basic primes.
     if (num == 2 | num == 3)
     {
+        if (debugMode)
+        {
+            print "Number is 2 or 3, prime.";
+        }
         return true;
     }
 
-    //Below 2 and % 0? Not prime.
-    if (source < 2 | source % 2 == 0)
+    if (debugMode)
     {
+        print "Number is not 2 or 3.";
+    }
+
+    //Below 2 and % 0? Not prime.
+    if (num < 2 | num % 2 == 0)
+    {
+        if (debugMode)
+        {
+            print "Number is divisible by 2 or below 2, not prime.";
+        }
         return false;
     }
 
     //Find the even integer below the number.
     let even_num = num - 1;
-    let i = 0;
+    let s = 0;
 
     //Find lowest odd divisor.
     while (even_num % 2 == 0)
     {
         even_num /= 2;
-        i++;
+        s++;
+    }
+
+    if (debugMode)
+    {
+        print "Lowest divisor is " + even_num + ".";
+        print "S Value calculated as " + s;
     }
 
     //Generate a random integer.
     let rand = 0;
-    //...
+    for (i up to certainty - 1) 
+    {
+        while (true)
+        {
+            rand = random.int(0);
+            if (rand >= 2 & rand < even_num - 2)
+            {
+                break;
+            }
+        }
+
+        if (debugMode)
+        {
+            print "Cycle " + (i+1) + ": Generated random number as " + rand;
+        }
+
+        //Done, check for x=1 or x=even-1.
+        let modPow = maths.modPow(rand, even_num, num);
+        if (modPow == 1 | modPow == num - 1)
+        {
+            continue;
+        }
+
+        //Iterating to check for prime.
+        for (i up to s - 1)
+        {
+            //From 1 upwards.
+            if (i < 1) { continue; }
+
+            modPow = maths.modPow(modPow, 2, num);
+            if (modPow == 1)
+            {
+                return false;
+            }
+            else if (modPow == num - 1)
+            {
+                break;
+            }
+        }
+
+        if (modPow != num - 1)
+        {
+            return false;
+        }
+        
+    }
+
+    //All tests have failed to prove composite, so return "probably prime".
+    return true;
 }
 
 
@@ -43,4 +110,12 @@ print "Enter the number you wish to check for primality.";
 let num = int(input.get());
 
 //Check.
-let isPrime = rabinMiller(num);
+let isPrime = rabinMiller(num, 5, true);
+if (isPrime)
+{
+    print "Your number is prime (probably)!";
+}
+else
+{
+    print "Your number is not prime. :(";
+}

@@ -1,7 +1,17 @@
 ﻿// The "maths" standard library, provided by Algo.
-// Contains one namespace, "random".
+// Contains two namespaces, "maths" and "random".
 // v0.0.2, revision 3.
 
+//The base maths library.
+library maths
+{
+
+	//Performs modPow on integers. Useful when the power is too large to normally compute. 
+	external modPow <- std_maths.modPow;
+
+}
+
+//The "Random" library. Seeds are defaultly based on Environment.TickCount.
 library random
 {
 
