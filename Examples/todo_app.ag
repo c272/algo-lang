@@ -82,8 +82,7 @@ let editNote(name, text, id) =
 {
     //Get the notes file.
     let notes = getNotes();
-    print notes;
-    
+
     //Find the note index.
     let i = getNoteIndex(id);
     if (i == -1)
@@ -93,10 +92,10 @@ let editNote(name, text, id) =
     }
 
     //Got the note index, now edit the note.
-    let note = notes[i];
+    let note = notes.list[i];
     note.text = text;
     note.name = name;
-    notes[i] = note;
+    notes.list[i] = note;
     saveNotes(notes);
 
     print "Successfully edited the note.";
@@ -163,7 +162,6 @@ let getID() =
         }
         catch (e)
         {
-            print e;
             print "Invalid ID given, please try again.";
         }
     }
