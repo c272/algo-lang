@@ -20,10 +20,10 @@ let getNotes() =
         {
             let list = [];
             let currentID = 0;
-        }
+        };
 
         //Save file.
-        output.toFile("notes.json", json.make(notes));
+        saveNotes(notes);
         return notes;
     }
 
@@ -31,6 +31,30 @@ let getNotes() =
     return json.parse(input.fromFile("notes.json"));
 }
 
+//Save the notes file.
+let saveNotes(notes) = 
+{
+    output.toFile("notes.json", json.make(notes));
+}
+
+//Returns the index of the note with the given ID.
+let getNoteIndex(id) =
+{
+    let i = -1;
+    let notes = getNotes();
+    for (j in notes.list)
+    {
+        let notesItem = notes.list[j];
+        if (notesItem.id == id)
+        {
+            i = j;
+            break;
+        }
+    }
+
+    return i;
+}
+ 
 //Creates a to-do note.
 let createNote(name, text) = 
 {
@@ -43,9 +67,108 @@ let createNote(name, text) =
         let id = notes.currentID;
         let name = name;
         let text = text;
-    }
-    add newNote to notes.list;
+    };
     
+    add newNote to notes.list;
+    notes.currentID++;
+    
+    //Save the note.
+    saveNotes(notes);
+    print "Successfully created the note.";
+}
+
+//Edits a to-do note.
+let editNote(name, text, id) =
+{
+    //Get the notes file.
+    let notes = getNotes();
+    print notes;
+    
+    //Find the note index.
+    let i = getNoteIndex(id);
+    if (i == -1)
+    {
+        print "The note you wanted to edit doesn't exist.";
+        return;
+    }
+
+    //Got the note index, now edit the note.
+    let note = notes[i];
+    note.text = text;
+    note.name = name;
+    notes[i] = note;
+    saveNotes(notes);
+
+    print "Successfully edited the note.";
+}
+
+//Deletes a to-do note.
+let deleteNote(id) =
+{
+    //Get the notes file.
+    let notes = getNotes();
+
+    //Get the index of the note.
+    let i = getNoteIndex(id);
+    if (i == -1)
+    {
+        print "The note you wanted to delete doesn't exist.";
+        return;
+    }
+
+    //Remove that index.
+    remove i in notes.list;
+    saveNotes(notes);
+    print "Successfully deleted note.";
+}
+
+//View the list of to-do notes.
+let viewNotes() =
+{
+    //Get notes and print them all.
+    print "Notes:";
+    let notes = getNotes();
+
+    if (len(notes.list) == 0) 
+    {
+        print "No notes have been made.";
+        return;
+    }
+
+    foreach (note in notes.list)
+    {
+        print note.name + " - " + note.text + " (ID " + note.id + ")";
+    }
+    print "";
+}
+
+//Gets the ID of a valid note.
+let getID() = 
+{
+    let id = null;
+    while (true)
+    {
+        try
+        {
+            id = int(input.get());
+
+            //Is the ID valid?
+            if (getNoteIndex(id) == -1)
+            {
+                print "Invalid ID given, please try again.";
+                continue;
+            }
+
+            break;
+        }
+        catch (e)
+        {
+            print e;
+            print "Invalid ID given, please try again.";
+        }
+    }
+
+    return id;
 }
 
 ///////////////////////
@@ -89,17 +212,40 @@ while (true)
 //Switch on the input.
 if (response == 1)
 {
-    print "1";
+    //Get the name and body of the note.
+    print "Enter the name of your note.";
+    let name = input.get();
+    print "Enter the body of your note.";
+    let body = input.get();
+
+    //Create the note.
+    createNote(name, body);
 }
 else if (response == 2)
 {
-    print "2";
+    //What ID is being edited?
+    print "What is the ID of the note to edit?";
+    let id = getID();
+
+    //Get the new name and body.
+    print "Enter the new name of your note.";
+    let name = input.get();
+    print "Enter the new body of your note.";
+    let body = input.get();
+
+    //Edit.
+    editNote(name, body, id);
 }
 else if (response == 3)
 {
-    print "3";
+    //Get the ID to delete.
+    print "What is the ID of the note to delete?";
+    let id = getID();
+
+    //Deleting.
+    deleteNote(id);
 }
 else
 {
-    print "4";
+    viewNotes();
 }

@@ -52,11 +52,15 @@ namespace Algo
                 //If something was actually returned, return it up.
                 if (returned != null)
                 {
+                    AlgoRuntimeInformation.CatchExceptions = false;
                     Scopes.RemoveScope();
                     return returned;
                 }
             }
             Scopes.RemoveScope();
+
+            //Turn off error catching.
+            AlgoRuntimeInformation.CatchExceptions = false;
 
             //Done executing try statements, did an error come back?
             if (!foundError)

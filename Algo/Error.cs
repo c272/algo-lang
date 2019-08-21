@@ -18,7 +18,7 @@ namespace Algo
             {
                 //Don't actually perform any error tasks, just set the caught message.
                 AlgoRuntimeInformation.SetExceptionMessage(errMessage);
-                return;
+                throw new Exception("Error caught, you shouldn't be seeing this message.");
             }
             
             //Set console colours.
