@@ -2,71 +2,104 @@
 // by Larry Tang, 2019
 
 //Require the needed libraries.
-import "core";
 import "io";
+import "json";
 
-//Import the functions for the to-do application.
-import "todo_functions" as todo;
+///////////////////////
+// UTILITY FUNCTIONS //
+///////////////////////
 
-//Create to-do file as required.
-if (!file.exists("todo.txt"))
+//Gets the to-do notes file.
+let getNotes() =
 {
-    output.createFile("todo.txt");
-}
-
-//Check what action should be performed.
-print "Welcome to the Algo to-do application.";
-print "---------";
-print "What action would you like to perform?";
-print "1: Create a new to-do item.";
-print "2: Remove a to-do item.";
-print "3: List the current to-do items.";
-print "---------";
-
-//Get the action.
-let action = input.get();
-
-//Switch on the action.
-if (action == "1")
-{
-    print "What note would you like to add?";
-    let noteText = input.get();
-    todo.createItem(noteText);
-}
-else if (action == "2")
-{
-    print "Which item would you like to remove?";
-
-    //Get ID, check it's a valid integer.
-    let idStr = null;
-    while (true)
+    //Check if the notes file exists.
+    if (!file.exists("notes.json"))
     {
-        idStr = input.get();
-        if (!string.isInteger(idStr))
+        //Doesn't exist, return default notes.
+        let notes = object 
         {
-            print "That is not a valid ID. Please try again.";
+            let list = [];
+            let currentID = 0;
         }
-        else
+
+        //Save file.
+        output.toFile("notes.json", json.make(notes));
+        return notes;
+    }
+
+    //File exists, serialize and return.
+    return json.parse(input.fromFile("notes.json"));
+}
+
+//Creates a to-do note.
+let createNote(name, text) = 
+{
+    //Get the notes file.
+    let notes = getNotes();
+
+    //Add a note to the file, using the current ID.
+    let newNote = object
+    {
+        let id = notes.currentID;
+        let name = name;
+        let text = text;
+    }
+    add newNote to notes.list;
+    
+}
+
+///////////////////////
+
+
+//Let the user select an option.
+print "Welcome to the Algo To-Do Example App 2.0!";
+print "Select an option to get started.";
+print "-------------------";
+print "1 - Create a note.";
+print "2 - Edit a note.";
+print "3 - Delete a note.";
+print "4 - View your notes.";
+print "-------------------\n";
+
+//Attempt to get user input.
+let response = -1;
+while (true)
+{
+    try
+    {
+        response = int(input.get());
+
+        //Within the number range?
+        if (response < 1 | response > 4)
         {
+            print "Invalid number given, please try again.";
+        }
+        else 
+        {
+            //Yes.
             break;
         }
     }
-
-    //Get the integer ID.
-    let id = int(idStr);
-
-    //Attempt to remove item.
-    print todo.removeItem(id);
-}
-else if (action == "3")
-{
-    //Get notes.
-    let notes = todo.getNotes();
-
-    //Enumerate, print.
-    print "ID | Text";
-    foreach (item in notes)
+    catch(e)
     {
-        print item.id + " | " + item.text;
+        print "Invalid number given, please try again.";
     }
+}
+
+//Switch on the input.
+if (response == 1)
+{
+    print "1";
+}
+else if (response == 2)
+{
+    print "2";
+}
+else if (response == 3)
+{
+    print "3";
+}
+else
+{
+    print "4";
 }

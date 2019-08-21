@@ -22,3 +22,6 @@ Changes to the Algo Language Support Extension are documented here.
 
 ## 1.0.6
 - Fixed a precedence bug involving for and foreach keywords.
+
+## 1.0.7
+- The "to" keyword is now added as an operator keyword. (#1)

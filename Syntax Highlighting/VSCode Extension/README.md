@@ -14,6 +14,9 @@ https://github.com/c272/algo-lang/issues/
 
 ## Release Notes
 
+### 1.0.7
+Added the "to" operator keyword (#1).
+
 ### 1.0.6
 Addressed a small bug where "for" would take precedence over "foreach".
 

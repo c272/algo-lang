@@ -58,7 +58,7 @@ contexts:
     - match: '(foreach|for|while|try|catch)'
       captures:
         0: keyword.control.Algo
-    - match: '(up to| as | in | from | at | sf)'
+    - match: '(up to| as | in | from | at | sf| to |)'
       captures:
         0: keyword.operator.word.Algo
     - match: '(null|true|false)'

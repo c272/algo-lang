@@ -2,7 +2,7 @@
     "name": "Algo",
     "displayName": "Algo Language Support",
     "description": "Support for the \"Algo\" programming language, by c272.",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "publisher": "c272",
     "repository": "https://github.com/c272/algo-lang",
     "icon": "logo.png",

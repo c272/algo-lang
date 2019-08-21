@@ -16,7 +16,7 @@ library input
 library output
 {
 
-	//Write string output to file.
+	//Write string output to file. args = path, content
 	external toFile <- std_io.output_toFile;
 
 	//Change the colour of the console output.

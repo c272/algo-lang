@@ -79,7 +79,7 @@
         'name' : 'keyword.control.Algo'
       }
       {
-        'match' : '(up to| as | in | from | at | sf)'
+        'match' : '(up to| as | in | from | at | sf| to |)'
         'name' : 'keyword.operator.word.Algo'
       }
       {
