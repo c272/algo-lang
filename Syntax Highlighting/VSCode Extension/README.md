@@ -14,6 +14,9 @@ https://github.com/c272/algo-lang/issues/
 
 ## Release Notes
 
+### 1.1.0
+Fixed a critical error with a greedy capture, **it is critical to update to this version**.
+
 ### 1.0.8
 Added the new "throw" functionality (v0.0.4).
 

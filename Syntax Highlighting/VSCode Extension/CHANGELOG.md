@@ -28,3 +28,6 @@ Changes to the Algo Language Support Extension are documented here.
 
 ## 1.0.8
 - Added the new "throw" functionality (v0.0.4).
+
+## 1.1.0
+- Fixed a critical error with a greedy capture, **it is critical to update to this version**.
