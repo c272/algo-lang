@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ALEC\ALEC.cs" />
     <Compile Include="ANTLRDebug.cs" />
     <Compile Include="Error.cs" />
     <Compile Include="Evaluation\Data Structures\AlgoConversion.cs" />

@@ -84,5 +84,26 @@ namespace Algo
             Console.WriteLine("Algo Warning: " + AlgoRuntimeInformation.FileLoaded + ", NOCONTEXT - " + errMessage);
             Console.ResetColor();
         }
+
+        //A fatal compile message (the compiler has failed).
+        public static void FatalCompile(string msg)
+        {
+            //Send the error message.
+            Console.ForegroundColor = ConsoleColor.Red;
+            ALEC.Log("FATAL - " + msg, ALECEvent.Fatal);
+            Console.ResetColor();
+
+            //Print the compile footer.
+            ALEC.PrintCompileFooter();
+            Environment.Exit(-1);
+        }
+
+        //A warning compile message.
+        public static void WarningCompile(string msg)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            ALEC.Log("WARN - " + msg, ALECEvent.Warning);
+            Console.ResetColor();
+        }
     }
 }

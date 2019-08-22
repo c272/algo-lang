@@ -137,7 +137,7 @@ namespace Algo
                 //Check the parameter length is the same.
                 if (paramLength != func.Parameters.Count)
                 {
-                    Error.Fatal(context, paramLength + " parameters passed to function " + func.Name + ", which expects " + func.Parameters.Count + ".");
+                    Error.Fatal(context, paramLength + " parameters passed to function '" + func.Name + "', which expects " + func.Parameters.Count + ".");
                     return null;
                 }
 

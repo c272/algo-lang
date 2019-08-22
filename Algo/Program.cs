@@ -91,6 +91,18 @@ namespace Algo
                 PrintVersionInfo();
                 return;
             }
+            else if (args[0] == "-c")
+            {
+                //Compile instruction. Args correct?
+                if (args.Length != 2)
+                {
+                    Error.FatalNoContext("Invalid amount of arguments given for compile. Should be in format \"algo -c [file]\".");
+                    return;
+                }
+
+                //Compile.
+                ALEC.Compile(args[1]);
+            }
             else if (args[0] == "pkg")
             {
                 //Package management.
@@ -227,7 +239,7 @@ namespace Algo
         //Prints the manual for a specific command.
         private static void PrintManual(string man)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("The manual for " + man + " is not currently available.");
         }
     }
 }
