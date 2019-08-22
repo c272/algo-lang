@@ -2,6 +2,14 @@
 // NOTE: THESE FUNCTIONS ARE NOT IN A LIBRARY.
 // v0.0.4, revision 5.
 
+
+////////////////////////////////////////////////////////////
+// Miscellaneous functions that aren't part of a library. //
+////////////////////////////////////////////////////////////
+
+//Terminates the Algo program, with an exit code.
+external terminate <- std_core.terminate;
+
 //Returns the length of an array or string.
 external len <- std_core.len;
 

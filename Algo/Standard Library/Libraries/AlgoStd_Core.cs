@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace Algo.StandardLibrary
 {
-    //Additional methods for std_core, commonly used functions that aren't part of the inhrent feature set of Algo.
-    //eg. Not print, since that technically isn't a function.
+    //Additional methods for std_core, commonly used functions that are automatically imported
+    //into Algo. (eg. str() and other casting functions, and len())
     public class AlgoStd_Core : IFunctionPlugin
     {
         public string Name { get; set; } = "std_core";
@@ -71,8 +71,31 @@ namespace Algo.StandardLibrary
                 Name = "get_type",
                 ParameterCount = 1,
                 Function = GetType
+            },
+
+            //terminate()
+            new AlgoPluginFunction()
+            {
+                Name = "terminate",
+                ParameterCount = 1,
+                Function = Terminate
             }
         };
+
+        //Terminates the Algo program, with a given exit code.
+        public static AlgoValue Terminate(ParserRuleContext context, AlgoValue[] args)
+        {
+            //Check the first argument is an integer, within INT32 max range.
+            if (args[0].Type != AlgoValueType.Integer || (BigInteger)args[0].Value < int.MinValue || (BigInteger)args[0].Value > int.MaxValue)
+            {
+                Error.Fatal(context, "Exit code must be an integer from " + int.MinValue + " to " + int.MaxValue + ".");
+                return null;
+            }
+
+            //Valid, exit.
+            Environment.Exit(int.Parse(((BigInteger)args[0].Value).ToString()));
+            return null;
+        }
 
         //Returns the length of a list or string.
         public static AlgoValue Length(ParserRuleContext context, params AlgoValue[] args)
