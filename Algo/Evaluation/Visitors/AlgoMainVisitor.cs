@@ -146,6 +146,11 @@ namespace Algo
                 //Try/catch block.
                 return VisitStat_try_catch(context.stat_try_catch());
             }
+            else if (context.stat_throw() != null)
+            {
+                //Throw an error.
+                VisitStat_throw(context.stat_throw());
+            }
             else
             {
                 Error.Fatal(context, "Syntax error, unrecognized statement.");

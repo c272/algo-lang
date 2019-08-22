@@ -9,7 +9,6 @@ namespace Algo
     /// </summary>
     public class Error
     {
-
         //Fatal error, with token context.
         public static void Fatal(ParserRuleContext context, string errMessage)
         {

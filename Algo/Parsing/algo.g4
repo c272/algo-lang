@@ -26,6 +26,7 @@ statement: (  stat_define
             | stat_list_remove
 			| stat_break
 			| stat_continue
+			| stat_throw
 		   )  ENDLINE
 		   
 			|  ( stat_forLoop
@@ -56,6 +57,7 @@ stat_import: IMPORT_SYM expr (AS_SYM IDENTIFIER)?;
 stat_list_add: ADD_SYM expr TO_SYM (IDENTIFIER | obj_access) (AT_SYM expr)?;
 stat_list_remove: REMOVE_SYM expr (FROM_SYM | IN_SYM) (IDENTIFIER | obj_access);
 stat_try_catch: TRY_SYM LBRACE block RBRACE CATCH_SYM LBRACKET IDENTIFIER RBRACKET LBRACE block RBRACE;
+stat_throw: THROW_SYM expr;
 stat_break: BREAK_SYM;
 stat_continue: CONTINUE_SYM;
 
@@ -176,6 +178,7 @@ DISREGARD_SYM: 'disregard';
 EXTERNAL_SYM: 'external';
 TRY_SYM: 'try';
 CATCH_SYM: 'catch';
+THROW_SYM: 'throw';
 
 //NON-MATHEMATICAL SYMBOLS
 ENDLINE: ';';

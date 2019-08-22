@@ -187,6 +187,13 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitStat_try_catch([NotNull] algoParser.Stat_try_catchContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.stat_throw"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStat_throw([NotNull] algoParser.Stat_throwContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="algoParser.stat_break"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

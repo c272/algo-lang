@@ -97,5 +97,23 @@ namespace Algo
             //Finished!
             return null;
         }
+
+        //When an error is manually thrown by a user.
+        public override object VisitStat_throw([NotNull] algoParser.Stat_throwContext context)
+        {
+            //Evaluate the expression.
+            AlgoValue throwStr = (AlgoValue)VisitExpr(context.expr());
+
+            //Is it a string?
+            if (throwStr.Type != AlgoValueType.String)
+            {
+                Error.Fatal(context, "Error message to throw must be a string.");
+                return null;
+            }
+
+            //Throw the error.
+            Error.Fatal(context, (string)throwStr.Value);
+            return null;
+        }
     }
 }

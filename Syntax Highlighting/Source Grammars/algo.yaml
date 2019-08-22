@@ -55,7 +55,7 @@ contexts:
     - match: '(if|else)'
       captures:
         0: keyword.control.conditional.Algo
-    - match: '(foreach|for|while|try|catch)'
+    - match: '(foreach|for|while|try|catch|throw)'
       captures:
         0: keyword.control.Algo
     - match: '(up to| as | in | from | at | sf| to |)'

@@ -25,3 +25,6 @@ Changes to the Algo Language Support Extension are documented here.
 
 ## 1.0.7
 - The "to" keyword is now added as an operator keyword. (#1)
+
+## 1.0.8
+- Added the new "throw" functionality (v0.0.4).
