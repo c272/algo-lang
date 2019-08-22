@@ -80,24 +80,42 @@ namespace Algo
 
             //For each of those, check contain a valid import (regex).
             Regex importReg = new Regex("import \"[^\"]+\"");
-            foreach (var line in lines)
+            foreach (var line in imports)
             {
                 if (!importReg.IsMatch(line))
                 {
                     //Uh oh, failed the link.
-                    Error.FatalCompile("An invalid import statement was found in script '" + fileName + "'.");
+                    Error.FatalCompile("An invalid import statement was found in script '" + fileName + "', \"" + line.Substring(0,30) + "...\".");
                     return;
                 }
 
                 //Matches, get the substring out.
                 string referencedFile = line.Substring("import \"".Length).TrimEnd('"');
-                Log("Discovered external reference to '" + referencedFile + "', attempting to read...");
+                if (!referencedFile.EndsWith(".ag")) { referencedFile += ".ag"; }
 
                 //Has the file been linked already?
                 if (LinkedScripts.Keys.Contains(referencedFile))
                 {
                     Log("This script has already been referenced, skipping.");
                     continue;
+                }
+
+                //Is the file in std or packages?
+                string stdPath = CPFilePath.GetPlatformFilePath(DefaultDirectories.StandardLibDirectory.Concat(new List<string>() { referencedFile }).ToArray());
+                string pkgPath = CPFilePath.GetPlatformFilePath(DefaultDirectories.PackagesDirectory.Concat(new List<string>() { referencedFile }).ToArray());
+                if (File.Exists(stdPath))
+                {
+                    Log("'" + referencedFile + "' discovered as a standard library file, attempting to read...");
+                    referencedFile = stdPath;
+                }
+                else if (File.Exists(pkgPath))
+                {
+                    Log("'" + referencedFile + "' discovered as a package, attempting to read...");
+                    referencedFile = pkgPath;
+                }
+                else
+                {
+                    Log("Discovered external reference to '" + referencedFile + "', attempting to read...");
                 }
 
                 //Not linked yet, trying to read the file into LinkedScripts.
@@ -129,7 +147,7 @@ namespace Algo
         //Prints the "compile finished" footer.
         public static void PrintCompileFooter()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("this is a compile footer");
         }
 
         //Logs an event to the current ALEC runtime.
