@@ -16,7 +16,9 @@ namespace Algo
         /////////////////////////////////
 
         //All scripts imported in all linked scripts to the input file.
+        public static string MainScript = "";
         public static Dictionary<string, string> LinkedScripts = new Dictionary<string, string>();
+        public static DateTime CompileStartTime;
         
         ////////////////////////////
         /// MAIN COMPILE METHODS ///
@@ -24,6 +26,9 @@ namespace Algo
         
         public static void Compile(string file)
         {
+            //Note the compile start time.
+            CompileStartTime = DateTime.Now;
+
             //Does the file that is being compiled exist?
             if (!File.Exists(file))
             {
@@ -32,13 +37,26 @@ namespace Algo
             }
 
             //Yes, read the file into memory and get all linked import references.
-            string toCompile = File.ReadAllText(file);
+            Log("Linking base Algo file '" + file + "'.");
+            string toCompile = "";
+            try
+            {
+                toCompile = File.ReadAllText(file);
+            }
+            catch(Exception e)
+            {
+                Error.FatalCompile("Could not read from base script file, error '" + e.Message + "'.");
+                return;
+            }
+            MainScript = toCompile;
+            Log("Successfully linked main file, linking references...");
 
             //Get all linked import reference files.
-            Log("Linking base Algo file '" + file + "'.");
             LinkFile(toCompile, file);
-            Log("Successfully linked all referenced Algo scripts.", ALECEvent.Success);
-            Console.WriteLine("todo");
+            Log("Successfully linked base and all referenced Algo scripts.", ALECEvent.Success);
+            
+            //
+
             return;
         }
 
@@ -90,7 +108,8 @@ namespace Algo
                 }
 
                 //Matches, get the substring out.
-                string referencedFile = line.Substring("import \"".Length).TrimEnd('"');
+                string symbolicName = line.Substring("import \"".Length).TrimEnd('"');
+                string referencedFile = symbolicName;
                 if (!referencedFile.EndsWith(".ag")) { referencedFile += ".ag"; }
 
                 //Has the file been linked already?
@@ -101,8 +120,8 @@ namespace Algo
                 }
 
                 //Is the file in std or packages?
-                string stdPath = CPFilePath.GetPlatformFilePath(DefaultDirectories.StandardLibDirectory.Concat(new List<string>() { referencedFile }).ToArray());
-                string pkgPath = CPFilePath.GetPlatformFilePath(DefaultDirectories.PackagesDirectory.Concat(new List<string>() { referencedFile }).ToArray());
+                string stdPath = CPFilePath.GetPlatformFilePath(DefaultDirectories.StandardLibDirectory.Concat(referencedFile.Split('/')).ToArray());
+                string pkgPath = CPFilePath.GetPlatformFilePath(DefaultDirectories.PackagesDirectory.Concat(referencedFile.Split('/')).ToArray());
                 if (File.Exists(stdPath))
                 {
                     Log("'" + referencedFile + "' discovered as a standard library file, attempting to read...");
@@ -121,7 +140,8 @@ namespace Algo
                 //Not linked yet, trying to read the file into LinkedScripts.
                 try
                 {
-                    LinkedScripts.Add(referencedFile, File.ReadAllText(referencedFile));
+                    //Add the symbolic name rather than the filename, easier to substitute into the file that way.
+                    LinkedScripts.Add(symbolicName, File.ReadAllText(referencedFile));
                 }
                 catch(Exception e)
                 {
