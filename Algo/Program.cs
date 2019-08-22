@@ -102,6 +102,7 @@ namespace Algo
 
                 //Compile.
                 ALEC.Compile(args[1]);
+                return;
             }
             else if (args[0] == "pkg")
             {
