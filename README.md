@@ -11,7 +11,7 @@ The language is currently not ready for general use. If, however, you want to co
 **Plugins for Popular Text Editors:**
 * [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=c272.Algo)
 * Atom (*Coming v0.0.4*)
-* [Sublime Text 3](/Syntax Highlighting/Sublime Text Package/)
+* [Sublime Text 3](Syntax Highlighting/Sublime Text Package/)
 
 
 ## Building Algo
