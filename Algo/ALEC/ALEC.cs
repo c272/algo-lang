@@ -127,7 +127,7 @@ namespace Algo
             //Reference the main Algo assembly (this one) when compiling.
             Assembly entryasm = Assembly.GetEntryAssembly();
             cp.ReferencedAssemblies.Add(entryasm.Location);
-            cp.ReferencedAssemblies.Add("Antlr4.Runtime.dll");
+            cp.ReferencedAssemblies.Add(CPFilePath.GetPlatformFilePath(new string[] { AppDomain.CurrentDomain.BaseDirectory, "Antlr4.Runtime.dll" }));
 
             //Attempt to compile.
             string finalScript = ALECTemplates.ALECEntryPoint.Replace("[CUSTOM-CODE-HERE]", MainScript);
