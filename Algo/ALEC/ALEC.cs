@@ -9,6 +9,7 @@ using System.CodeDom;
 using Microsoft.CSharp;
 using System.Reflection;
 using System.Diagnostics;
+using ILRepacking;
 
 namespace Algo
 {
@@ -177,6 +178,43 @@ namespace Algo
                 }
 
                 Log("MKBundle has finished executing.");
+            }
+            else
+            {
+                //It's Windows, use ILRepack instead.
+                Log("Attempting to bundle dependencies into packed executable...");
+                RepackOptions opt = new RepackOptions();
+                opt.OutputFile = ProjectName + "_packed.exe";
+                opt.SearchDirectories = new string[] { AppDomain.CurrentDomain.BaseDirectory, Environment.CurrentDirectory };
+
+                //Setting input assemblies.
+                string[] files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll");
+                opt.InputAssemblies = new string[] { ProjectName + ".exe", entryasm.Location }.Concat(files).ToArray();
+                
+                try
+                {
+                    //Merging.
+                    ILRepack pack = new ILRepack(opt);
+                    pack.Repack();
+                    Log("Successfully merged all dependencies with the output executable.", ALECEvent.Success);
+
+                    //Replacing the depending executable with the new one.
+                    Log("Cleaning up build files...");
+                    try
+                    {
+                        File.Delete(ProjectName + ".exe");
+                        File.Move(ProjectName + "_packed.exe", ProjectName + ".exe");
+                    }
+                    catch(Exception e)
+                    {
+                        Error.WarningCompile("File cleanup failed with error '" + e.Message + "'.");
+                        Error.WarningCompile("Failed to clean up build files, the executable to use is named '" + ProjectName + "_packed.exe' rather than '" + ProjectName + ".exe'.");
+                    }
+                }
+                catch(Exception e)
+                {
+                    Error.WarningCompile("Packing the executable's dependencies failed, with error '" + e.Message + "'. You will need to include algo.exe and all it's dependencies along with the built executable for it to run.");
+                }
             }
 
             //Print the compile footer.

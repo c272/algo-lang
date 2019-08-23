@@ -33,8 +33,18 @@ namespace Algo
             Plugins.Add(new StandardLibrary.AlgoStd_Maths());
 
             //Are there any plugin files in the /packages/ directory?
-            string[] files = Directory.GetFiles(CPFilePath.GetPlatformFilePath(DefaultDirectories.PackagesDirectory));
-            string[] dirs = Directory.GetDirectories(CPFilePath.GetPlatformFilePath(DefaultDirectories.PackagesDirectory));
+            string[] files = null;
+            string[] dirs = null;
+            try
+            {
+                files = Directory.GetFiles(CPFilePath.GetPlatformFilePath(DefaultDirectories.PackagesDirectory));
+                dirs = Directory.GetDirectories(CPFilePath.GetPlatformFilePath(DefaultDirectories.PackagesDirectory));
+            }
+            catch
+            {
+                //Failed to load, this is likely a compiled ALEC executable. Don't bother doing any more.
+                return;
+            }
 
             List<string> dllFiles = new List<string>();
             foreach (var file in files)

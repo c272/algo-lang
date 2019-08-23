@@ -51,6 +51,9 @@
     <Reference Include="Antlr4.Runtime, Version=4.6.0.0, Culture=neutral, PublicKeyToken=09abb75b9ed49849, processorArchitecture=MSIL">
       <HintPath>..\packages\Antlr4.Runtime.4.6.6\lib\net45\Antlr4.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="ILRepack, Version=2.0.17.0, Culture=neutral, PublicKeyToken=c3e9373f1c31208e, processorArchitecture=MSIL">
+      <HintPath>..\packages\ILRepack.Lib.2.0.17\lib\net40\ILRepack.dll</HintPath>
+    </Reference>
     <Reference Include="MathNet.Numerics, Version=4.8.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MathNet.Numerics.4.8.1\lib\net461\MathNet.Numerics.dll</HintPath>
     </Reference>

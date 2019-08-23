@@ -67,4 +67,7 @@ D:\Files\Programming\GitHub\algo\Algo\bin\Debug\AlgoSDK.pdb
 D:\Files\Programming\GitHub\algo\Algo\bin\Debug\Antlr4.Runtime.xml
 D:\Files\Programming\GitHub\algo\Algo\bin\Debug\MathNet.Numerics.xml
 D:\Files\Programming\GitHub\algo\Algo\bin\Debug\Newtonsoft.Json.xml
-D:\Files\Programming\GitHub\algo\Algo\obj\Debug\Algo.csprojResolveAssemblyReference.cache
+D:\Files\Programming\GitHub\algo\Algo\obj\Debug\Algo.csprojAssemblyReference.cache
+D:\Files\Programming\GitHub\algo\Algo\obj\Debug\Algo.csproj.CoreCompileInputs.cache
+D:\Files\Programming\GitHub\algo\Algo\bin\Debug\ILRepack.dll
+D:\Files\Programming\GitHub\algo\Algo\obj\Debug\Algo.csproj.CopyComplete
