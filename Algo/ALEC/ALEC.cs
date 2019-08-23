@@ -4,6 +4,10 @@ using System.Linq;
 using System.IO;
 using Antlr4.Runtime;
 using System.Text.RegularExpressions;
+using System.CodeDom.Compiler;
+using System.CodeDom;
+using Microsoft.CSharp;
+using System.Reflection;
 
 namespace Algo
 {
@@ -18,14 +22,25 @@ namespace Algo
         //All scripts imported in all linked scripts to the input file.
         public static string MainScript = "";
         public static Dictionary<string, string> LinkedScripts = new Dictionary<string, string>();
+
+        //The compile start time.
         public static DateTime CompileStartTime;
-        
+
+        //The name of the compiling project.
+        public static string ProjectName;
+
+        //The regex to detect an import statement.
+        public static Regex ImportRegex = new Regex("import \"[^\"]+\"");
+
         ////////////////////////////
         /// MAIN COMPILE METHODS ///
         ////////////////////////////
-        
+
         public static void Compile(string file)
         {
+            //Print the compile header.
+            PrintCompileHeader();
+
             //Note the compile start time.
             CompileStartTime = DateTime.Now;
 
@@ -36,7 +51,18 @@ namespace Algo
                 return;
             }
 
-            //Yes, read the file into memory and get all linked import references.
+            //Get the FileInfo, set the name of the project.
+            FileInfo fi = new FileInfo(file);
+            if (fi.Name.Contains("."))
+            {
+                ProjectName = fi.Name.Split('.')[0];
+            }
+            else
+            {
+                ProjectName = fi.Name;
+            }
+
+            //Yes, read the file into memory and strip all the comments.
             Log("Linking base Algo file '" + file + "'.");
             string toCompile = "";
             try
@@ -48,16 +74,134 @@ namespace Algo
                 Error.FatalCompile("Could not read from base script file, error '" + e.Message + "'.");
                 return;
             }
-            MainScript = toCompile;
+
+            //Attaching the "core" library to the start.
+            Log("Attaching the 'core' library to the base script.");
+            MainScript = "import \"core\";" + MainScript;
+
+            //Strip all comment lines.
+            var scriptLines = toCompile.Replace("\r", "").Split('\n');
+            foreach (var line in scriptLines)
+            {
+                if (!line.StartsWith("//"))
+                {
+                    MainScript += line + "\n";
+                }
+            }
             Log("Successfully linked main file, linking references...");
 
             //Get all linked import reference files.
-            LinkFile(toCompile, file);
+            LinkFile(MainScript, file);
             Log("Successfully linked base and all referenced Algo scripts.", ALECEvent.Success);
-            
-            //
 
+            //Replacing import references with their proper scripts.
+            Log("Attempting to replace abstract import links...");
+            bool success = ReplaceImportReferences();
+            if (!success)
+            {
+                Error.FatalCompile("Failed to replace import links with script references. Do you have a circular import loop?");
+                return;
+            }
+
+            //That's done, now convert it to a literal string.
+            Log("Converting script into literal form for compilation...");
+            MainScript = MainScript.Replace("\"", "\"\"");
+            Log("Successfully converted into literal form.");
+
+            //Create the compiler (with arguments).
+            CSharpCodeProvider provider = new CSharpCodeProvider();
+            CompilerParameters cp = new CompilerParameters();
+            cp.GenerateExecutable = true;
+            cp.OutputAssembly = ProjectName + ".exe";
+            cp.GenerateInMemory = false;
+
+            //Reference the main Algo assembly (this one) when compiling.
+            Assembly entryasm = Assembly.GetEntryAssembly();
+            cp.ReferencedAssemblies.Add(entryasm.Location);
+            cp.ReferencedAssemblies.Add("Antlr4.Runtime.dll");
+
+            //Attempt to compile.
+            string finalScript = ALECTemplates.ALECEntryPoint.Replace("[CUSTOM-CODE-HERE]", MainScript);
+            CompilerResults results = provider.CompileAssemblyFromSource(cp, finalScript);
+
+            if (results.Errors.HasErrors)
+            {
+                //Uh oh, failed.
+                //Collect the errors.
+                string final = "Attempting to compile returned some errors:\n";
+                List<string> errors = new List<string>();
+                foreach (CompilerError error in results.Errors)
+                {
+                    errors.Add(error.ErrorText + " (Line " + error.Line + ", column " + error.Column + ").");
+                }
+
+                for (int i=0; i<errors.Count; i++)
+                {
+                    final += "[" + (i + 1) + "] - " + errors[i] + "\n";
+                }
+
+                //Log.
+                Error.FatalCompile(final);
+                return;
+            }
+
+            //Successfully compiled, try to output to file.
+            Log("Successfully compiled the Algo script into assembly.", ALECEvent.Success);
+            Log("Output has been saved in '" + ProjectName + ".exe'.\n\n");
+
+            //Print the compile footer.
+            PrintCompileFooter();
             return;
+        }
+
+        //Turns a normal string input into a literal output string (eg. \n becomes \\n)
+        private static string ConvertToLiteral(string input)
+        {
+            using (var writer = new StringWriter())
+            {
+                using (var provider = CodeDomProvider.CreateProvider("CSharp"))
+                {
+                    provider.GenerateCodeFromExpression(new CodePrimitiveExpression(input), writer, null);
+                    return writer.ToString();
+                }
+            }
+        }
+
+        //Replace import references in the base file and all linked source files, up to n times.
+        //where n = the number of linked files.
+        //If it goes over n, there is a high likelihood of a circular reference.
+        private static bool ReplaceImportReferences()
+        {
+            int n = LinkedScripts.Count + 1;
+            for (int i = 0; i <= n; i++)
+            {
+                Log("Beginning pass " + (i + 1) + " of AIL replacement...");
+
+                //Replace the base script's references.
+                foreach (var link in LinkedScripts)
+                {
+                    MainScript = MainScript.Replace("import \"" + link.Key + "\";", link.Value);
+                }
+                
+                //Done replacing, check if there are any import statements left.
+                bool importFound = false;
+                if (ImportRegex.IsMatch(MainScript))
+                {
+                    Log("Import still exists in base script.");
+                    importFound = true;
+                }
+                
+                //Was a remaining import found? If so, keep going.
+                if (!importFound)
+                {
+                    Log("Successfully replaced all abstract import links with the loaded linked scripts.", ALECEvent.Success);
+                    return true;
+                }
+
+                Log("Imports still remain after pass " + (i + 1) + ", " + (n - i) + " remaining before fail.");
+            }
+
+            return false;
         }
 
         //Recursively grabs all import references through linked files in scripts, strips comments.
@@ -82,9 +226,9 @@ namespace Algo
             List<string> imports = new List<string>();
             foreach (var line in lines)
             {
-                if (line.StartsWith("import "))
+                if (ImportRegex.IsMatch(line))
                 {
-                    imports.Add(line);
+                    imports.Add(ImportRegex.Match(line).Value);
                 }
             }
 
@@ -97,10 +241,9 @@ namespace Algo
             Log("Detected " + imports.Count + " referenced external scripts.");
 
             //For each of those, check contain a valid import (regex).
-            Regex importReg = new Regex("import \"[^\"]+\"");
             foreach (var line in imports)
             {
-                if (!importReg.IsMatch(line))
+                if (!ImportRegex.IsMatch(line))
                 {
                     //Uh oh, failed the link.
                     Error.FatalCompile("An invalid import statement was found in script '" + fileName + "', \"" + line.Substring(0,30) + "...\".");
@@ -113,9 +256,9 @@ namespace Algo
                 if (!referencedFile.EndsWith(".ag")) { referencedFile += ".ag"; }
 
                 //Has the file been linked already?
-                if (LinkedScripts.Keys.Contains(referencedFile))
+                if (LinkedScripts.Keys.Contains(symbolicName))
                 {
-                    Log("This script has already been referenced, skipping.");
+                    Log("Script '" + symbolicName + "' has already been linked, skipping.");
                     continue;
                 }
 
@@ -153,8 +296,9 @@ namespace Algo
                 Log("Successfully read and linked file '" + referencedFile + "'.", ALECEvent.Success);
 
                 //Link files for all linked scripts (recursively).
-                foreach (var file in LinkedScripts)
+                for (int i=0; i<LinkedScripts.Count; i++)
                 {
+                    var file = LinkedScripts.ElementAt(i);
                     LinkFile(file.Value, file.Key);
                 }
             }
@@ -163,6 +307,12 @@ namespace Algo
         ///////////////////////
         /// LOGGING METHODS ///
         ///////////////////////
+
+        //Prints the compile header.
+        public static void PrintCompileHeader()
+        {
+            Console.WriteLine("This is a compile header.\n");
+        }
 
         //Prints the "compile finished" footer.
         public static void PrintCompileFooter()

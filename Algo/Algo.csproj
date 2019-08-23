@@ -22,7 +22,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>1</WarningLevel>
     <CustomCommands>
       <CustomCommands>
         <Command>
@@ -32,6 +32,8 @@
         </Command>
       </CustomCommands>
     </CustomCommands>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -41,6 +43,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Antlr4.Runtime, Version=4.6.0.0, Culture=neutral, PublicKeyToken=09abb75b9ed49849, processorArchitecture=MSIL">
@@ -70,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ALEC\ALEC.cs" />
+    <Compile Include="ALEC\ALECTemplates.cs" />
     <Compile Include="ANTLRDebug.cs" />
     <Compile Include="Error.cs" />
     <Compile Include="Evaluation\Data Structures\AlgoConversion.cs" />
