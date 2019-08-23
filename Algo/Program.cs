@@ -18,7 +18,7 @@ namespace Algo
         //The tree traversal class for Algo.
         public static algoVisitor visitor = null;
 
-        //The current version of algo. (vX.X.BUILD)
+        //The current version of Algo. (vX.X.BUILD)
         private const int MAJOR_VER = 0;
         private const int MINOR_VER = 4;
 

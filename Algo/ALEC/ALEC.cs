@@ -15,6 +15,14 @@ namespace Algo
     //Compiles Algo scripts into a system executable, cross platform.
     public static class ALEC
     {
+        ///////////////////////////////
+        /// ALEC PROPERTIES (CONST) ///
+        ///////////////////////////////
+
+        //The current version of ALEC. (vX.X.BUILD)
+        private const int MAJOR_VER = 0;
+        private const int MINOR_VER = 1;
+
         /////////////////////////////////
         /// STATIC COMPILE PROPERTIES ///
         /////////////////////////////////
@@ -147,7 +155,7 @@ namespace Algo
 
             //Successfully compiled, try to output to file.
             Log("Successfully compiled the Algo script into assembly.", ALECEvent.Success);
-            Log("Output has been saved in '" + ProjectName + ".exe'.\n\n");
+            Log("Output has been saved in '" + ProjectName + ".exe'.");
 
             //If Linux, MKBundle.
             //... todo ...
@@ -314,13 +322,45 @@ namespace Algo
         //Prints the compile header.
         public static void PrintCompileHeader()
         {
-            Console.WriteLine("This is a compile header.\n");
+            string[] verInfo = typeof(Program).Assembly.GetName().Version.ToString().Split('.');
+            Console.WriteLine(@"  ______     __         ______     ______    
+ /\  __ \   /\ \       /\  ___\   /\  ___\   
+ \ \  __ \  \ \ \____  \ \  __\   \ \ \____  
+  \ \_\ \_\  \ \_____\  \ \_____\  \ \_____\ 
+   \/_/\/_/   \/_____/   \/_____/   \/_____/
+");
+            Console.WriteLine("ALEC (Algo Executable Language Compiler) v" + MAJOR_VER + "." + MINOR_VER + "." + verInfo[2] + ", build " + verInfo[3]);
+            Console.WriteLine("Framework: .NET Framework ENV " + Environment.Version);
+            Console.WriteLine("Operating System: " + Environment.OSVersion);
+            if (Environment.Is64BitProcess)
+            {
+                Console.WriteLine("Build Mode: 64 bit");
+            }
+            else
+            {
+                Console.WriteLine("Build Mode: 32 bit");
+            }
+            Console.WriteLine();
         }
 
         //Prints the "compile finished" footer.
         public static void PrintCompileFooter()
         {
-            Console.WriteLine("this is a compile footer");
+            Console.WriteLine("\n  --------------");
+            if (Events.FindIndex(x => x.Item1 == ALECEvent.Fatal) == -1)
+            {
+                Console.WriteLine(" Build succeeded.");
+            }
+            else
+            {
+                Console.WriteLine(" Build failed. :(");
+            }
+
+            //Print the amount of events.
+            Console.WriteLine("  " + Events.Where(x => x.Item1 == ALECEvent.Fatal).Count() + " fatal errors.");
+            Console.WriteLine("    " + Events.Where(x => x.Item1 == ALECEvent.Warning).Count() + " warnings.");
+            Console.WriteLine("    " + Events.Where(x => x.Item1 == ALECEvent.Notice).Count() + " notices.");
+            Console.WriteLine("  --------------");
         }
 
         //Logs an event to the current ALEC runtime.
