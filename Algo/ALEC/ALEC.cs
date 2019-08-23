@@ -8,6 +8,7 @@ using System.CodeDom.Compiler;
 using System.CodeDom;
 using Microsoft.CSharp;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace Algo
 {
@@ -158,7 +159,25 @@ namespace Algo
             Log("Output has been saved in '" + ProjectName + ".exe'.");
 
             //If Linux, MKBundle.
-            //... todo ...
+            if (AlgoPlatformInfo.IsLinux)
+            {
+                //Attempt to run MKBundle.
+                Log("Linux detected as the operating system, attempting to create a native binary...");
+                Log("MAKE SURE YOU HAVE MKBUNDLE INSTALLED, AND HAVE A MONO 'machine.config' AT /etc/mono/4.5/machine.config.");
+                Process proc = new Process();
+                proc.StartInfo.FileName = "/bin/bash";
+                proc.StartInfo.Arguments = "-c \" mkbundle -o " + ProjectName + " --simple " + cp.OutputAssembly + " --machine-config /etc/mono/4.5/machine.config --no-config --nodeps *.dll \"";
+                proc.StartInfo.UseShellExecute = false;
+                proc.StartInfo.RedirectStandardOutput = true;
+                proc.Start();
+
+                while (!proc.StandardOutput.EndOfStream)
+                {
+                    Log(proc.StandardOutput.ReadLine());
+                }
+
+                Log("MKBundle has finished executing.");
+            }
 
             //Print the compile footer.
             PrintCompileFooter();
