@@ -149,6 +149,9 @@ namespace Algo
             Log("Successfully compiled the Algo script into assembly.", ALECEvent.Success);
             Log("Output has been saved in '" + ProjectName + ".exe'.\n\n");
 
+            //If Linux, MKBundle.
+            //... todo ...
+
             //Print the compile footer.
             PrintCompileFooter();
             return;
