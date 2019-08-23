@@ -38,7 +38,6 @@ Also, as an example of what the language looks like, here's some sample code I'v
 *Warning: This may be out of date when there are major updates and revisions to the language, and the README hasn't been modified.*
 
     //Import the input library and string library.
-    import "core";
     import "io";
 
     //Define a function to enumerate over the string characters.
