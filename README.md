@@ -11,7 +11,7 @@ The language is currently not ready for general use. If, however, you want to co
 **Plugins for Popular Text Editors:**
 * [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=c272.Algo)
 * Atom (*Coming v0.0.4*)
-* Sublime Text 3 (*Coming v0.0.4*)
+* [Sublime Text 3](https://github.com/c272/algo-lang/tree/master/Syntax%20Highlighting/Sublime%20Text%20Package)
 
 
 ## Building Algo
@@ -38,7 +38,6 @@ Also, as an example of what the language looks like, here's some sample code I'v
 *Warning: This may be out of date when there are major updates and revisions to the language, and the README hasn't been modified.*
 
     //Import the input library and string library.
-    import "core";
     import "io";
 
     //Define a function to enumerate over the string characters.
