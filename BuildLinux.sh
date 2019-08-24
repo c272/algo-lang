@@ -21,5 +21,6 @@ cp Algo/Standard\ Library/Algo\ Scripts/*  Builds/std
 # Copy over the main executable and Antlr dependencies for compile purposes.
 cp Algo/bin/Debug/Algo.exe Builds/
 cp Algo/bin/Debug/Antlr4.Runtime.dll Builds/
+cp Algo/bin/Debug/AlgoSDK.dll Builds/
 
 echo BUILD COMPLETE!

@@ -167,7 +167,7 @@ namespace Algo
                 Log("MAKE SURE YOU HAVE MKBUNDLE INSTALLED, AND HAVE A MONO 'machine.config' AT /etc/mono/4.5/machine.config.");
                 Process proc = new Process();
                 proc.StartInfo.FileName = "/bin/bash";
-                proc.StartInfo.Arguments = "-c \" mkbundle -o " + ProjectName + " --simple " + cp.OutputAssembly + " --machine-config /etc/mono/4.5/machine.config --no-config --nodeps *.dll \"";
+                proc.StartInfo.Arguments = "-c \" mkbundle -o " + ProjectName + " --simple " + cp.OutputAssembly + " --machine-config /etc/mono/4.5/machine.config --no-config --nodeps *.dll Algo.exe \"";
                 proc.StartInfo.UseShellExecute = false;
                 proc.StartInfo.RedirectStandardOutput = true;
                 proc.Start();

@@ -1,0 +1,17 @@
+//Import dependencies.
+import "io";
+
+//Get the string the user wants to check.
+print "Please enter a string to check.";
+let toCheck = input.get();
+
+//Reverse, compare.
+let reversed = string.reverse(toCheck);
+if (reversed == toCheck)
+{
+    print "That is a palindrome!";
+}
+else
+{
+    print "That is not a palindrome.";
+}
