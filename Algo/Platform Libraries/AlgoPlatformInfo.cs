@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -10,7 +11,8 @@ namespace Algo
     //Static class containing platform information for .NET and Algo.
     public static class AlgoPlatformInfo
     {
-        public static bool IsLinux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
-        public static bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+        //This is a rudamentary bugfix while Mono is broken.
+        public static bool IsLinux = Directory.Exists("/");
+        public static bool IsWindows = !IsLinux;
     }
 }

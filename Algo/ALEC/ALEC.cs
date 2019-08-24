@@ -178,10 +178,22 @@ namespace Algo
                 }
 
                 Log("MKBundle has finished executing.");
+
+                //Delete the main executable.
+                Log("Attempting to clean up...");
+                try
+                {
+                    File.Delete(ProjectName + ".exe");
+                }
+                catch(Exception e)
+                {
+                    Error.WarningCompile("Failed to clean up Windows executable, given error '" + e.Message + "'.");
+                }
             }
-            else
+            else if (AlgoPlatformInfo.IsWindows)
             {
                 //It's Windows, use ILRepack instead.
+                Log("Windows detected as the operating system, attempting to create a native binary...");
                 Log("Attempting to bundle dependencies into packed executable...");
                 RepackOptions opt = new RepackOptions();
                 opt.OutputFile = ProjectName + "_packed.exe";
@@ -215,6 +227,11 @@ namespace Algo
                 {
                     Error.WarningCompile("Packing the executable's dependencies failed, with error '" + e.Message + "'. You will need to include algo.exe and all it's dependencies along with the built executable for it to run.");
                 }
+            }
+            else
+            {
+                Error.FatalCompile("Could not detect the operating system to compile native binary.");
+                return;
             }
 
             //Print the compile footer.
