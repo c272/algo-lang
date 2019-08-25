@@ -89,7 +89,7 @@ namespace Algo
 
             //Nope.
             //Test 2: Packages directory for Algo.
-            dirParts = new string[] { AppDomain.CurrentDomain.BaseDirectory, "packages" }.Concat(fileParts).ToArray();
+            dirParts = DefaultDirectories.PackagesDirectory.Concat(fileParts).ToArray();
             dirToCheck = CPFilePath.GetPlatformFilePath(dirParts);
 
             //Is it there?
@@ -102,7 +102,7 @@ namespace Algo
 
             //Nope.
             //Test 3: Standard libraries.
-            dirParts = new string[] { AppDomain.CurrentDomain.BaseDirectory, "std" }.Concat(fileParts).ToArray();
+            dirParts = DefaultDirectories.StandardLibDirectory.Concat(fileParts).ToArray();
             dirToCheck = CPFilePath.GetPlatformFilePath(dirParts);
 
             //Is it there?
@@ -122,12 +122,12 @@ namespace Algo
         public void LoadCoreLibrary()
         {
             //Check the file exists.
-            var dirParts = new string[] { AppDomain.CurrentDomain.BaseDirectory, "std", "core.ag" };
+            var dirParts = DefaultDirectories.StandardLibDirectory.Concat(new string[] { "core.ag" }).ToArray();
             var corePath = CPFilePath.GetPlatformFilePath(dirParts);
 
             if (!File.Exists(corePath))
             {
-                Error.FatalNoContext("Failed loading the core library. No core functions could be loaded, Algo cannot run. Please reinstall Algo, or redownload the 'core.ag' standard library.");
+                Error.FatalNoContext("Failed loading the core library from '" + corePath + "'. No core functions could be loaded, Algo cannot run. Please reinstall Algo, or redownload the 'core.ag' standard library.");
                 return;
             }
 

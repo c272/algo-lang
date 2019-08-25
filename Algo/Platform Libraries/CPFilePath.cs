@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,8 +32,9 @@ namespace Algo
     //A list of required default directories for Algo.
     public static class DefaultDirectories
     {
-        public static string[] PackagesDirectory = { AppDomain.CurrentDomain.BaseDirectory, "packages" };
-        public static string[] StandardLibDirectory = { AppDomain.CurrentDomain.BaseDirectory, "std" };
+        public static string AssemblyDirectory = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+        public static string[] PackagesDirectory = { AssemblyDirectory, "packages" };
+        public static string[] StandardLibDirectory = { AssemblyDirectory, "std" };
         public static string[] WorkingDirectory = { Environment.CurrentDirectory };
     }
 }

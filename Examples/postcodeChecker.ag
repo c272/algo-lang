@@ -3,7 +3,6 @@
 import "json";
 import "io";
 import "web";
-import "core";
 
 //Ask the user for a postcode.
 print "What postcode would you like information for?";
