@@ -30,7 +30,7 @@ namespace Algo.StandardLibrary
                 ParameterCount = 1
             },
 
-            //input.fileExists();
+            //file.exists();
             new AlgoPluginFunction()
             {
                 Name = "file_exists",
@@ -62,14 +62,104 @@ namespace Algo.StandardLibrary
                 ParameterCount = 1
             },
 
-            //output.createFile();
+            //file.create();
             new AlgoPluginFunction()
             {
                 Name = "output_createFile",
                 Function = CreateFile,
                 ParameterCount = 1
+            },
+
+            //file.delete();
+            new AlgoPluginFunction()
+            {
+                Name = "file_delete",
+                Function = DeleteFile,
+                ParameterCount = 1
+            },
+
+            //file.createDir();
+            new AlgoPluginFunction()
+            {
+                Name = "dir_create",
+                Function = CreateDir,
+                ParameterCount = 1
+            },
+
+            //file.deleteDir();
+            new AlgoPluginFunction()
+            {
+                Name = "dir_delete",
+                Function = DeleteDir,
+                ParameterCount = 1
             }
         };
+
+        //Deletes a directory.
+        private static AlgoValue DeleteDir(ParserRuleContext context, AlgoValue[] args)
+        {
+            if (args[0].Type != AlgoValueType.String)
+            {
+                Error.Fatal(context, "Name of the directory to delete must be a String, not " + args[0].Type.ToString() + ".");
+                return null;
+            }
+
+            //Attempt to create.
+            try
+            {
+                Directory.Delete((string)args[0].Value);
+            }
+            catch(Exception e)
+            {
+                Error.Fatal(context, "Failed to delete directory, '" + e.Message + "'.");
+            }
+
+            return null;
+        }
+
+        //Creates a directory.
+        private static AlgoValue CreateDir(ParserRuleContext context, AlgoValue[] args)
+        {
+            if (args[0].Type != AlgoValueType.String)
+            {
+                Error.Fatal(context, "Name of the directory to create must be a String, not " + args[0].Type.ToString() + ".");
+                return null;
+            }
+
+            //Attempt to create.
+            try
+            {
+                Directory.CreateDirectory((string)args[0].Value);
+            }
+            catch (Exception e)
+            {
+                Error.Fatal(context, "Failed to create directory, '" + e.Message + "'.");
+            }
+
+            return null;
+        }
+
+        //Delete a file.
+        private static AlgoValue DeleteFile(ParserRuleContext context, AlgoValue[] args)
+        {
+            if (args[0].Type != AlgoValueType.String)
+            {
+                Error.Fatal(context, "Name of the file to delete must be a String, not " + args[0].Type.ToString() + ".");
+                return null;
+            }
+
+            //Attempt to create.
+            try
+            {
+                File.Delete((string)args[0].Value);
+            }
+            catch (Exception e)
+            {
+                Error.Fatal(context, "Failed to delete file, '" + e.Message + "'.");
+            }
+
+            return null;
+        }
 
         //Get the current console arguments as an Algo list.
         public static AlgoValue GetConsoleArgs(ParserRuleContext context, AlgoValue[] args)

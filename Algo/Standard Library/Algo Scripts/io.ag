@@ -25,9 +25,6 @@ library output
 	//Change the colour of the console output.
 	external setConsoleColour <- std_io.output_changeConsoleColour;
 
-	//Create a file on disk.
-	external createFile <- std_io.output_createFile;
-
 }
 
 library file
@@ -35,7 +32,18 @@ library file
 
 	//Check whether a file exists or not.
 	external exists <- std_io.file_exists;
-
+    
+    //Create a file.
+    external create <- std_io.output_createFile;
+    
+    //Delete a given file.
+    external delete <- std_io.file_delete;
+    
+    //Create a directory.
+    external createDir <- std_io.dir_create;
+    
+    //Delete a directory.
+    external deleteDir <- std_io.dir_delete;
 }
 
 //Console colours for the Output library.
