@@ -44,7 +44,12 @@ namespace Algo
                     {
                         printString += GetStringRepresentation(context, listVal) + ", ";
                     }
-                    printString = printString.Substring(0, printString.Length - 2);
+
+                    //Only trim commas if there are actually items.
+                    if (((List<AlgoValue>)toPrint.Value).Count > 0)
+                    {
+                        printString = printString.Substring(0, printString.Length - 2);
+                    }
                     printString += ']';
                     break;
 
