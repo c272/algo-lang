@@ -14,6 +14,7 @@ namespace Algo
     /// </summary>
     public partial class algoVisitor : algoBaseVisitor<object>
     {
+        //A "print" statement.
         public override object VisitStat_print([NotNull] algoParser.Stat_printContext context)
         {
             //Evaluate the expression.
@@ -55,6 +56,23 @@ namespace Algo
             //Print and return.
             Console.WriteLine(printString);
             return null;
+        }
+
+        //Sets the current console arguments for use in scripts.
+        public static void SetConsoleArguments(string[] args)
+        {
+            //Clear existing.
+            ConsoleArguments.Clear();
+
+            //Loop over, set arguments.
+            foreach (var arg in args)
+            {
+                ConsoleArguments.Add(new AlgoValue()
+                {
+                    Value = arg,
+                    Type = AlgoValueType.String
+                });
+            }
         }
     }
 }

@@ -10,6 +10,9 @@ library input
 
 	//Get input from file.
 	external fromFile <- std_io.input_fromFile;
+    
+    //Get a list of console arguments.
+    external args <- std_io.input_args;
 	
 }
 

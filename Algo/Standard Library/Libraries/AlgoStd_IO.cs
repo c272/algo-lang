@@ -38,6 +38,14 @@ namespace Algo.StandardLibrary
                 ParameterCount = 1
             },
 
+            //input.args();
+            new AlgoPluginFunction()
+            {
+                Name = "input_args",
+                Function = GetConsoleArgs,
+                ParameterCount = 0
+            },
+
             //output.toFile();
             new AlgoPluginFunction()
             {
@@ -62,6 +70,16 @@ namespace Algo.StandardLibrary
                 ParameterCount = 1
             }
         };
+
+        //Get the current console arguments as an Algo list.
+        public static AlgoValue GetConsoleArgs(ParserRuleContext context, AlgoValue[] args)
+        {
+            return new AlgoValue()
+            {
+                Type = AlgoValueType.List,
+                Value = algoVisitor.ConsoleArguments
+            };
+        }
 
         //Getting input directly from the terminal.
         public static AlgoValue GetConsoleInput(ParserRuleContext context, params AlgoValue[] args)

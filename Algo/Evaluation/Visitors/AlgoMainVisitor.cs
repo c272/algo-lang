@@ -16,6 +16,9 @@ namespace Algo
         //Plugins collection for this instance.
         public static AlgoFunctionPlugins Plugins = new AlgoFunctionPlugins();
 
+        //The provided console arguments for this instance.
+        public static List<AlgoValue> ConsoleArguments = new List<AlgoValue>();
+
         //When the "Statement" node is visited.
         public override object VisitCompileUnit(algoParser.CompileUnitContext context)
         {

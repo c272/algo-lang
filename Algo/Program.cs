@@ -131,8 +131,11 @@ namespace Algo
                 Error.FatalNoContext("No file with the name '" + args[0] + "' exists relative to your current directory.");
                 return;
             }
+
+            //Loading in the file arguments.
+            algoVisitor.SetConsoleArguments(args);
             
-            //Test input string.
+            //Read in the input.
             AlgoRuntimeInformation.FileLoaded = args[0];
             string input = File.ReadAllText(fullPath);
             var chars = new AntlrInputStream(input);
