@@ -133,7 +133,7 @@ namespace Algo
             }
 
             //Loading in the file arguments.
-            algoVisitor.SetConsoleArguments(args);
+            algoVisitor.SetConsoleArguments(args.Skip(1).ToArray());
             
             //Read in the input.
             AlgoRuntimeInformation.FileLoaded = args[0];

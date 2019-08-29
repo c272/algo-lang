@@ -32,9 +32,21 @@ namespace Algo
     //A list of required default directories for Algo.
     public static class DefaultDirectories
     {
-        public static string AssemblyDirectory = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+        public static string AssemblyDirectory = GetAssemblyDir();
         public static string[] PackagesDirectory = { AssemblyDirectory, "packages" };
         public static string[] StandardLibDirectory = { AssemblyDirectory, "std" };
         public static string[] WorkingDirectory = { Environment.CurrentDirectory };
+
+        //Returns the assembly base directory to use.
+        public static string GetAssemblyDir()
+        {
+            //If debugger is attached, use ADBaseDir. Otherwise, use the workaround.
+            if (!Debugger.IsAttached)
+            {
+                return Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+            }
+
+            return AppDomain.CurrentDomain.BaseDirectory;
+        }
     }
 }

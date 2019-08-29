@@ -1,0 +1,119 @@
+// Question Marks
+// ----
+// Returns "true" if the string provided has three question marks
+// between every two numbers that add up to 10.
+//
+// ex. kj3kd??e?7dsf = true
+//     woeifa28fdkjz = false
+//
+// (c) Larry Tang, 2019
+
+import "io";
+
+////////////
+// CONFIG //
+////////////
+
+let QMARKS_REQUIRED = 3;
+let SUM_REQUIRED = 10;
+
+////////////
+
+//Utility functions.
+//REWRITE WITH REGEX!
+let isNum(chr) = 
+{
+    if (char == 1 
+      | char == 2 
+      | char == 3 
+      | char == 4 
+      | char == 5 
+      | char == 6 
+      | char == 7 
+      | char == 8 
+      | char == 9)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+//The main function.
+let questionMark(input) =
+{
+    //The current character sum.
+    let sum = 0;
+    let qMarkCount = 0;
+    let startedSum = false;
+    let success = false;
+
+    //Trawl through character by character.
+    foreach (char in input)
+    {
+        //Check if the current character is a number.
+        if (isNum(char))
+        {
+            //Increment sum.
+            sum += int(char);
+
+            //Has the sum already been started?
+            if (startedSum)
+            {
+                //Yes. Check whether the sum is proper.
+                if (sum == SUM_REQUIRED)
+                {
+                    //Got it. Question marks in between correct?
+                    if (qMarkCount != QMARKS_REQUIRED)
+                    {
+                        return false;
+                    }
+                    
+                    success = true;
+                }
+
+                //Reset.
+                qMarkCount = 0;
+                sum = 0;
+                startedSum = false;
+            }
+
+            //Start the sum.
+            startedSum = true;
+            continue;
+        }
+
+        //No, is it a question mark?
+        if (char == "?")
+        {
+            if (!startedSum)
+            {
+                //Ignore this one, doesn't matter.
+                continue;
+            }
+
+            //If the sum is started, add to the question mark count.
+            qMarkCount++;
+        }
+    }
+
+    return success;
+}
+
+//Get args.
+let args = input.args();
+if (len(args) != 1)
+{
+    print args;
+    print "Invalid amount of arguments.";
+    terminate(-1);
+}
+
+if (!questionMark(args[0]))
+{
+    print "This string does not conform to the standard of " + QMARKS_REQUIRED + " question marks between numbers summing to " + SUM_REQUIRED + ".";
+}
+else
+{
+    print "This string conforms to the standard!";
+}
