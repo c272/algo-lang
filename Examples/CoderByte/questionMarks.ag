@@ -23,15 +23,16 @@ let SUM_REQUIRED = 10;
 //REWRITE WITH REGEX!
 let isNum(chr) = 
 {
-    if (char == 1 
-      | char == 2 
-      | char == 3 
-      | char == 4 
-      | char == 5 
-      | char == 6 
-      | char == 7 
-      | char == 8 
-      | char == 9)
+    if (char == "0"
+      | char == "1" 
+      | char == "2" 
+      | char == "3" 
+      | char == "4" 
+      | char == "5"
+      | char == "6" 
+      | char == "7" 
+      | char == "8" 
+      | char == "9")
     {
         return true;
     }
@@ -76,6 +77,7 @@ let questionMark(input) =
                 qMarkCount = 0;
                 sum = 0;
                 startedSum = false;
+                continue;
             }
 
             //Start the sum.
