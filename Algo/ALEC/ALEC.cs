@@ -127,8 +127,15 @@ namespace Algo
 
             //Reference the main Algo assembly (this one) when compiling.
             Assembly entryasm = Assembly.GetEntryAssembly();
-            cp.ReferencedAssemblies.Add(entryasm.Location);
-            cp.ReferencedAssemblies.Add(CPFilePath.GetPlatformFilePath(new string[] { AppDomain.CurrentDomain.BaseDirectory, "Antlr4.Runtime.dll" }));
+            if (AlgoPlatformInfo.IsWindows)
+            {
+                cp.ReferencedAssemblies.Add(entryasm.Location);
+            }
+            else
+            {
+                cp.ReferencedAssemblies.Add(CPFilePath.GetPlatformFilePath(new string[] { DefaultDirectories.AssemblyDirectory, "Algo.exe" }));
+            }
+            cp.ReferencedAssemblies.Add(CPFilePath.GetPlatformFilePath(new string[] { DefaultDirectories.AssemblyDirectory, "Antlr4.Runtime.dll" }));
 
             //Attempt to compile.
             string finalScript = ALECTemplates.ALECEntryPoint.Replace("[CUSTOM-CODE-HERE]", MainScript);
@@ -167,7 +174,11 @@ namespace Algo
                 Log("MAKE SURE YOU HAVE MKBUNDLE INSTALLED, AND HAVE A MONO 'machine.config' AT /etc/mono/4.5/machine.config.");
                 Process proc = new Process();
                 proc.StartInfo.FileName = "/bin/bash";
-                proc.StartInfo.Arguments = "-c \" mkbundle -o " + ProjectName + " --simple " + cp.OutputAssembly + " --machine-config /etc/mono/4.5/machine.config --no-config --nodeps *.dll Algo.exe \"";
+                proc.StartInfo.Arguments = "-c \" mkbundle -o " + ProjectName + " --simple " + cp.OutputAssembly + " --machine-config /etc/mono/4.5/machine.config --no-config --nodeps "
+                    + CPFilePath.GetPlatformFilePath(new string[] { DefaultDirectories.AssemblyDirectory, "*.dll"})
+                    + " "
+                    + CPFilePath.GetPlatformFilePath(new string[] { DefaultDirectories.AssemblyDirectory, "Algo.exe" })
+                    + "\"";
                 proc.StartInfo.UseShellExecute = false;
                 proc.StartInfo.RedirectStandardOutput = true;
                 proc.Start();

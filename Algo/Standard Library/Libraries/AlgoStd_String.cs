@@ -188,7 +188,7 @@ namespace Algo.StandardLibrary
             };
         }
 
-        //Returns whether the given string containsa specific substring.
+        //Returns whether the given string contains a specific substring.
         public static AlgoValue ContainsString(ParserRuleContext context, params AlgoValue[] args)
         {
             //Get the base string and the substring.
