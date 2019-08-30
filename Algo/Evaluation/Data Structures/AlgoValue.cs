@@ -34,11 +34,11 @@ namespace Algo
                 case AlgoValueType.Integer:
                     return ((BigInteger)Value).Equals((BigInteger)objVal);
                 case AlgoValueType.List:
-                    return ((List<AlgoValue>)Value).Equals((List<AlgoValue>)objVal);
+                    return AlgoComparators.ListsEqual(this, obj);
                 case AlgoValueType.Null:
                     return true;
                 case AlgoValueType.Object:
-                    return ((AlgoObject)Value).Equals((AlgoObject)objVal);
+                    return AlgoComparators.ObjectsEqual(this, obj);
                 case AlgoValueType.Rational:
                     return ((BigRational)Value).Equals((BigRational)objVal);
                 default:

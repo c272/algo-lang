@@ -39,6 +39,105 @@ namespace Algo
             return left._Equals(right);
         }
 
+        //Checks whether two lists are equal to each other.
+        public static bool ListsEqual(AlgoValue leftval, AlgoValue rightval)
+        {
+            //Casting.
+            var left = (List<AlgoValue>)leftval.Value;
+            var right = (List<AlgoValue>)rightval.Value;
+
+            //Simple length check.
+            if (left.Count != right.Count)
+            {
+                return false;
+            }
+
+            //Loop over, check.
+            for (int i = 0; i < left.Count; i++)
+            {
+                if (!left[i]._Equals(right[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        //Checks whether two objects are equal to each other.
+        public static bool ObjectsEqual(AlgoValue leftval, AlgoValue rightval)
+        {
+            //Casting.
+            var left = (AlgoObject)leftval.Value;
+            var right = (AlgoObject)rightval.Value;
+
+            //Simple length check.
+            if (left.ObjectScopes.GetScopes()[0].Count != right.ObjectScopes.GetScopes()[0].Count)
+            {
+                return false;
+            }
+
+            //Loop over child properties.
+            List<string> checkedProps = new List<string>();
+            foreach (var prop in left.ObjectScopes.GetScopes()[0])
+            {
+                //Check whether it exists in the other object.
+                bool found = false;
+                foreach (var c_prop in right.ObjectScopes.GetScopes()[0])
+                { 
+                    if (prop.Key == c_prop.Key)
+                    {
+                        found = true;
+
+                        //Found it! Check the values are equal.
+                        if (!prop.Value._Equals(c_prop.Value))
+                        {
+                            //Nope.
+                            return false;
+                        }
+
+                        checkedProps.Add(prop.Key);
+                        break;
+                    }
+                }
+
+                if (!found) { return false; }
+            }
+
+            //Check remaining properties.
+            foreach (var prop in right.ObjectScopes.GetScopes()[0])
+            {
+                //Don't check already checked properties.
+                if (checkedProps.Contains(prop.Key))
+                {
+                    continue;
+                }
+
+                bool found = false;
+                foreach (var c_prop in left.ObjectScopes.GetScopes()[0])
+                {
+                    if (prop.Key == c_prop.Key)
+                    {
+                        found = true;
+
+                        //Found it, are the values equal?
+                        if (!prop.Value._Equals(c_prop.Value))
+                        {
+                            //Nope.
+                            return false;
+                        }
+
+                        break;
+                    }
+                }
+
+                if (!found) { return false; }
+            }
+
+            //Return true, checks passed.
+            return true;
+        }
+
         //Greater than.
         public static bool GreaterThan(ParserRuleContext context, AlgoValue left, AlgoValue right, bool equalTo)
         {
