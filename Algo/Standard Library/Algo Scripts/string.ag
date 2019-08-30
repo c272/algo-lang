@@ -1,5 +1,5 @@
 ﻿//The "string" standard library provided by Algo.
-//v0.0.2, revision 2.
+//v0.0.4, revision 0.
 
 library string 
 {
@@ -37,4 +37,9 @@ library string
     //Returns a string, converted to nocaps.
     external toLower <- std_string.toLower;
 
+}
+
+library regex
+{
+    external match <- std_string.regex_match;
 }

@@ -3,6 +3,7 @@ using ExtendedNumerics;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Text.RegularExpressions;
 
 namespace Algo.StandardLibrary
 {
@@ -98,8 +99,58 @@ namespace Algo.StandardLibrary
                 Name = "reverse",
                 ParameterCount = 1,
                 Function = Reverse
+            },
+
+            //regex.match(str, rgx)
+            new AlgoPluginFunction()
+            {
+                Name = "regex_match",
+                ParameterCount = 2,
+                Function = MatchRegex
             }
         };
+
+        //Returns a list of matches from a Regex.
+        public static AlgoValue MatchRegex(ParserRuleContext context, AlgoValue[] args)
+        {
+            //Check both arguments are regex.
+            if (args[0].Type != args[1].Type || args[0].Type != AlgoValueType.String)
+            {
+                Error.Fatal(context, "Both arguments should be of type String.");
+                return null;
+            }
+
+            //Get the matches.
+            MatchCollection matches = null;
+            try
+            {
+                Regex reg = new Regex((string)args[1].Value);
+                matches = reg.Matches((string)args[0].Value);
+            }
+            catch (Exception e)
+            {
+                Error.Fatal(context, "Failed to match Regex, given error '" + e.Message + "'.");
+                return null;
+            }
+
+            //Get the raw match data.
+            List<AlgoValue> matchList = new List<AlgoValue>();
+            foreach (Match match in matches)
+            {
+                matchList.Add(new AlgoValue()
+                {
+                    Type = AlgoValueType.String,
+                    Value = match.Value
+                });
+            }
+
+            //Return the list.
+            return new AlgoValue()
+            {
+                Type = AlgoValueType.List,
+                Value = matchList
+            };
+        }
 
         //Returns a reverse of the given string.
         public static AlgoValue Reverse(ParserRuleContext context, params AlgoValue[] args)
