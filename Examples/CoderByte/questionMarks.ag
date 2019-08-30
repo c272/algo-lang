@@ -19,27 +19,6 @@ let SUM_REQUIRED = 10;
 
 ////////////
 
-//Utility functions.
-//REWRITE WITH REGEX!
-let isNum(chr) = 
-{
-    if (char == "0"
-      | char == "1" 
-      | char == "2" 
-      | char == "3" 
-      | char == "4" 
-      | char == "5"
-      | char == "6" 
-      | char == "7" 
-      | char == "8" 
-      | char == "9")
-    {
-        return true;
-    }
-
-    return false;
-}
-
 //The main function.
 let questionMark(input) =
 {
@@ -53,7 +32,7 @@ let questionMark(input) =
     foreach (char in input)
     {
         //Check if the current character is a number.
-        if (isNum(char))
+        if (len(regex.match(char, "[0-9]")) == 1)
         {
             //Increment sum.
             sum += int(char);
