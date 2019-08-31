@@ -43,8 +43,7 @@ Also, as an example of what the language looks like, here's some sample code I'v
     let printCharacters(x) = {
 
         //Print all the characters individually.
-        let charList = string.getChars(x);
-        foreach (i in charList) {
+        foreach (i in string.getChars(x)) {
             print i;
         }
 
