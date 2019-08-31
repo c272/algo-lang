@@ -12,7 +12,7 @@ namespace Algo
     public static class AlgoPlatformInfo
     {
         //This is a rudamentary bugfix while Mono is broken.
-        public static bool IsLinux = Directory.Exists("/");
+        public static bool IsLinux = File.Exists("/bin/bash");
         public static bool IsWindows = !IsLinux;
     }
 }
