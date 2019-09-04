@@ -70,5 +70,4 @@ D:\Files\Programming\GitHub\algo\Algo\obj\Debug\algoBaseVisitor.cs
 D:\Files\Programming\GitHub\algo\Algo\obj\Debug\Algo.csproj.Antlr4GeneratedCodeFileListAbsolute.txt
 D:\Files\Programming\GitHub\algo\Algo\obj\Debug\Algo.exe
 D:\Files\Programming\GitHub\algo\Algo\obj\Debug\Algo.pdb
-D:\Files\Programming\GitHub\algo\Algo\obj\Debug\Algo.csproj.CoreCompileInputs.cache
-D:\Files\Programming\GitHub\algo\Algo\obj\Debug\Algo.csproj.CopyComplete
+D:\Files\Programming\GitHub\algo\Algo\obj\Debug\Algo.csprojResolveAssemblyReference.cache

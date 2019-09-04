@@ -851,6 +851,54 @@ namespace Algo
                 }
             }
 
+            //Byte combinations.
+            if (left.Type == AlgoValueType.Bytes)
+            {
+                //Integer
+                if (right.Type == AlgoValueType.Integer)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Integer,
+                        Value = BigInteger.Add(new BigInteger((byte[])left.Value), (BigInteger)right.Value)
+                    };
+                }
+
+                //Float
+                else if (right.Type == AlgoValueType.Float)
+                {
+                    //Get integer from bytes.
+                    BigInteger bytes = new BigInteger((byte[])left.Value);
+                    BigFloat float_bytes = new BigFloat(bytes);
+
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Float,
+                        Value = BigFloat.Add((BigFloat)right.Value, float_bytes)
+                    };
+                }
+
+                //String
+                else if (right.Type == AlgoValueType.String)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.String,
+                        Value = ((byte[])left.Value).ToHexString() + (string)right.Value
+                    };
+                }
+
+                //Rational
+                else if (right.Type == AlgoValueType.Rational)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Rational,
+                        Value = BigRational.Add((BigRational)right.Value, new BigRational(new BigInteger((byte[])left.Value))),
+                    };
+                }
+            }
+
             //Could not find a match, error.
             Error.Fatal(context, "Invalid types to add, cannot add type " + left.Type.ToString() + " and type " + right.Type.ToString() + ".");
             return null;
@@ -1018,6 +1066,44 @@ namespace Algo
                         Type = AlgoValueType.Rational,
                         Value = BigRational.Subtract((BigRational)left.Value, new BigRational(new BigInteger((byte[])right.Value))),
 
+                    };
+                }
+            }
+
+            //Byte combinations.
+            if (left.Type == AlgoValueType.Bytes)
+            {
+                //Integer
+                if (right.Type == AlgoValueType.Integer)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Integer,
+                        Value = BigInteger.Subtract(new BigInteger((byte[])left.Value), (BigInteger)right.Value)
+                    };
+                }
+
+                //Float
+                else if (right.Type == AlgoValueType.Float)
+                {
+                    //Get integer from bytes.
+                    BigInteger bytes = new BigInteger((byte[])left.Value);
+                    BigFloat float_bytes = new BigFloat(bytes);
+
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Float,
+                        Value = BigFloat.Subtract(float_bytes, (BigFloat)right.Value)
+                    };
+                }
+
+                //Rational
+                else if (right.Type == AlgoValueType.Rational)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Rational,
+                        Value = BigRational.Subtract(new BigRational(new BigInteger((byte[])left.Value)), (BigRational)right.Value),
                     };
                 }
             }
