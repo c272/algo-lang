@@ -1,4 +1,4 @@
-﻿//The "string" standard library provided by Algo.
+//The "string" standard library provided by Algo.
 //v0.0.4, revision 0.
 
 library string 
@@ -24,6 +24,9 @@ library string
 
 	//Returns a boolean of whether a string ends with a substring.
 	external endsWith <- std_string.endsWith;
+
+	//Returns a boolean of whether a string starts with a substring.
+	external startsWith <- std_string.startsWith;
 
 	//Returns a boolean of whether a string represents an integer.
 	external isInteger <- std_string.isInteger;
