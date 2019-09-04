@@ -1,2 +1,10 @@
 language: csharp
 solution: Algo.sln
+
+deploy:
+  provider: releases
+  api_key: gh_oauth
+  file: "algo"
+  skip_cleanup: true
+  on:
+    tags: true
