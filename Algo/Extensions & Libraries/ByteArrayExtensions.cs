@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,11 +21,11 @@ namespace Algo
         //Add another byte array, return result.
         public static byte[] SumWith(this byte[] first, byte[] second)
         {
-            var i1 = BitConverter.ToInt64(first, 0);
-            var i2 = BitConverter.ToInt64(second, 0);
-            var sum = i1 + i2;
+            BigInteger n1 = new BigInteger(first);
+            BigInteger n2 = new BigInteger(second);
+            BigInteger sum = BigInteger.Add(n1, n2);
 
-            return BitConverter.GetBytes(sum);
+            return sum.ToByteArray();
         }
     }
 }
