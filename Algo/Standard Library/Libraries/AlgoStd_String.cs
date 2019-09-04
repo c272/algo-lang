@@ -61,6 +61,14 @@ namespace Algo.StandardLibrary
                 Function = StringEndsWith
             },
 
+            //StartsWith
+            new AlgoPluginFunction()
+            {
+                Name = "startsWith",
+                ParameterCount = 2,
+                Function = StringStartsWith
+            },
+
             //IsInteger
             new AlgoPluginFunction()
             {
@@ -374,6 +382,25 @@ namespace Algo.StandardLibrary
             {
                 Type = AlgoValueType.Boolean,
                 Value = source.EndsWith(end)
+            };
+        }
+
+        //Returns whether a string value starts with a specific substring.
+        public static AlgoValue StringStartsWith(ParserRuleContext context, params AlgoValue[] args)
+        {
+            //Arguments are strings?
+            if (args[0].Type != AlgoValueType.String || args[1].Type != AlgoValueType.String)
+            {
+                Error.Fatal(context, "Source and substring must both be of type String.");
+                return null;
+            }
+
+            string source = (string)args[0].Value;
+            string start = (string)args[1].Value;
+            return new AlgoValue()
+            {
+                Type = AlgoValueType.Boolean,
+                Value = source.StartsWith(start)
             };
         }
 

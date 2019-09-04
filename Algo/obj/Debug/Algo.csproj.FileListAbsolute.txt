@@ -71,3 +71,12 @@ D:\Files\Programming\GitHub\algo\Algo\obj\Debug\Algo.csproj.Antlr4GeneratedCodeF
 D:\Files\Programming\GitHub\algo\Algo\obj\Debug\Algo.exe
 D:\Files\Programming\GitHub\algo\Algo\obj\Debug\Algo.pdb
 D:\Files\Programming\GitHub\algo\Algo\obj\Debug\Algo.csprojResolveAssemblyReference.cache
+Z:\VSProjects\algo\algo-lang\Algo\obj\Debug\Algo.csprojAssemblyReference.cache
+Z:\VSProjects\algo\algo-lang\Algo\obj\Debug\algoLexer.cs
+Z:\VSProjects\algo\algo-lang\Algo\obj\Debug\algoParser.cs
+Z:\VSProjects\algo\algo-lang\Algo\obj\Debug\algoListener.cs
+Z:\VSProjects\algo\algo-lang\Algo\obj\Debug\algoBaseListener.cs
+Z:\VSProjects\algo\algo-lang\Algo\obj\Debug\algoVisitor.cs
+Z:\VSProjects\algo\algo-lang\Algo\obj\Debug\algoBaseVisitor.cs
+Z:\VSProjects\algo\algo-lang\Algo\obj\Debug\Algo.csproj.Antlr4GeneratedCodeFileListAbsolute.txt
+Z:\VSProjects\algo\algo-lang\Algo\obj\Debug\Algo.csproj.CoreCompileInputs.cache
