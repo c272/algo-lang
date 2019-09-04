@@ -414,7 +414,7 @@ namespace Algo
   \ \_\ \_\  \ \_____\  \ \_____\  \ \_____\ 
    \/_/\/_/   \/_____/   \/_____/   \/_____/
 ");
-            Console.WriteLine("ALEC (Algo Executable Language Compiler) v" + MAJOR_VER + "." + MINOR_VER + "." + verInfo[2] + ", build " + verInfo[3]);
+            Console.WriteLine("ALEC (Algo Language Executable Compiler) v" + MAJOR_VER + "." + MINOR_VER + "." + verInfo[2] + ", build " + verInfo[3]);
             Console.WriteLine("Framework: .NET Framework ENV " + Environment.Version);
             Console.WriteLine("Operating System: " + Environment.OSVersion);
             if (Environment.Is64BitProcess)
