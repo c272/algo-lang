@@ -94,6 +94,7 @@ namespace Algo
         Object,
         Break,
         Continue,
-        Null
+        Null,
+        Bytes
     }
 }

@@ -110,7 +110,7 @@ selfmod_op: ADDFROM_OP | TAKEFROM_OP | MULFROM_OP | DIVFROM_OP;
 postfix_op: ADD_PFOP | TAKE_PFOP;
 
 //A single literal value.
-value: stat_functionCall | obj_access | IDENTIFIER | INTEGER | FLOAT | BOOLEAN | STRING | RATIONAL | NULL | array | array_access | object;
+value: stat_functionCall | obj_access | IDENTIFIER | HEX | INTEGER | FLOAT | BOOLEAN | STRING | RATIONAL | NULL | array | array_access | object;
 
 //Accessing a library or object.
 obj_access: (IDENTIFIER POINT)+ IDENTIFIER;
@@ -145,6 +145,9 @@ STRING: '"' (~["] | '\\"')* '"';
 
 //Rational.
 RATIONAL: INTEGER [ ]* DIV_OP [ ]* INTEGER; 
+
+//Hex (bytes).
+HEX: '0x' [0-9A-Fa-f]+;
 
 //Null.
 NULL: 'null';

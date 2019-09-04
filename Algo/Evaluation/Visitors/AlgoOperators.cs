@@ -628,6 +628,14 @@ namespace Algo
                         
                     };
                 }
+                else if (left.Type == AlgoValueType.Bytes)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Bytes,
+                        Value = ((byte[])left.Value).SumWith((byte[])right.Value)
+                    };
+                }
                 else if (left.Type == AlgoValueType.String)
                 {
                     return new AlgoValue()
@@ -680,6 +688,20 @@ namespace Algo
                         
                     };
                 }
+
+                //Byte.
+                else if (right.Type == AlgoValueType.Bytes)
+                {
+                    //Get integer from bytes.
+                    BigInteger bytes = new BigInteger((byte[])right.Value);
+                    BigFloat float_bytes = new BigFloat(bytes);
+
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Float,
+                        Value = BigFloat.Add((BigFloat)left.Value, float_bytes)
+                    };
+                }
             }
 
             //Integer combinations.
@@ -716,6 +738,18 @@ namespace Algo
                         Value = ((BigInteger)left.Value).ToString() + (string)right.Value
                     };
                 }
+
+                //Bytes
+                else if (right.Type == AlgoValueType.Bytes)
+                {
+                    BigInteger bytes = new BigInteger((byte[])right.Value);
+
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Integer,
+                        Value = BigInteger.Add((BigInteger)left.Value, bytes)
+                    };
+                }
             }
 
             //Rational combinations.
@@ -744,6 +778,17 @@ namespace Algo
                         Type = AlgoValueType.Rational,
                         Value = BigRational.Add((BigRational)left.Value, new BigRational((BigInteger)right.Value)),
                         
+                    };
+                }
+
+                //Bytes.
+                else if (right.Type == AlgoValueType.Bytes)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Rational,
+                        Value = BigRational.Add((BigRational)left.Value, new BigRational(new BigInteger((byte[])right.Value))),
+
                     };
                 }
 
@@ -792,6 +837,16 @@ namespace Algo
                         Type = AlgoValueType.String,
                         Value = (string)left.Value + ((BigRational)right.Value).ToString(),
                         
+                    };
+                }
+
+                //Bytes
+                else if (right.Type == AlgoValueType.Bytes)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.String,
+                        Value = (string)left.Value + ((byte[])right.Value).ToHexString()
                     };
                 }
             }
@@ -850,6 +905,20 @@ namespace Algo
                         
                     };
                 }
+
+                //Bytes.
+                else if (right.Type == AlgoValueType.Bytes)
+                {
+                    //Cast to integer.
+                    BigInteger bytes = new BigInteger((byte[])right.Value);
+                    BigFloat float_bytes = new BigFloat(bytes);
+
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Float,
+                        Value = BigFloat.Subtract((BigFloat)left.Value, float_bytes)
+                    };
+                }
             }
 
             //Integer combinations.
@@ -885,6 +954,18 @@ namespace Algo
                         Type = AlgoValueType.Rational,
                         Value = BigRational.Subtract(new BigRational((BigInteger)left.Value), (BigRational)right.Value),
                         
+                    };
+                }
+
+                //Bytes
+                else if (right.Type == AlgoValueType.Bytes)
+                {
+                    BigInteger bytes = new BigInteger((byte[])right.Value);
+
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Integer,
+                        Value = BigInteger.Subtract((BigInteger)left.Value, bytes)
                     };
                 }
             }
@@ -926,6 +1007,17 @@ namespace Algo
                         Type = AlgoValueType.Rational,
                         Value = BigRational.Subtract((BigRational)left.Value, (BigRational)right.Value),
                         
+                    };
+                }
+
+                //Bytes.
+                else if (right.Type == AlgoValueType.Bytes)
+                {
+                    return new AlgoValue()
+                    {
+                        Type = AlgoValueType.Rational,
+                        Value = BigRational.Subtract((BigRational)left.Value, new BigRational(new BigInteger((byte[])right.Value))),
+
                     };
                 }
             }
@@ -1029,6 +1121,14 @@ namespace Algo
                             Value = new BigFloat((BigInteger)value.Value),
                             
                         };
+
+                    //BYTES
+                    case AlgoValueType.Bytes:
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.Float,
+                            Value = new BigFloat(BitConverter.ToSingle((byte[])value.Value, 0))
+                        };
                     
                     //RATIONAL.
                     case AlgoValueType.Rational:
@@ -1066,12 +1166,18 @@ namespace Algo
                         return new AlgoValue()
                         {
                             Type = AlgoValueType.Integer,
-                            Value = converted,
-                            
+                            Value = converted
                         };
 
                     case AlgoValueType.Integer:
                         return value;
+
+                    case AlgoValueType.Bytes:
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.Integer,
+                            Value = new BigInteger((byte[])value.Value)
+                        };
 
                     case AlgoValueType.Rational:
                         Error.Warning(context, "Implicitly casting from rational to intger will likely cause loss of data.");
@@ -1110,7 +1216,6 @@ namespace Algo
                         {
                             Type = AlgoValueType.Rational,
                             Value = new BigRational((BigInteger)value.Value),
-                            
                         };
 
                     default:
@@ -1154,11 +1259,40 @@ namespace Algo
                             
                         };
 
+                    case AlgoValueType.Bytes:
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.String,
+                            Value = ((byte[])value.Value).ToHexString()
+                        };
+
                     case AlgoValueType.String:
                         return value;
 
                     default:
                         Error.Fatal(context, "Cannot implicitly convert value of type " + value.Type.ToString() + " to a string.");
+                        return null;
+                }
+            }
+
+            else if (type == AlgoValueType.Bytes)
+            {
+                switch (value.Type)
+                {
+                    case AlgoValueType.Bytes:
+                        return value;
+
+                    case AlgoValueType.Integer:
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.Bytes,
+                            Value = ((BigInteger)value.Value).ToByteArray()
+                        };
+
+                    //todo: AlgoValueType.Float
+
+                    default:
+                        Error.Fatal(context, "Cannot implicitly convert value of type " + value.Type.ToString() + " to bytes.");
                         return null;
                 }
             }

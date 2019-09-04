@@ -38,6 +38,9 @@ external flt <- std_core.flt;
 //Boolean.
 external bool <- std_core.bool;
 
+//Hex.
+external hex <- std_core.hex;
+
 //////////////////////////////////
 // Check the type of variables. //
 //////////////////////////////////

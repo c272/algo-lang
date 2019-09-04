@@ -195,6 +195,15 @@ namespace Algo
 
                 };
             }
+            else if (context.HEX() != null)
+            {
+                //BYTES
+                return new AlgoValue()
+                {
+                    Type = AlgoValueType.Bytes,
+                    Value = context.HEX().GetText().ToByteArray()
+                };
+            }
             else if (context.NULL() != null)
             {
                 //NULL VALUE
