@@ -1,6 +1,6 @@
 ![algologo](logo_small.png) **v0.1.0**
 
-![license](https://img.shields.io/badge/license-MIT-blue.svg) ![issues](https://img.shields.io/github/issues/c272/algo-lang.svg) ![support](https://img.shields.io/badge/platform-c%23.net%20%3E%3D%207-lightgrey.svg) ![build](https://travis-ci.com/c272/algo-lang.svg?branch=master)
+![license](https://img.shields.io/badge/license-MIT-blue.svg) ![issues](https://img.shields.io/github/issues/c272/algo-lang.svg) ![support](https://img.shields.io/badge/platform-c%23.net%20%3E%3D%204%2E7-lightgrey.svg) ![build](https://travis-ci.com/c272/algo-lang.svg?branch=master)
 
 *A programming language which aims to be simple, mathematical and easy to learn.*
 ## Introduction
