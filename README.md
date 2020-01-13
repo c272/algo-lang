@@ -32,11 +32,10 @@ Simply running `algo -v` in console will display your current version, including
 For more information on language syntax and usage, see the GitHub wiki, [here.](https://github.com/c272/algo-lang/wiki)
 
 ## Sample Code
-Also, as an example of what the language looks like, here's some sample code I've typed up.
+For test samples of Algo code and workflow, see the [examples.](Examples/)
+Just to show a small snippet, here's some test code I wrote when originally drafting the language:
 
-*Warning: This may be out of date when there are major updates and revisions to the language, and the README hasn't been modified.*
-
-    //Import the input library and string library.
+    //Import the input library.
     import "io";
 
     //Define a function to enumerate over the string characters.
