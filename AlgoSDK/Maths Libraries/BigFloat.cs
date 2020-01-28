@@ -77,6 +77,7 @@ namespace ExtendedNumerics
             int numeratorLen = BitConverter.ToInt32(bytes, 0);
             int denomLen = BitConverter.ToInt32(bytes, 4);
 
+            //add length check before this
             var numerator = bytes.Skip(8).Take(numeratorLen);
             var denom = bytes.Skip(8 + numeratorLen).Take(denomLen);
 
