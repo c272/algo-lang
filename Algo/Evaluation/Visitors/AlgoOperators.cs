@@ -1361,6 +1361,7 @@ namespace Algo
                 }
             }
 
+            //Cast to bytes.
             else if (type == AlgoValueType.Bytes)
             {
                 switch (value.Type)
@@ -1375,7 +1376,12 @@ namespace Algo
                             Value = ((BigInteger)value.Value).ToByteArray()
                         };
 
-                    //todo: AlgoValueType.Float
+                    case AlgoValueType.Float:
+                        return new AlgoValue()
+                        {
+                            Type = AlgoValueType.Bytes,
+                            Value = ((BigFloat)value.Value).ToByteArray()
+                        };
 
                     default:
                         Error.Fatal(context, "Cannot implicitly convert value of type " + value.Type.ToString() + " to bytes.");

@@ -1,4 +1,3 @@
-import "core";
 import "io";
 
 let limit = int(input.get());

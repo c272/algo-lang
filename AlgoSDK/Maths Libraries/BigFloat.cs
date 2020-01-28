@@ -41,6 +41,52 @@ namespace ExtendedNumerics
             }
         }
 
+        /// <summary>
+        /// Converts a BigFloat into an array of bytes.
+        /// </summary>
+        public byte[] ToByteArray()
+        {
+            //Get the numerator and denominator as byte arrays.
+            byte[] numeratorBytes = numerator.ToByteArray();
+            byte[] denomBytes = denominator.ToByteArray();
+            byte[] numeratorLen = BitConverter.GetBytes(numeratorBytes.Length);
+            byte[] denomLen = BitConverter.GetBytes(denomBytes.Length);
+
+            //Concatenate. The two lengths go first (first 8 bytes), the rest is data.
+            List<byte> bytes = new List<byte>();
+            bytes.AddRange(numeratorLen);
+            bytes.AddRange(denomLen);
+            bytes.AddRange(numeratorBytes);
+            bytes.AddRange(denomBytes);
+
+            //Return.
+            return bytes.ToArray();
+        }
+
+        /// <summary>
+        /// Creates a BigFloat instance from bytes.
+        /// </summary>
+        public static BigFloat FromBytes(byte[] bytes)
+        {
+            if (bytes.Length < 8)
+            {
+                throw new Exception("Invalid bytes to create a BigFloat, not enough data provided.");
+            }
+
+            //Take the length of the sections, run that length.
+            int numeratorLen = BitConverter.ToInt32(bytes, 0);
+            int denomLen = BitConverter.ToInt32(bytes, 4);
+
+            var numerator = bytes.Skip(8).Take(numeratorLen);
+            var denom = bytes.Skip(8 + numeratorLen).Take(denomLen);
+
+            //Parse.
+            BigInteger numeratorCl = new BigInteger(numerator.ToArray());
+            BigInteger denomCl = new BigInteger(denom.ToArray());
+
+            //Create.
+            return new BigFloat(numeratorCl, denomCl);
+        }
 
         //constructors
         public BigFloat()
