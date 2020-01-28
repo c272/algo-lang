@@ -1213,7 +1213,7 @@ namespace Algo
                         return new AlgoValue()
                         {
                             Type = AlgoValueType.Float,
-                            Value = new BigFloat(BitConverter.ToSingle((byte[])value.Value, 0))
+                            Value = BigFloat.FromBytes((byte[])value.Value)
                         };
                     
                     //RATIONAL.

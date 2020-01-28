@@ -25,3 +25,9 @@ D:\Files\Programming\GitHub\algo\AlgoSDK\obj\Debug\AlgoSDK.csprojResolveAssembly
 Z:\VSProjects\algo\algo-lang\AlgoSDK\obj\Debug\AlgoSDK.csprojAssemblyReference.cache
 Z:\VSProjects\algo\algo-lang\AlgoSDK\obj\Debug\AlgoSDK.csproj.CoreCompileInputs.cache
 Z:\VSProjects\algo\algo-lang\AlgoSDK\obj\Debug\AlgoSDK.dll
+Z:\VSProjects\algo\algo-lang\AlgoSDK\bin\Debug\AlgoSDK.dll
+Z:\VSProjects\algo\algo-lang\AlgoSDK\bin\Debug\AlgoSDK.pdb
+Z:\VSProjects\algo\algo-lang\AlgoSDK\bin\Debug\Antlr4.Runtime.dll
+Z:\VSProjects\algo\algo-lang\AlgoSDK\bin\Debug\Antlr4.Runtime.xml
+Z:\VSProjects\algo\algo-lang\AlgoSDK\obj\Debug\AlgoSDK.csproj.CopyComplete
+Z:\VSProjects\algo\algo-lang\AlgoSDK\obj\Debug\AlgoSDK.pdb

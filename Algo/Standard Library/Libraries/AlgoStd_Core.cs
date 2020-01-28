@@ -227,11 +227,7 @@ namespace Algo.StandardLibrary
         public static AlgoValue ConvertBytes(ParserRuleContext context, params AlgoValue[] args)
         {
             //Just return convertType, no special cases here.
-            return new AlgoValue()
-            {
-                Type = AlgoValueType.Bytes,
-                Value = AlgoOperators.ConvertType(context, args[0], AlgoValueType.Bytes)
-            };
+            return AlgoOperators.ConvertType(context, args[0], AlgoValueType.Bytes);
         }
 
         //Returns the type of the variable.

@@ -70,14 +70,19 @@ namespace ExtendedNumerics
         {
             if (bytes.Length < 8)
             {
-                throw new Exception("Invalid bytes to create a BigFloat, not enough data provided.");
+                throw new Exception("Invalid bytes to create a float, not enough data provided.");
             }
 
             //Take the length of the sections, run that length.
             int numeratorLen = BitConverter.ToInt32(bytes, 0);
             int denomLen = BitConverter.ToInt32(bytes, 4);
 
-            //add length check before this
+            //Is the length of the data actually accurate?
+            if (bytes.Length != 8 + numeratorLen + denomLen)
+            {
+                throw new Exception("Invalid bytes to create a float, data is not formatted correctly.");
+            }
+
             var numerator = bytes.Skip(8).Take(numeratorLen);
             var denom = bytes.Skip(8 + numeratorLen).Take(denomLen);
 

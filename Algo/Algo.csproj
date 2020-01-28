@@ -80,6 +80,7 @@
     <Compile Include="Evaluation\Visitors\AlgoLibraryManager.cs" />
     <Compile Include="Evaluation\Visitors\AlgoLoops.cs" />
     <Compile Include="Extensions &amp; Libraries\ByteArrayExtensions.cs" />
+    <Compile Include="Extensions &amp; Libraries\VersionExtensions.cs" />
     <Compile Include="Parsing\algo.g4.lexer.cs">
       <DependentUpon>algo.g4</DependentUpon>
     </Compile>

@@ -64,6 +64,15 @@ namespace Algo
             Fatal(null, errMessage);
         }
 
+        //Internal fatal error.
+        public static void Internal(string errMessage)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Internal Language Error - " + errMessage);
+            Console.WriteLine("Please submit this with a detailed description as an issue at github.com/c272/algo/issues.");
+            Console.ResetColor();
+        }
+
         //Warning.
         public static void Warning(ParserRuleContext context, string errMessage)
         {

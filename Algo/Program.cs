@@ -80,7 +80,10 @@ namespace Algo
                     {
                         visitor.VisitCompileUnit(s_tree);
                     }
-                    catch {}
+                    catch (Exception e) {
+                        //Internal exception.
+                        Error.Internal(e.Message);
+                    }
                 }
                 
                 return;
@@ -179,7 +182,8 @@ namespace Algo
         private static void PrintVersionInfo()
         {
             string[] verInfo = typeof(Program).Assembly.GetName().Version.ToString().Split('.');
-            Console.WriteLine("Algo Language Interpreter v" + MAJOR_VER + "." + MINOR_VER + "." + verInfo[2] + ", build " + verInfo[3] + ".");
+            Console.WriteLine("Algo Language Interpreter v" + MAJOR_VER + "." + MINOR_VER + "." + verInfo[2] + ", build " + verInfo[3] + ". (" +
+                                typeof(Program).Assembly.GetName().GetVersionName() + ")");
             Console.WriteLine("(c) Larry Tang, 2019-" + DateTime.Now.Year);
             Console.WriteLine("\nFor information on how to use this interpreter, enter 'algo help'.");
         }
