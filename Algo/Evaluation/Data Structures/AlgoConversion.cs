@@ -33,6 +33,9 @@ namespace Algo
                 case AlgoValueType.Rational:
                     printString = ((BigRational)toPrint.Value).ToString();
                     break;
+                case AlgoValueType.Bytes:
+                    printString = ((byte[])toPrint.Value).ToHexString();
+                    break;
                 case AlgoValueType.String:
                     printString = (string)toPrint.Value;
                     break;

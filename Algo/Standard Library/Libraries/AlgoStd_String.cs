@@ -1,4 +1,4 @@
-﻿using Antlr4.Runtime;
+using Antlr4.Runtime;
 using ExtendedNumerics;
 using System;
 using System.Collections.Generic;
