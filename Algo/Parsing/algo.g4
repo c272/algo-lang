@@ -111,7 +111,7 @@ selfmod_op: ADDFROM_OP | TAKEFROM_OP | MULFROM_OP | DIVFROM_OP;
 postfix_op: ADD_PFOP | TAKE_PFOP;
 
 //A single literal value.
-value: (stat_functionCall particle*) | (IDENTIFIER particle*) | HEX | INTEGER | FLOAT | BOOLEAN | STRING | RATIONAL | NULL | array | object;
+value: (IDENTIFIER particle*) | (stat_functionCall particle*) | HEX | INTEGER | FLOAT | BOOLEAN | STRING | RATIONAL | NULL | array | object;
 
 //A single fragment of a value, can be chained together in certain situations.
 particle: (POINT functionCall_particle) | array_access_particle | (POINT IDENTIFIER);

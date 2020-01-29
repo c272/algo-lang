@@ -3306,16 +3306,16 @@ public partial class algoParser : Parser {
 	}
 
 	public partial class ValueContext : ParserRuleContext {
-		public Stat_functionCallContext stat_functionCall() {
-			return GetRuleContext<Stat_functionCallContext>(0);
-		}
+		public ITerminalNode IDENTIFIER() { return GetToken(algoParser.IDENTIFIER, 0); }
 		public ParticleContext[] particle() {
 			return GetRuleContexts<ParticleContext>();
 		}
 		public ParticleContext particle(int i) {
 			return GetRuleContext<ParticleContext>(i);
 		}
-		public ITerminalNode IDENTIFIER() { return GetToken(algoParser.IDENTIFIER, 0); }
+		public Stat_functionCallContext stat_functionCall() {
+			return GetRuleContext<Stat_functionCallContext>(0);
+		}
 		public ITerminalNode HEX() { return GetToken(algoParser.HEX, 0); }
 		public ITerminalNode INTEGER() { return GetToken(algoParser.INTEGER, 0); }
 		public ITerminalNode FLOAT() { return GetToken(algoParser.FLOAT, 0); }
@@ -3362,7 +3362,7 @@ public partial class algoParser : Parser {
 				EnterOuterAlt(_localctx, 1);
 				{
 				{
-				State = 525; stat_functionCall();
+				State = 525; Match(IDENTIFIER);
 				State = 529;
 				_errHandler.Sync(this);
 				_alt = Interpreter.AdaptivePredict(_input,46,_ctx);
@@ -3386,7 +3386,7 @@ public partial class algoParser : Parser {
 				EnterOuterAlt(_localctx, 2);
 				{
 				{
-				State = 532; Match(IDENTIFIER);
+				State = 532; stat_functionCall();
 				State = 536;
 				_errHandler.Sync(this);
 				_alt = Interpreter.AdaptivePredict(_input,47,_ctx);
@@ -4277,9 +4277,9 @@ public partial class algoParser : Parser {
 		"\x206\x208\x3\x2\x2\x2\x207\x202\x3\x2\x2\x2\x207\x203\x3\x2\x2\x2\x208"+
 		"K\x3\x2\x2\x2\x209\x20A\t\x4\x2\x2\x20AM\x3\x2\x2\x2\x20B\x20C\t\x5\x2"+
 		"\x2\x20CO\x3\x2\x2\x2\x20D\x20E\t\x6\x2\x2\x20EQ\x3\x2\x2\x2\x20F\x213"+
-		"\x5\x14\v\x2\x210\x212\x5T+\x2\x211\x210\x3\x2\x2\x2\x212\x215\x3\x2\x2"+
+		"\a\x46\x2\x2\x210\x212\x5T+\x2\x211\x210\x3\x2\x2\x2\x212\x215\x3\x2\x2"+
 		"\x2\x213\x211\x3\x2\x2\x2\x213\x214\x3\x2\x2\x2\x214\x227\x3\x2\x2\x2"+
-		"\x215\x213\x3\x2\x2\x2\x216\x21A\a\x46\x2\x2\x217\x219\x5T+\x2\x218\x217"+
+		"\x215\x213\x3\x2\x2\x2\x216\x21A\x5\x14\v\x2\x217\x219\x5T+\x2\x218\x217"+
 		"\x3\x2\x2\x2\x219\x21C\x3\x2\x2\x2\x21A\x218\x3\x2\x2\x2\x21A\x21B\x3"+
 		"\x2\x2\x2\x21B\x227\x3\x2\x2\x2\x21C\x21A\x3\x2\x2\x2\x21D\x227\a\b\x2"+
 		"\x2\x21E\x227\a\x3\x2\x2\x21F\x227\a\x4\x2\x2\x220\x227\a\x5\x2\x2\x221"+

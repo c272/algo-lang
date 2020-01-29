@@ -123,7 +123,7 @@ namespace Algo
 
                 //Get the child, see if it's a function.
                 AlgoObject thisObj = current.Value as AlgoObject;
-                string funcName = context.IDENTIFIER().GetText();
+                string funcName = context.functionCall_particle().IDENTIFIER().GetText();
                 AlgoValue childFunc = thisObj.ObjectScopes.GetVariable(funcName);
                 if (childFunc == null || (childFunc.Type != AlgoValueType.Function && childFunc.Type != AlgoValueType.EmulatedFunction))
                 {
@@ -167,11 +167,17 @@ namespace Algo
 
             //Right length of parameters?
             var paramCtx = context.literal_params();
-            if (current.Type == AlgoValueType.EmulatedFunction)
+            int givenNumParams = 0;
+            if (paramCtx != null)
+            {
+                givenNumParams = paramCtx.expr().Length;
+            }
+
+            else if (current.Type == AlgoValueType.EmulatedFunction)
             {
                 var func = ((AlgoPluginFunction)current.Value);
                 int paramNum = func.ParameterCount;
-                if (paramCtx.expr().Length != paramNum)
+                if (givenNumParams != paramNum)
                 {
                     Error.Fatal(context, "Invalid number of parameters for function '" + func.Name + "' (Expected " + func.ParameterCount + ", got " + paramCtx.expr().Length + ").");
                     return null;
@@ -181,7 +187,7 @@ namespace Algo
             {
                 var func = ((AlgoFunction)current.Value);
                 int paramNum = func.Parameters.Count;
-                if (paramCtx.expr().Length != paramNum)
+                if (givenNumParams != paramNum)
                 {
                     Error.Fatal(context, "Invalid number of parameters for function '" + func.Name + "' (Expected " + func.Parameters.Count + ", got " + paramCtx.expr().Length + ").");
                     return null;
@@ -196,9 +202,12 @@ namespace Algo
             }
 
             List<AlgoValue> params_ = new List<AlgoValue>();
-            foreach (var paramToEval in paramCtx.expr())
+            if (paramCtx != null)
             {
-                params_.Add((AlgoValue)VisitExpr(paramToEval));
+                foreach (var paramToEval in paramCtx.expr())
+                {
+                    params_.Add((AlgoValue)VisitExpr(paramToEval));
+                }
             }
 
             //Switch back scopes.
