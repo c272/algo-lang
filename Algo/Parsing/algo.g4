@@ -38,15 +38,15 @@ statement: (  stat_define
 			   );
 
 //Types of statement.
-stat_define: LET_SYM (IDENTIFIER | obj_access) EQUALS expr;
-stat_setvar: (IDENTIFIER | obj_access | array_access) EQUALS expr rounding_expr?;
-stat_setvar_op: (IDENTIFIER | obj_access | array_access) selfmod_op expr;
-stat_setvar_postfix: (IDENTIFIER | obj_access | array_access) postfix_op;
-stat_deletevar: DISREGARD_SYM (IDENTIFIER | obj_access | MUL_OP);
+stat_define: LET_SYM (IDENTIFIER particle*) EQUALS expr;
+stat_setvar: (IDENTIFIER particle*) EQUALS expr rounding_expr?;
+stat_setvar_op: (IDENTIFIER particle*) selfmod_op expr;
+stat_setvar_postfix: (IDENTIFIER particle*) postfix_op;
+stat_deletevar: DISREGARD_SYM (IDENTIFIER particle* | MUL_OP);
 stat_enumDef: LET_SYM IDENTIFIER EQUALS ENUM_SYM LBRACE abstract_params? RBRACE;
-stat_functionCall: (IDENTIFIER | obj_access) LBRACKET literal_params? RBRACKET;
+stat_functionCall: (IDENTIFIER particle*) LBRACKET literal_params? RBRACKET;
 functionCall_particle: IDENIFIER LBRACKET literal_params? RBRACKET;
-stat_functionDef: LET_SYM IDENTIFIER LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
+stat_functionDef: LET_SYM (IDENTIFIER particle*) LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
 stat_loadFuncExt: EXTERNAL_SYM IDENTIFIER STREAMING_SYM obj_access;
 stat_return: RETURN_SYM expr?;
 stat_forLoop: (FOR_SYM | FOREACH_SYM) LBRACKET IDENTIFIER ((IN_SYM expr) | UP_SYM TO_SYM expr) RBRACKET LBRACE statement* RBRACE;
@@ -116,13 +116,8 @@ value: (stat_functionCall particle*) | (array_access particle*) | (IDENTIFIER pa
 //A single fragment of a value, can be chained together in certain situations.
 particle: (POINT functionCall_particle) | array_access_particle | (POINT IDENTIFIER);
 
-//Accessing a library or object.
-obj_access: (IDENTIFIER POINT)+ IDENTIFIER;
-
 //An array.
 array: '[' ((value ',')* value)? ']';
-//Accessing an array, through a stored, function returned or literal array.
-array_access: (IDENTIFIER | obj_access | stat_functionCall | array) '[' literal_params ']';
 //Accessing an array during a particle chain.
 array_access_particle: '[' literal_params ']';
 
