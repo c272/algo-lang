@@ -182,7 +182,6 @@ namespace Algo
                 {
                     Type = AlgoValueType.Rational,
                     Value = new BigRational(BigInteger.Zero, new Fraction(BigInteger.Parse(numerator), BigInteger.Parse(denominator))),
-
                 };
             }
             else if (context.BOOLEAN() != null)
@@ -216,11 +215,21 @@ namespace Algo
             }
             else if (context.IDENTIFIER() != null)
             {
-                //VARIABLE
-                //Check if the variable exists in scope.
-                if (!Scopes.VariableExists(context.IDENTIFIER().GetText()))
+                //VARIABLE/OBJECT
+                
+                //Is it a user created variable?
+                if (Scopes.VariableExists(context.IDENTIFIER().GetText()))
                 {
-                    Error.Fatal(context, "No variable exists named '" + context.IDENTIFIER().GetText() + "'.");
+                    //Yes (todo)...
+                }
+                //Is it a library?
+                else if(Scopes.LibraryExists(context.IDENTIFIER().GetText()))
+                {
+                    //Yes (todo)...
+                }
+                else
+                {
+                    Error.Fatal(context, "No variable or library exists with name '" + context.IDENTIFIER().GetText() + "'.");
                     return null;
                 }
 

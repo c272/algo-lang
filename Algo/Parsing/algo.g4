@@ -45,6 +45,7 @@ stat_setvar_postfix: (IDENTIFIER | obj_access | array_access) postfix_op;
 stat_deletevar: DISREGARD_SYM (IDENTIFIER | obj_access | MUL_OP);
 stat_enumDef: LET_SYM IDENTIFIER EQUALS ENUM_SYM LBRACE abstract_params? RBRACE;
 stat_functionCall: (IDENTIFIER | obj_access) LBRACKET literal_params? RBRACKET;
+functionCall_particle: IDENIFIER LBRACKET literal_params? RBRACKET;
 stat_functionDef: LET_SYM IDENTIFIER LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
 stat_loadFuncExt: EXTERNAL_SYM IDENTIFIER STREAMING_SYM obj_access;
 stat_return: RETURN_SYM expr?;
@@ -110,7 +111,10 @@ selfmod_op: ADDFROM_OP | TAKEFROM_OP | MULFROM_OP | DIVFROM_OP;
 postfix_op: ADD_PFOP | TAKE_PFOP;
 
 //A single literal value.
-value: stat_functionCall | obj_access | IDENTIFIER | HEX | INTEGER | FLOAT | BOOLEAN | STRING | RATIONAL | NULL | array | array_access | object;
+value: (stat_functionCall particle*) | (array_access particle*) | (IDENTIFIER particle*) | HEX | INTEGER | FLOAT | BOOLEAN | STRING | RATIONAL | NULL | array | object;
+
+//A single fragment of a value, can be chained together in certain situations.
+particle: (POINT functionCall_particle) | array_access_particle | (POINT IDENTIFIER);
 
 //Accessing a library or object.
 obj_access: (IDENTIFIER POINT)+ IDENTIFIER;
@@ -119,6 +123,8 @@ obj_access: (IDENTIFIER POINT)+ IDENTIFIER;
 array: '[' ((value ',')* value)? ']';
 //Accessing an array, through a stored, function returned or literal array.
 array_access: (IDENTIFIER | obj_access | stat_functionCall | array) '[' literal_params ']';
+//Accessing an array during a particle chain.
+array_access_particle: '[' literal_params ']';
 
 //A single Algo object represented in text.
 object: OBJ_SYM LBRACE obj_child_definitions? RBRACE;

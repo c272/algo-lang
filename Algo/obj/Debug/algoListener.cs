@@ -142,6 +142,17 @@ public interface IalgoListener : IParseTreeListener {
 	void ExitStat_functionCall([NotNull] algoParser.Stat_functionCallContext context);
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.functionCall_particle"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFunctionCall_particle([NotNull] algoParser.FunctionCall_particleContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.functionCall_particle"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFunctionCall_particle([NotNull] algoParser.FunctionCall_particleContext context);
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.stat_functionDef"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -472,6 +483,17 @@ public interface IalgoListener : IParseTreeListener {
 	void ExitValue([NotNull] algoParser.ValueContext context);
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.particle"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterParticle([NotNull] algoParser.ParticleContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.particle"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitParticle([NotNull] algoParser.ParticleContext context);
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.obj_access"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -503,6 +525,17 @@ public interface IalgoListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitArray_access([NotNull] algoParser.Array_accessContext context);
+
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.array_access_particle"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterArray_access_particle([NotNull] algoParser.Array_access_particleContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.array_access_particle"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitArray_access_particle([NotNull] algoParser.Array_access_particleContext context);
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.object"/>.

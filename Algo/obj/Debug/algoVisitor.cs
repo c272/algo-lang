@@ -103,6 +103,13 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitStat_functionCall([NotNull] algoParser.Stat_functionCallContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.functionCall_particle"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunctionCall_particle([NotNull] algoParser.FunctionCall_particleContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="algoParser.stat_functionDef"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -313,6 +320,13 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitValue([NotNull] algoParser.ValueContext context);
 
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.particle"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParticle([NotNull] algoParser.ParticleContext context);
+
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="algoParser.obj_access"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -332,6 +346,13 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitArray_access([NotNull] algoParser.Array_accessContext context);
+
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="algoParser.array_access_particle"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitArray_access_particle([NotNull] algoParser.Array_access_particleContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="algoParser.object"/>.

@@ -75,10 +75,10 @@
     <Compile Include="Evaluation\Data Structures\AlgoConversion.cs" />
     <Compile Include="Evaluation\Data Structures\AlgoFunction.cs" />
     <Compile Include="Evaluation\Data Structures\AlgoObject.cs" />
-    <Compile Include="Evaluation\Visitors\AlgoComparators.cs" />
+    <Compile Include="Evaluation\Visitors\Type Manipulation\AlgoComparators.cs" />
     <Compile Include="Evaluation\Visitors\AlgoErrorHandling.cs" />
-    <Compile Include="Evaluation\Visitors\AlgoLibraryManager.cs" />
-    <Compile Include="Evaluation\Visitors\AlgoLoops.cs" />
+    <Compile Include="Evaluation\Visitors\Data Storage\AlgoLibraryManager.cs" />
+    <Compile Include="Evaluation\Visitors\Code Flow\AlgoLoops.cs" />
     <Compile Include="Extensions &amp; Libraries\ByteArrayExtensions.cs" />
     <Compile Include="Extensions &amp; Libraries\VersionExtensions.cs" />
     <Compile Include="Parsing\algo.g4.lexer.cs">
@@ -87,15 +87,15 @@
     <Compile Include="Parsing\algo.g4.parser.cs">
       <DependentUpon>algo.g4</DependentUpon>
     </Compile>
-    <Compile Include="Evaluation\Visitors\AlgoChecks.cs" />
+    <Compile Include="Evaluation\Visitors\Code Flow\AlgoChecks.cs" />
     <Compile Include="Parsing\AlgoExpressionParser.cs" />
-    <Compile Include="Evaluation\Visitors\AlgoFunctionManager.cs" />
+    <Compile Include="Evaluation\Visitors\Code Flow\AlgoFunctionManager.cs" />
     <Compile Include="Evaluation\Visitors\AlgoIO.cs" />
     <Compile Include="Evaluation\Visitors\AlgoMainVisitor.cs" />
-    <Compile Include="Evaluation\Visitors\AlgoOperators.cs" />
+    <Compile Include="Evaluation\Visitors\Type Manipulation\AlgoOperators.cs" />
     <Compile Include="Evaluation\Data Structures\AlgoScopes.cs" />
     <Compile Include="Evaluation\Data Structures\AlgoValue.cs" />
-    <Compile Include="Evaluation\Visitors\AlgoVariableHandler.cs" />
+    <Compile Include="Evaluation\Visitors\Data Storage\AlgoVariableHandler.cs" />
     <Compile Include="Platform Libraries\AlgoPlatformInfo.cs" />
     <Compile Include="Platform Libraries\CPFilePath.cs" />
     <Compile Include="Program.cs" />
@@ -112,7 +112,7 @@
     <Compile Include="Standard Library\Libraries\AlgoStd_Maths.cs" />
     <Compile Include="Standard Library\Libraries\AlgoStd_String.cs" />
     <Compile Include="Standard Library\Libraries\AlgoStd_IO.cs" />
-    <Compile Include="Evaluation\Visitors\AlgoListManager.cs" />
+    <Compile Include="Evaluation\Visitors\Data Storage\AlgoListManager.cs" />
     <Compile Include="Standard Library\Libraries\SimpleHTTP.cs" />
     <Compile Include="Standard Library\Libraries\AlgoStd_Web.cs" />
     <Compile Include="Standard Library\Libraries\AlgoStd_JSON.cs" />
