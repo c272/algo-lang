@@ -19,7 +19,7 @@ namespace Algo
         public override object VisitParticle([NotNull] algoParser.ParticleContext context)
         {
             //Get the last result of the particle before this.
-            AlgoValue current = ParticleManager.GetParticleResult();
+            AlgoValue current = Particles.GetParticleResult();
             if (current == null)
             {
                 Error.Internal("Particle chain started without setting an initial value.");
@@ -51,7 +51,7 @@ namespace Algo
                 }
 
                 //Yes, set result and return.
-                ParticleManager.SetParticleInput(newObj);
+                Particles.SetParticleInput(newObj);
                 return null;
             }
 
@@ -73,17 +73,17 @@ namespace Algo
                     }
 
                     //Need to switch scopes for evaluating indexes?
-                    if (ParticleManager.funcArgumentScopes != null)
+                    if (Particles.funcArgumentScopes != null)
                     {
                         oldScope = Scopes;
-                        Scopes = ParticleManager.funcArgumentScopes;
+                        Scopes = Particles.funcArgumentScopes;
                     }
 
                     //Evaluate the expression.
                     AlgoValue indexVal = (AlgoValue)VisitExpr(index);
 
                     //Back to normal.
-                    if (ParticleManager.funcArgumentScopes != null)
+                    if (Particles.funcArgumentScopes != null)
                     {
                         Scopes = oldScope;
                     }
@@ -107,7 +107,7 @@ namespace Algo
                 }
 
                 //Set result.
-                ParticleManager.SetParticleInput(currentLV);
+                Particles.SetParticleInput(currentLV);
                 return null;
             }
 
@@ -132,16 +132,16 @@ namespace Algo
                 }
 
                 //Set the particle result as the function value, call the function call particle.
-                ParticleManager.SetParticleInput(childFunc);
+                Particles.SetParticleInput(childFunc);
                 var result = VisitFunctionCall_particle(context.functionCall_particle());
                 if (result == null)
                 { 
-                    ParticleManager.Reset(); //Returned no result. 
+                    Particles.ResetParticleInput(); //Returned no result. 
                 }
                 else
                 {
                     //A result came back, set input for the next particle.
-                    ParticleManager.SetParticleInput((AlgoValue)result);
+                    Particles.SetParticleInput((AlgoValue)result);
                 }
 
                 return null;
@@ -163,7 +163,7 @@ namespace Algo
             AlgoScopeCollection oldScope = null;
 
             //Get the previous particle output.
-            var current = ParticleManager.GetParticleResult();
+            var current = Particles.GetParticleResult();
 
             //Right length of parameters?
             var paramCtx = context.literal_params();
@@ -189,10 +189,10 @@ namespace Algo
             }
 
             //Evaluate all the parameters, in the paramScope if necessary.
-            if (ParticleManager.funcArgumentScopes != null)
+            if (Particles.funcArgumentScopes != null)
             {
                 oldScope = Scopes;
-                Scopes = ParticleManager.funcArgumentScopes;
+                Scopes = Particles.funcArgumentScopes;
             }
 
             List<AlgoValue> params_ = new List<AlgoValue>();
@@ -202,7 +202,7 @@ namespace Algo
             }
 
             //Switch back scopes.
-            if (ParticleManager.funcArgumentScopes != null)
+            if (Particles.funcArgumentScopes != null)
             {
                 Scopes = oldScope;
             }

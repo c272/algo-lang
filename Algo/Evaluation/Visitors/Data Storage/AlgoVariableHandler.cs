@@ -16,16 +16,7 @@ namespace Algo
         public override object VisitStat_define([NotNull] algoParser.Stat_defineContext context)
         {
             //Get the name of the identifier/objtext.
-            string name = "";
-            if (context.IDENTIFIER() != null)
-            {
-                name = context.IDENTIFIER().GetText();
-            }
-            else
-            {
-
-                name = context.obj_access().GetText();
-            }
+            string name = Particles.StitchVariableName(context, context.IDENTIFIER().GetText(), context.particle());
 
             //Evaluate the expression on the right side of the define.
             AlgoValue value = (AlgoValue)VisitExpr(context.expr());
@@ -85,31 +76,10 @@ namespace Algo
         public override object VisitStat_setvar([NotNull] algoParser.Stat_setvarContext context)
         {
             //Get the variable/object reference.
-            string objString = "";
-            if (context.IDENTIFIER() != null)
+            AlgoValue varToSet = Particles.ParseParticleBlock(this, context, context.IDENTIFIER(), context.particle());
+            if (varToSet == null)
             {
-                objString = context.IDENTIFIER().GetText();
-            }
-            else if (context.obj_access() != null)
-            {
-                objString = context.obj_access().GetText();
-            }
-            else
-            {
-                if (context.array_access().IDENTIFIER() != null)
-                {
-                    objString = context.array_access().IDENTIFIER().GetText();
-                }
-                else
-                {
-                    objString = context.array_access().obj_access().GetText();
-                }
-            }
-
-            //Validate it.
-            if (!Scopes.VariableExists(objString))
-            {
-                Error.Fatal(context, "An object reference named '" + objString + "' does not exist.");
+                Error.Fatal(context, "No value returned to set.");
                 return null;
             }
 
@@ -142,15 +112,8 @@ namespace Algo
             }
 
             //Set variable.
-            if (context.array_access() == null)
-            {
-                Scopes.SetVariable(objString, value);
-            }
-            else
-            {
-                //It's an array, so set the list value instead.
-                Scopes.SetListValue(context, objString, context.array_access(), value);
-            }
+            varToSet.Value = value.Value;
+            varToSet.Type = value.Type;
 
             return null;
         }
@@ -158,44 +121,12 @@ namespace Algo
         //When a variable value is changed by a self modifying operator.
         public override object VisitStat_setvar_op([NotNull] algoParser.Stat_setvar_opContext context)
         {
-            //Get variable name.
-            string varname = "";
-            if (context.IDENTIFIER() != null)
+            //Get variable reference.
+            AlgoValue oldValue = Particles.ParseParticleBlock(this, context, context.IDENTIFIER(), context.particle());
+            if (oldValue == null)
             {
-                varname = context.IDENTIFIER().GetText();
-            }
-            else if (context.obj_access() != null)
-            {
-                varname = context.obj_access().GetText();
-            }
-            else
-            {
-                if (context.array_access().IDENTIFIER() != null)
-                {
-                    varname = context.array_access().IDENTIFIER().GetText();
-                }
-                else
-                {
-                    varname = context.array_access().obj_access().GetText();
-                }
-            }
-
-            //Check if the variable already exists.
-            if (!Scopes.VariableExists(varname))
-            {
-                Error.Fatal(context, "A variable with the name '" + varname + "' does not exist, cannot set value.");
+                Error.Fatal(context, "No value returned to modify with operator.");
                 return null;
-            }
-
-            //It does, get the variable.
-            AlgoValue oldValue = null;
-            if (context.array_access() == null)
-            {
-                oldValue = Scopes.GetVariable(varname);
-            }
-            else
-            {
-                oldValue = Scopes.GetListValue(context, varname, context.array_access());
             }
 
             //Does, evaluate the expression to set the value.
@@ -231,15 +162,8 @@ namespace Algo
             }
 
             //Set the value of the variable.
-            if (context.array_access() == null)
-            {
-                Scopes.SetVariable(varname, newValue);
-            }
-            else
-            {
-                Scopes.SetListValue(context, varname, context.array_access(), newValue);
-            }
-
+            oldValue.Value = newValue.Value;
+            oldValue.Type = newValue.Type;
             return null;
         }
 
@@ -247,43 +171,11 @@ namespace Algo
         public override object VisitStat_setvar_postfix([NotNull] algoParser.Stat_setvar_postfixContext context)
         {
             //Get variable name.
-            string varname = "";
-            if (context.IDENTIFIER() != null)
+            AlgoValue oldValue = Particles.ParseParticleBlock(this, context, context.IDENTIFIER(), context.particle());
+            if (oldValue == null)
             {
-                varname = context.IDENTIFIER().GetText();
-            }
-            else if (context.obj_access() != null)
-            {
-                varname = context.obj_access().GetText();
-            }
-            else
-            {
-                if (context.array_access().IDENTIFIER() != null)
-                {
-                    varname = context.array_access().IDENTIFIER().GetText();
-                }
-                else
-                {
-                    varname = context.array_access().obj_access().GetText();
-                }
-            }
-
-            //Check if the variable already exists.
-            if (!Scopes.VariableExists(varname))
-            {
-                Error.Fatal(context, "A variable with the name '" + varname + "' does not exist, cannot set value.");
+                Error.Fatal(context, "No value returned to modify with operator.");
                 return null;
-            }
-
-            //It does, get the variable.
-            AlgoValue oldValue = null;
-            if (context.array_access() == null)
-            {
-                oldValue = Scopes.GetVariable(varname);
-            }
-            else
-            {
-                oldValue = Scopes.GetListValue(context, varname, context.array_access());
             }
 
             //Switch on the operator type.
@@ -320,14 +212,8 @@ namespace Algo
             }
 
             //Set the variable value.
-            if (context.array_access() == null)
-            {
-                Scopes.SetVariable(varname, newValue);
-            } else
-            {
-                Scopes.SetListValue(context, varname, context.array_access(), newValue);
-            }
-
+            oldValue.Value = newValue.Value;
+            oldValue.Type = newValue.Type;
             return null;
         }
 
@@ -335,18 +221,10 @@ namespace Algo
         public override object VisitStat_deletevar([NotNull] algoParser.Stat_deletevarContext context)
         {
             //Checking if the disregard wants to delete all variables or only one.
-            if (context.IDENTIFIER() != null || context.obj_access() != null)
+            if (context.IDENTIFIER() != null)
             {
                 //Get variable name.
-                string varname = "";
-                if (context.IDENTIFIER() != null)
-                {
-                    varname = context.IDENTIFIER().GetText();
-                }
-                else
-                {
-                    varname = context.obj_access().GetText();
-                }
+                string varname = Particles.StitchVariableName(context, context.IDENTIFIER().GetText(), context.particle());
 
                 //Check if variable exists.
                 if (!Scopes.VariableExists(varname))

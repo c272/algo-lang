@@ -153,14 +153,14 @@ namespace Algo
         public AlgoValue GetEmulatedFuncValue(algoParser.Stat_loadFuncExtContext context)
         {
             //Attempt to get the text (as array) of the class and function from obj_access.
-            if (context.obj_access().IDENTIFIER().Length != 2)
+            if (context.particle().Length != 1)
             {
                 Error.Fatal(context, "Import function is invalid, must be in the form \"Class.Function\".");
                 return null;
             }
 
-            string className = context.obj_access().IDENTIFIER()[0].GetText();
-            string funcName = context.obj_access().IDENTIFIER()[1].GetText();
+            string className = context.IDENTIFIER()[1].GetText();
+            string funcName = context.particle()[0].IDENTIFIER().GetText();
 
             //Attempt to grab the plugin from the plugins manager.
             if (!PluginExists(className))

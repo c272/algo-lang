@@ -184,14 +184,14 @@ namespace Algo
             AlgoValue func = Plugins.GetEmulatedFuncValue(context);
 
             //Check if a variable with the supplied name already exists in scope.
-            if (Scopes.VariableExists(context.IDENTIFIER().GetText()))
+            if (Scopes.VariableExists(context.IDENTIFIER()[0].GetText()))
             {
-                Error.Fatal(context, "A variable with the name '" + context.IDENTIFIER().GetText() + "' already exists, can't redefine it.");
+                Error.Fatal(context, "A variable with the name '" + context.IDENTIFIER()[0].GetText() + "' already exists, can't redefine it.");
                 return null;
             }
 
             //Add to scope.
-            Scopes.AddVariable(context.IDENTIFIER().GetText(), func);
+            Scopes.AddVariable(context.IDENTIFIER()[0].GetText(), func);
             return null;
         }
     }

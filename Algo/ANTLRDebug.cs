@@ -79,6 +79,9 @@ namespace Algo
             }
         }
 
+        /// <summary>
+        /// Prints the parse list for debugging information.
+        /// </summary>
         public static void PrintParseList(algoParser.CompileUnitContext tree, algoParser parser)
         {
             //Printing parse tree.

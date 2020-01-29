@@ -91,13 +91,13 @@ namespace Algo
             //Switch scopes as necessary.
             if (!isVariable)
             {
-                ParticleManager.SetFunctionArgumentScopes(Scopes); //Make sure arguments are still evaluated on this scope.
+                Particles.SetFunctionArgumentScopes(Scopes); //Make sure arguments are still evaluated on this scope.
                 oldScope = Scopes;
                 Scopes = scopes_local;
             }
 
             //Loop through the particles (if any), and evaluate each, starting from the initial identifier.
-            ParticleManager.SetParticleInput(currentValue);
+            Particles.SetParticleInput(currentValue);
             if (context.particle() != null)
             {
                 foreach (var particle in context.particle())
@@ -110,11 +110,11 @@ namespace Algo
             if (!isVariable)
             {
                 Scopes = oldScope;
-                ParticleManager.ResetFunctionArgumentScopes();
+                Particles.ResetFunctionArgumentScopes();
             }
 
             //Get the result back.
-            currentValue = ParticleManager.GetParticleResult();
+            currentValue = Particles.GetParticleResult();
             if (currentValue == null)
             {
                 Error.Fatal(context, "No value returned to call final function on.");
@@ -125,7 +125,7 @@ namespace Algo
             if (context.IDENTIFIER() == null)
             {
                 //Visit and execute THIS value, not a child value.
-                ParticleManager.SetParticleInput(currentValue);
+                Particles.SetParticleInput(currentValue);
                 return VisitFunctionCall_particle(context.functionCall_particle());
             }
             else
@@ -148,7 +148,7 @@ namespace Algo
                 }
 
                 //Set the particle result as the function value, call the function call particle.
-                ParticleManager.SetParticleInput(childFunc);
+                Particles.SetParticleInput(childFunc);
                 return VisitFunctionCall_particle(context.functionCall_particle());
             }
         }

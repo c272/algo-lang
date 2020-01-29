@@ -31,3 +31,11 @@ Z:\VSProjects\algo\algo-lang\AlgoSDK\bin\Debug\Antlr4.Runtime.dll
 Z:\VSProjects\algo\algo-lang\AlgoSDK\bin\Debug\Antlr4.Runtime.xml
 Z:\VSProjects\algo\algo-lang\AlgoSDK\obj\Debug\AlgoSDK.csproj.CopyComplete
 Z:\VSProjects\algo\algo-lang\AlgoSDK\obj\Debug\AlgoSDK.pdb
+C:\Users\Larry\Files\Programming\c272\algo-lang\AlgoSDK\bin\Debug\AlgoSDK.dll
+C:\Users\Larry\Files\Programming\c272\algo-lang\AlgoSDK\bin\Debug\AlgoSDK.pdb
+C:\Users\Larry\Files\Programming\c272\algo-lang\AlgoSDK\bin\Debug\Antlr4.Runtime.dll
+C:\Users\Larry\Files\Programming\c272\algo-lang\AlgoSDK\bin\Debug\Antlr4.Runtime.xml
+C:\Users\Larry\Files\Programming\c272\algo-lang\AlgoSDK\obj\Debug\AlgoSDK.csprojAssemblyReference.cache
+C:\Users\Larry\Files\Programming\c272\algo-lang\AlgoSDK\obj\Debug\AlgoSDK.csproj.CopyComplete
+C:\Users\Larry\Files\Programming\c272\algo-lang\AlgoSDK\obj\Debug\AlgoSDK.dll
+C:\Users\Larry\Files\Programming\c272\algo-lang\AlgoSDK\obj\Debug\AlgoSDK.pdb

@@ -18,22 +18,18 @@ namespace Algo
             //Evaluate the value to be added to the list.
             AlgoValue toAdd = (AlgoValue)VisitExpr(context.expr()[0]);
 
-            //Check whether the given variable exists.
-            string varname = "";
-            if (context.IDENTIFIER() != null) { varname = context.IDENTIFIER().GetText(); }
-            if (context.obj_access() != null) { varname = context.obj_access().GetText(); }
-
-            if (!Scopes.VariableExists(varname))
+            //Get the list variable from the identifier and particle.
+            AlgoValue listVar = Particles.ParseParticleBlock(this, context, context.IDENTIFIER(), context.particle());
+            if (listVar == null)
             {
-                Error.Fatal(context, "A variable with the name '" + varname + "' does not exist.");
+                Error.Fatal(context, "No list value returned to add to from particle block.");
                 return null;
             }
 
-            //Variable exists, so get the list value from it.
-            AlgoValue listVar = Scopes.GetVariable(varname);
+            //Check the type is actually a list.
             if (listVar.Type != AlgoValueType.List)
             {
-                Error.Fatal(context, "Variable given is not list, so can't add an item to it.");
+                Error.Fatal(context, "Variable given is not list, so can't remove an item from it.");
                 return null;
             }
 
@@ -73,13 +69,8 @@ namespace Algo
                 toReturn.Add(toAdd);
             }
 
-            //Set the variable.
-            Scopes.SetVariable(varname, new AlgoValue()
-            {
-                Type = AlgoValueType.List,
-                Value = toReturn
-            });
-
+            //Set the variable via. reference (TEST ME!).
+            listVar.Value = toReturn;
             return null;
         }
 
@@ -90,18 +81,14 @@ namespace Algo
             AlgoValue toRemove = (AlgoValue)VisitExpr(context.expr());
 
             //Get the variable.
-            string varname = "";
-            if (context.IDENTIFIER() != null) { varname = context.IDENTIFIER().GetText(); }
-            if (context.obj_access() != null) { varname = context.obj_access().GetText(); }
-
-            if (!Scopes.VariableExists(varname))
+            var listVar = Particles.ParseParticleBlock(this, context, context.IDENTIFIER(), context.particle());
+            if (listVar == null)
             {
-                Error.Fatal(context, "A variable with the name '" + varname + "' does not exist.");
+                Error.Fatal(context, "No variable was returned to remove an item from, so can't remove an item from it.");
                 return null;
             }
 
             //Variable exists, so get the list value from it.
-            AlgoValue listVar = Scopes.GetVariable(varname);
             if (listVar.Type != AlgoValueType.List)
             {
                 Error.Fatal(context, "Variable given is not list, so can't remove an item from it.");
