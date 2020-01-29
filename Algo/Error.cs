@@ -71,6 +71,8 @@ namespace Algo
             Console.WriteLine("Internal Language Error - " + errMessage);
             Console.WriteLine("Please submit this with a detailed description as an issue at github.com/c272/algo/issues.");
             Console.ResetColor();
+
+            Environment.Exit(-1);
         }
 
         //Warning.
