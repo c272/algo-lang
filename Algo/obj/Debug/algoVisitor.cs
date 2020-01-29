@@ -327,25 +327,11 @@ public interface IalgoVisitor<Result> : IParseTreeVisitor<Result> {
 	Result VisitParticle([NotNull] algoParser.ParticleContext context);
 
 	/// <summary>
-	/// Visit a parse tree produced by <see cref="algoParser.obj_access"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitObj_access([NotNull] algoParser.Obj_accessContext context);
-
-	/// <summary>
 	/// Visit a parse tree produced by <see cref="algoParser.array"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitArray([NotNull] algoParser.ArrayContext context);
-
-	/// <summary>
-	/// Visit a parse tree produced by <see cref="algoParser.array_access"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitArray_access([NotNull] algoParser.Array_accessContext context);
 
 	/// <summary>
 	/// Visit a parse tree produced by <see cref="algoParser.array_access_particle"/>.

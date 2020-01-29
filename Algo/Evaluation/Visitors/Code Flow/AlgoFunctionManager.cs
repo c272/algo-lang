@@ -55,202 +55,102 @@ namespace Algo
         //When a function is called.
         public override object VisitStat_functionCall([NotNull] algoParser.Stat_functionCallContext context)
         {
-            //The function to call.
-            AlgoValue funcToCall = null;
-
+            //DEFINING LOCALS
             //The library scope (if applicable).
-            AlgoScopeCollection scopes_local = null;
+            AlgoScopeCollection scopes_local = null, oldScope = null;
+            bool isVariable = false; //Defines whether the func being called is a library or not.
+            AlgoValue currentValue = null;
 
-            //Check if it's a nested variable.
-            bool isVariable = false;
-            if (context.obj_access() != null && Scopes.VariableExists(context.obj_access().IDENTIFIER()[0].GetText()))
+            //Evaluate the first identifier, check if it's a library or a normal variable.
+            string initialIdentifier = null;
+            if (context.IDENTIFIER() != null)
             {
-                //Yes, it's a variable.
-                isVariable = true;
-
-                //Stitch the access string together, and get value.
-                string objStr = context.obj_access().GetText();
-                AlgoValue value = Scopes.GetVariable(objStr);
-
-                //Setting function to call.
-                funcToCall = value;
-            }
-
-            //No, it's a library or identifier.
-            else {
-
-                //Getting the correct scope to grab the function from.
-                //Is it just the current one?
-                if (context.IDENTIFIER() != null)
-                {
-                    isVariable = true;
-                    //scopes_local = Scopes;
-
-                    //Check if a function variable exists with this name.
-                    if (!Scopes.VariableExists(context.IDENTIFIER().GetText()))
-                    {
-                        Error.Fatal(context, "No function with name '" + context.IDENTIFIER().GetText() + "' exists.");
-                        return null;
-                    }
-
-                    //Get the variable.
-                    AlgoValue value = Scopes.GetVariable(context.IDENTIFIER().GetText());
-
-
-                    //Set function to call.
-                    funcToCall = value;
-                }
-                else
-                {
-                    //Getting the correct scope.
-                    scopes_local = Scopes.GetScopeFromLibAccess(context.obj_access());
-
-                    //Checking if a function variable exists in this scope with the right name.
-                    string varname = context.obj_access().IDENTIFIER().Last().GetText();
-                    if (!scopes_local.VariableExists(varname))
-                    {
-                        Error.Fatal(context, "No variable exists with the name '" + varname + "'.");
-                        return null;
-                    }
-
-                    //Get the variable.
-                    AlgoValue funcValue = scopes_local.GetVariable(varname);
-
-                    //Set the function to call.
-                    funcToCall = funcValue;
-                }
-            }
-
-            //Check if the value is a normal function or an emulated function.
-            if (funcToCall.Type == AlgoValueType.Function)
-            {
-                //Get the function.
-                AlgoFunction func = (AlgoFunction)funcToCall.Value;
-
-                //Getting parameter length.
-                int paramLength = 0;
-                if (context.literal_params() != null)
-                {
-                    paramLength = context.literal_params().expr().Length;
-                }
-
-                //Check the parameter length is the same.
-                if (paramLength != func.Parameters.Count)
-                {
-                    Error.Fatal(context, paramLength + " parameters passed to function '" + func.Name + "', which expects " + func.Parameters.Count + ".");
-                    return null;
-                }
-
-                //Parse all the parameters.
-                List<AlgoValue> paramvalues = new List<AlgoValue>();
-                if (context.literal_params() != null)
-                {
-                    foreach (var param in context.literal_params().expr())
-                    {
-                        AlgoValue evaluated = (AlgoValue)VisitExpr(param);
-                        paramvalues.Add(evaluated);
-                    }
-                }
-
-                //If the function is a library, swap out the current scope for the library's scope.
-                AlgoScopeCollection oldScope = null;
-                if (!isVariable)
-                {
-                    oldScope = Scopes;
-                    Scopes = scopes_local;
-                }
-
-                //Adding a scope, and creating the parameters inside it.
-                Scopes.AddScope();
-                for (int i = 0; i < paramvalues.Count; i++)
-                {
-                    Scopes.AddVariable(func.Parameters[i], paramvalues[i]);
-                }
-
-                //Running the function's body.
-                foreach (var statement in func.Body)
-                {
-                    AlgoValue returned = (AlgoValue)VisitStatement(statement);
-                    if (returned != null)
-                    {
-                        //Switch back to original scope if required.
-                        if (!isVariable)
-                        {
-                            Scopes = oldScope;
-                        } else
-                        {
-                            //Normal function, remove scope and return.
-                            Scopes.RemoveScope();
-                        }
-                        
-                        return returned;
-                    }
-                }
-
-                //Remove the function's scope, we're done!
-                Scopes.RemoveScope();
-
-                //If it was a library, return to old scope.
-                if (!isVariable)
-                {
-                    Scopes = oldScope;
-                }
-            }
-
-            //It wasn't a normal function, is it an emulated function?
-            else if (funcToCall.Type == AlgoValueType.EmulatedFunction)
-            {
-                //Emulated function, so just return the result of the delegate.
-                //First, have to grab parameters though.
-                AlgoPluginFunction func = (AlgoPluginFunction)funcToCall.Value;
-
-                //Evaluate parameters.
-                //Getting parameter length.
-                int paramLength = 0;
-                if (context.literal_params() != null)
-                {
-                    paramLength = context.literal_params().expr().Length;
-                }
-
-                //Check the parameter length is the same.
-                if (paramLength != func.ParameterCount)
-                {
-                    Error.Fatal(context, paramLength + " parameters passed to function " + func.Name + ", which expects " + func.ParameterCount + ".");
-                    return null;
-                }
-
-                //Parse all the parameters.
-                List<AlgoValue> paramvalues = new List<AlgoValue>();
-                if (context.literal_params() != null)
-                {
-                    foreach (var param in context.literal_params().expr())
-                    {
-                        AlgoValue evaluated = (AlgoValue)VisitExpr(param);
-                        paramvalues.Add(evaluated);
-                    }
-                }
-
-                //Return the result of the delegate.
-                AlgoValue returned = null;
-                try
-                {
-                    returned = func.Function(context, paramvalues.ToArray());
-                }
-                catch(Exception e)
-                {
-                    Error.Fatal(context, "External function returned an error, " + e.Message);
-                    return null;
-                }
-
-                return returned;
+                //Nested properties/particles.
+                initialIdentifier = context.IDENTIFIER().GetText();
             }
             else
             {
-                //Not a function.
-                Error.Fatal(context, "The given function does not exist, so cannot call.");
+                //Simple function call.
+                initialIdentifier = context.functionCall_particle().IDENTIFIER().GetText();
+            }
+            
+            //Normal variable?
+            if (Scopes.VariableExists(initialIdentifier))
+            {
+                //Normal variable for base.
+                isVariable = true;
+                currentValue = Scopes.GetVariable(initialIdentifier);
+            }
+            else if (Scopes.LibraryExists(initialIdentifier))
+            {
+                //Library, needs scope switching.
+                isVariable = false;
+                scopes_local = Scopes.GetLibrary(initialIdentifier);
             }
 
-            return null;
+            //Switch scopes as necessary.
+            if (!isVariable)
+            {
+                ParticleManager.SetFunctionArgumentScopes(Scopes); //Make sure arguments are still evaluated on this scope.
+                oldScope = Scopes;
+                Scopes = scopes_local;
+            }
+
+            //Loop through the particles (if any), and evaluate each, starting from the initial identifier.
+            ParticleManager.SetParticleInput(currentValue);
+            if (context.particle() != null)
+            {
+                foreach (var particle in context.particle())
+                {
+                    VisitParticle(particle);
+                }
+            }
+
+            //Switch scopes back.
+            if (!isVariable)
+            {
+                Scopes = oldScope;
+                ParticleManager.ResetFunctionArgumentScopes();
+            }
+
+            //Get the result back.
+            currentValue = ParticleManager.GetParticleResult();
+            if (currentValue == null)
+            {
+                Error.Fatal(context, "No value returned to call final function on.");
+                return null;
+            }
+
+            //Attempt to execute the final function on the result.
+            if (context.IDENTIFIER() == null)
+            {
+                //Visit and execute THIS value, not a child value.
+                ParticleManager.SetParticleInput(currentValue);
+                return VisitFunctionCall_particle(context.functionCall_particle());
+            }
+            else
+            {
+                //There were particles, visit and execute CHILD value.
+                if (currentValue.Type != AlgoValueType.Object)
+                {
+                    Error.Fatal(context, "Cannot call a child function on a value with no children (given value was not an object).");
+                    return null;
+                }
+
+                //Get the child, see if it's a function.
+                AlgoObject thisObj = currentValue.Value as AlgoObject;
+                string funcName = context.IDENTIFIER().GetText();
+                AlgoValue childFunc = thisObj.ObjectScopes.GetVariable(funcName);
+                if (childFunc == null || (childFunc.Type != AlgoValueType.Function && childFunc.Type != AlgoValueType.EmulatedFunction))
+                {
+                    Error.Fatal(context, "No child function exists with name '" + funcName + "'.");
+                    return null;
+                }
+
+                //Set the particle result as the function value, call the function call particle.
+                ParticleManager.SetParticleInput(childFunc);
+                return VisitFunctionCall_particle(context.functionCall_particle());
+            }
         }
 
         //When a value is returned from a function.

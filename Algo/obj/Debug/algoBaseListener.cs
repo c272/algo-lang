@@ -582,19 +582,6 @@ public partial class algoBaseListener : IalgoListener {
 	public virtual void ExitParticle([NotNull] algoParser.ParticleContext context) { }
 
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="algoParser.obj_access"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterObj_access([NotNull] algoParser.Obj_accessContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="algoParser.obj_access"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitObj_access([NotNull] algoParser.Obj_accessContext context) { }
-
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.array"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
@@ -606,19 +593,6 @@ public partial class algoBaseListener : IalgoListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitArray([NotNull] algoParser.ArrayContext context) { }
-
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="algoParser.array_access"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterArray_access([NotNull] algoParser.Array_accessContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="algoParser.array_access"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitArray_access([NotNull] algoParser.Array_accessContext context) { }
 
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.array_access_particle"/>.

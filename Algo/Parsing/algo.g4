@@ -44,10 +44,10 @@ stat_setvar_op: (IDENTIFIER particle*) selfmod_op expr;
 stat_setvar_postfix: (IDENTIFIER particle*) postfix_op;
 stat_deletevar: DISREGARD_SYM (IDENTIFIER particle* | MUL_OP);
 stat_enumDef: LET_SYM IDENTIFIER EQUALS ENUM_SYM LBRACE abstract_params? RBRACE;
-stat_functionCall: (IDENTIFIER particle*) LBRACKET literal_params? RBRACKET;
-functionCall_particle: IDENIFIER LBRACKET literal_params? RBRACKET;
+stat_functionCall: (IDENTIFIER particle* POINT)? functionCall_particle;
+functionCall_particle: IDENTIFIER LBRACKET literal_params? RBRACKET;
 stat_functionDef: LET_SYM (IDENTIFIER particle*) LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
-stat_loadFuncExt: EXTERNAL_SYM IDENTIFIER STREAMING_SYM obj_access;
+stat_loadFuncExt: EXTERNAL_SYM IDENTIFIER STREAMING_SYM (IDENTIFIER particle*);
 stat_return: RETURN_SYM expr?;
 stat_forLoop: (FOR_SYM | FOREACH_SYM) LBRACKET IDENTIFIER ((IN_SYM expr) | UP_SYM TO_SYM expr) RBRACKET LBRACE statement* RBRACE;
 stat_whileLoop: WHILE_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE;
@@ -55,8 +55,8 @@ stat_if: IF_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE stat_elif* stat
 stat_print: PRINT_SYM expr rounding_expr?;
 stat_library: LIB_SYM IDENTIFIER LBRACE statement* RBRACE;
 stat_import: IMPORT_SYM expr (AS_SYM IDENTIFIER)?;
-stat_list_add: ADD_SYM expr TO_SYM (IDENTIFIER | obj_access) (AT_SYM expr)?;
-stat_list_remove: REMOVE_SYM expr (FROM_SYM | IN_SYM) (IDENTIFIER | obj_access);
+stat_list_add: ADD_SYM expr TO_SYM (IDENTIFIER particle*) (AT_SYM expr)?;
+stat_list_remove: REMOVE_SYM expr (FROM_SYM | IN_SYM) (IDENTIFIER particle*);
 stat_try_catch: TRY_SYM LBRACE block RBRACE CATCH_SYM LBRACKET IDENTIFIER RBRACKET LBRACE block RBRACE;
 stat_throw: THROW_SYM expr;
 stat_break: BREAK_SYM;
@@ -111,7 +111,7 @@ selfmod_op: ADDFROM_OP | TAKEFROM_OP | MULFROM_OP | DIVFROM_OP;
 postfix_op: ADD_PFOP | TAKE_PFOP;
 
 //A single literal value.
-value: (stat_functionCall particle*) | (array_access particle*) | (IDENTIFIER particle*) | HEX | INTEGER | FLOAT | BOOLEAN | STRING | RATIONAL | NULL | array | object;
+value: (stat_functionCall particle*) | (IDENTIFIER particle*) | HEX | INTEGER | FLOAT | BOOLEAN | STRING | RATIONAL | NULL | array | object;
 
 //A single fragment of a value, can be chained together in certain situations.
 particle: (POINT functionCall_particle) | array_access_particle | (POINT IDENTIFIER);
