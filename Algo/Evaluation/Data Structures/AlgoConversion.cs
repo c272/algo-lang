@@ -13,7 +13,7 @@ namespace Algo
     public static class AlgoConversion
     {
         //Returns the string representation of a given Algo value.
-        public static string GetStringRepresentation(ParserRuleContext context, AlgoValue toPrint)
+        public static string GetStringRepresentation(AlgoValue toPrint)
         {
             string printString = "";
             switch (toPrint.Type)
@@ -45,7 +45,7 @@ namespace Algo
                     printString += '[';
                     foreach (var listVal in (List<AlgoValue>)toPrint.Value)
                     {
-                        printString += GetStringRepresentation(context, listVal) + ", ";
+                        printString += GetStringRepresentation(listVal) + ", ";
                     }
 
                     //Only trim commas if there are actually items.
@@ -60,15 +60,15 @@ namespace Algo
                     printString += "{ ";
                     foreach (var prop in (Dictionary<string, AlgoValue>)((AlgoObject)(toPrint.Value)).ObjectScopes.GetScopes().Last())
                     {
-                        printString += prop.Key + ": " + GetStringRepresentation(context, prop.Value) + ", ";
+                        printString += prop.Key + ": " + GetStringRepresentation(prop.Value) + ", ";
                     }
                     printString = printString.Trim(',', ' ');
                     printString += " }";
                     return printString;
 
                 default:
-                    Error.Fatal(context, "Invalid type, cannot convert a value of type '" + toPrint.Type + "' to string.");
-                    return null;
+                    //Just return the type name.
+                    return "types." + toPrint.Type.ToString();
             }
 
             return printString;

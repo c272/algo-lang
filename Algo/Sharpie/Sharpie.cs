@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Algo.CLI;
 using Newtonsoft.Json;
 
 namespace Algo.PacMan
@@ -15,7 +16,7 @@ namespace Algo.PacMan
         public static int MinorVersion = 1;
 
         //The main global class for the Sharp2e package manager.
-        public Sharpie(string[] args)
+        public Sharpie(PackageManagerCLIOptions opts)
         {
             //If the packages and sources files don't exist, initialize them.
             if (!File.Exists(PackagesFile))
@@ -28,56 +29,47 @@ namespace Algo.PacMan
                 File.WriteAllText(SourcesFile, JsonConvert.SerializeObject(new SharpieSources()));
             }
 
-            //What's the user trying to get (eg. packages, build info, source management, help)
-            if (args.Length < 1)
+            //Get help.
+            if (opts.Help)
             {
-                Console.WriteLine("Sharpie Package Manager v" + MajorVersion + "." + MinorVersion + ", build " + typeof(Program).Assembly.GetName().Version.ToString().Split('.')[2] + ".");
-                Console.WriteLine("(c) Larry Tang 2019 - " + DateTime.Now.Year);
+                Console.Write("Use 'algo help' without the 'pkg' to see help information for Sharpie.");
                 return;
             }
 
-            //Get help.
-            if (args[0] == "help")
-            {
-                //todo
-            }
-
             //Listing?
-            else if (args[0] == "list")
+            else if (opts.ListPackages)
             {
                 ListPackages();
                 return;
             }
             
             //Managing sources?
-            else if (args[0] == "sources")
+            else if (opts.ListSources)
             {
-                ManageSources(args.Slice(1, -1));
-                return;
-            }
-
-            //All commands past here require two parameters.
-            if (args.Length < 2)
-            {
-                Error.FatalNoContext("Invalid amount of arguments for the package manager.");
+                ListSources();
                 return;
             }
 
             //Managing packages?
-            if (args[0] == "add")
+            if (opts.AddPackages != null)
             {
-                AddPackage(args.Slice(1, -1));
+                AddPackage(opts.AddPackages.ToArray());
+                return;
             }
-            else if (args[0] == "remove")
+            else if (opts.RemovePackages != null)
             {
-                RemovePackage(args.Slice(1, -1));
+                RemovePackage(opts.RemovePackages.ToArray());
+                return;
             }
-            else if (args[0] == "update")
+            else if (opts.UpdatePackages != null)
             {
-                UpdatePackage(args.Slice(1, -1));
+                UpdatePackage(opts.UpdatePackages.ToArray());
+                return;
             } else
             {
-                Error.FatalNoContext("Unknown command supplied to package manager.");
+                //Just list the version info.
+                Console.WriteLine("Sharpie Package Manager v" + MajorVersion + "." + MinorVersion + ", build " + typeof(Program).Assembly.GetName().Version.ToString().Split('.')[2] + ".");
+                Console.WriteLine("(c) Larry Tang 2018 - " + DateTime.Now.Year);
             }
         }
     }

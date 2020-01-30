@@ -251,8 +251,8 @@ namespace Algo.StandardLibrary
         public static AlgoValue ContainsString(ParserRuleContext context, params AlgoValue[] args)
         {
             //Get the base string and the substring.
-            string baseString = AlgoConversion.GetStringRepresentation(context, args[0]);
-            string substring = AlgoConversion.GetStringRepresentation(context, args[1]);
+            string baseString = AlgoConversion.GetStringRepresentation(args[0]);
+            string substring = AlgoConversion.GetStringRepresentation(args[1]);
 
             //Return a bool.
             return new AlgoValue()

@@ -22,7 +22,7 @@ namespace Algo
 
             //Depending on the type, set string accordingly via. casts.
             string printString = "";
-            printString = AlgoConversion.GetStringRepresentation(context, toPrint);
+            printString = AlgoConversion.GetStringRepresentation(toPrint);
 
             //Check if a rounding expression is present.
             if (context.rounding_expr() != null)
@@ -48,7 +48,7 @@ namespace Algo
                         toPrint = AlgoOperators.Round(context, toPrint, roundingInt);
 
                         //Set print string.
-                        printString = AlgoConversion.GetStringRepresentation(context, toPrint);
+                        printString = AlgoConversion.GetStringRepresentation(toPrint);
                     }
                 }
             }

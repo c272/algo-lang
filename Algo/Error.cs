@@ -68,9 +68,25 @@ namespace Algo
         public static void Internal(string errMessage)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Internal Language Error - " + errMessage);
-            Console.WriteLine("Please submit this with a detailed description as an issue at github.com/c272/algo/issues.");
-            Console.ResetColor();
+            if (AlgoRuntimeInformation.DeveloperMode)
+            {
+                Console.WriteLine("Internal Language Error - " + errMessage);
+                Console.WriteLine("Please submit this with a detailed description as an issue at github.com/c272/algo/issues.");
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.WriteLine("Internal language crash, Enable developer mode for further debugging details.");
+                Console.ResetColor();
+            }
+            
+            //If in continuous mode, just restart.
+            if (AlgoRuntimeInformation.ContinuousMode)
+            {
+                Program.Main(new string[] { "--nohead" });
+                Environment.Exit(0);
+                return;
+            }
 
             Environment.Exit(-1);
         }

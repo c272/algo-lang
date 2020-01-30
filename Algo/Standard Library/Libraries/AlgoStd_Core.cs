@@ -141,7 +141,7 @@ namespace Algo.StandardLibrary
             return new AlgoValue()
             {
                 Type = AlgoValueType.String,
-                Value = AlgoConversion.GetStringRepresentation(context, args[0])
+                Value = AlgoConversion.GetStringRepresentation(args[0])
             };
         }
 

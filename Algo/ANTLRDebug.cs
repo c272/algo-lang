@@ -48,7 +48,7 @@ namespace Algo
                     {
                         try
                         {
-                            varValue = variable.Value.Value.ToString();
+                            varValue = AlgoConversion.GetStringRepresentation(variable.Value);
                         }
                         catch
                         {
@@ -72,7 +72,7 @@ namespace Algo
                     Console.WriteLine("Scope " + (i + 1) + "\n---");
                     foreach (var variable in libscopes[i])
                     {
-                        Console.WriteLine(variable.Key + " of type " + variable.Value.Type.ToString() + ", value " + variable.Value.Value.ToString() + ".");
+                        Console.WriteLine(variable.Key + " of type " + variable.Value.Type.ToString() + ", value " + AlgoConversion.GetStringRepresentation(variable.Value) + ".");
                     }
                     Console.WriteLine("");
                 }

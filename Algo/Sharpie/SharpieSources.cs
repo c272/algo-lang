@@ -14,45 +14,31 @@ namespace Algo.PacMan
         //Get the sources file.
         public static string SourcesFile = CPFilePath.GetPlatformFilePath(DefaultDirectories.PackagesDirectory.Concat(new string[] { "sources.pkg" }).ToArray());
 
-        //Manage sources in Sharpie.
-        public void ManageSources(string[] args)
+        /// <summary>
+        /// Lists all sources currently installed on the Sharpie master list.
+        /// </summary>
+        public void ListSources()
         {
             //Get the current source list from file.
             SharpieSources sources = JsonConvert.DeserializeObject<SharpieSources>(File.ReadAllText(SourcesFile));
 
-            //No arguments? List all current sources.
-            if (args.Length < 1)
+            //List all current sources.
+            Console.WriteLine("Sharpie Sources\n-----------");
+            foreach (var source in sources.Sources)
             {
-                Console.WriteLine("Sharpie Sources\n-----------");
-                foreach (var source in sources.Sources)
-                {
-                    Console.WriteLine(source.SourceName + " | " + source.Link);
-                }
-                if (sources.Sources.Count == 0)
-                {
-                    Console.WriteLine("No sources installed.");
-                }
-                Console.WriteLine("-----------\n");
+                Console.WriteLine(source.SourceName + " | " + source.Link);
             }
-            else if (args[0] == "add")
+            if (sources.Sources.Count == 0)
             {
-                //Add a source.
-                AddSource(args.Slice(1, -1));
+                Console.WriteLine("No sources installed.");
             }
-            else if (args[0] == "remove")
-            {
-                //Remove a source.
-                RemoveSource(args.Slice(1, -1));
-            }
-            else
-            {
-                Error.FatalNoContext("Invalid command for sources.");
-                return;
-            }
-
+            Console.WriteLine("-----------\n");
+            
         }
 
-        //Add a source to the source list.
+        /// <summary>
+        /// Adds a source to the Sharpie master list.
+        /// </summary>
         public void AddSource(string[] args)
         {
             //Check the argument length.
@@ -121,7 +107,9 @@ namespace Algo.PacMan
             }
         }
 
-        //Remove sources from the source list, and all associated packages.
+        /// <summary>
+        /// Remove sources from the source list, and all associated packages.
+        /// </summary>
         public void RemoveSource(string[] args)
         {
             //Check the argument length.
@@ -172,7 +160,10 @@ namespace Algo.PacMan
         }
 
         //Update a given source (or all sources) from the master list.
-        //todo
+        private void UpdateSources(string[] args)
+        {
+            Error.Internal("This feature is currently not implemented. Sorry!");
+        }
 
         //Displays a warning to the user about installing untrusted sources.
         private void DisplayWarning()
