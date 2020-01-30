@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2035
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Algo", "Algo\Algo.csproj", "{6B2A0F2A-4C2A-4B30-9908-95B8895D6055}"
 EndProject
@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.travis.yml = .travis.yml
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgoTests", "AlgoTests\AlgoTests.csproj", "{9691A967-2E97-4562-852A-52A98FF3D0E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +28,10 @@ Global
 		{F4512291-4C2F-48BE-BF80-21F0B980CA38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4512291-4C2F-48BE-BF80-21F0B980CA38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4512291-4C2F-48BE-BF80-21F0B980CA38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9691A967-2E97-4562-852A-52A98FF3D0E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9691A967-2E97-4562-852A-52A98FF3D0E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9691A967-2E97-4562-852A-52A98FF3D0E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9691A967-2E97-4562-852A-52A98FF3D0E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

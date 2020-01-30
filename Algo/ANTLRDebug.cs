@@ -10,6 +10,14 @@ namespace Algo
 {
     public static class ANTLRDebug
     {
+        /// <summary>
+        /// Enters unit test mode for this Algo instance.
+        /// </summary>
+        public static void EnterTestMode()
+        {
+            AlgoRuntimeInformation.UnitTestMode = true;
+        }
+
         public static void PrintTokens(Lexer lexer)
         {
             //Getting tokens.
