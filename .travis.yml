@@ -1,7 +1,7 @@
 language: csharp
 solution: Algo.sln
 install:
-  - nuget restore solution-name.sln
+  - nuget restore Algo.sln
   - nuget install NUnit.Console -Version 3.9.0 -OutputDirectory testrunner
 script:
   - msbuild /p:Configuration=Release Algo.sln
