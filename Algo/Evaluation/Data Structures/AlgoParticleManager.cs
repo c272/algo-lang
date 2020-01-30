@@ -103,32 +103,92 @@ namespace Algo
                 //It's a library, prepare for a scope switch.
                 var scopes_local = algoVisitor.Scopes.GetLibrary(firstIdentifier.GetText());
                 AlgoScopeCollection oldScope = algoVisitor.Scopes;
-
+                
                 //First, get the first particle to set as the particle input.
-                var toEval = particleContext[0];
-                var particleVal = scopes_local.GetVariable(toEval.IDENTIFIER().GetText());
-                if (particleVal == null)
+                var toEval = particleContext[0]; AlgoValue particleVal = null;
+
+                //Is the first particle an identifier?
+                if (toEval.IDENTIFIER() != null)
                 {
-                    Error.Fatal(toEval, "No variable exists in library '" + firstIdentifier.GetText() + "' named '" + toEval.IDENTIFIER().GetText() + "'.");
+                    particleVal = scopes_local.GetVariable(toEval.IDENTIFIER().GetText());
+                    if (particleVal == null)
+                    {
+                        Error.Fatal(toEval, "No variable exists in library '" + firstIdentifier.GetText() + "' named '" + toEval.IDENTIFIER().GetText() + "'.");
+                        return null;
+                    }
+                }
+                else if (toEval.functionCall_particle() != null)
+                {
+                    //Not an identifier, a function. Attempt to call with the correct scopes.
+                    SetFunctionArgumentScopes(algoVisitor.Scopes);
+                    algoVisitor.Scopes = scopes_local;
+                    var funcParticle = toEval.functionCall_particle();
+
+                    //Attempt to get the function from the library.
+                    if (!scopes_local.VariableExists(funcParticle.IDENTIFIER().GetText()))
+                    {
+                        Error.Fatal(funcParticle, "No function exists named '" + funcParticle.IDENTIFIER().GetText() + " in library '" + firstIdentifier.GetText() + "'.");
+                        return null;
+                    }
+                    
+                    //Is it a valid function?
+                    var funcVal = scopes_local.GetVariable(funcParticle.IDENTIFIER().GetText());
+                    if (funcVal.Type != AlgoValueType.EmulatedFunction && funcVal.Type != AlgoValueType.Function)
+                    {
+                        Error.Fatal(funcParticle, "Cannot call a value that is not a function ('" + funcParticle.IDENTIFIER().GetText() + " in library '" + firstIdentifier.GetText() + "').");
+                        return null;
+                    }
+
+                    SetParticleInput(funcVal);
+                    var returned = visitor.VisitFunctionCall_particle(toEval.functionCall_particle());
+                    if (returned != null)
+                    {
+                        particleVal = (AlgoValue)returned;
+                    }
+                    else
+                    {
+                        particleVal = null;
+                    }
+
+                    //Reset scopes.
+                    algoVisitor.Scopes = oldScope;
+                    ResetFunctionArgumentScopes();
+                    ResetParticleInput();
+                }
+                else
+                {
+                    //Not a function call or child.
+                    Error.Fatal(toEval, "Cannot index directly into a library.");
                     return null;
                 }
 
-                //Swap out the scopes, set the argument evaluation scope.
-                SetFunctionArgumentScopes(algoVisitor.Scopes);
-                SetParticleInput(particleVal);
-                algoVisitor.Scopes = scopes_local;
-
-                //Execute all the particles past the first one.
-                for (int i = 1; i < particleContext.Length; i++)
+                //Do more particle values need to be gathered?
+                if (particleContext.Length > 1)
                 {
-                    visitor.VisitParticle(particleContext[i]);
-                    particleVal = GetParticleResult();
-                }
+                    //If particle value is null, throw an error.
+                    if (particleVal == null)
+                    {
+                        Error.Fatal(toEval, "No value returned to perform further operations on.");
+                        return null;
+                    }
 
-                //Switch back to the original scope, reset the arg eval scope.
-                ResetFunctionArgumentScopes();
-                ResetParticleInput();
-                algoVisitor.Scopes = oldScope;
+                    //Swap out the scopes, set the argument evaluation scope.
+                    SetFunctionArgumentScopes(algoVisitor.Scopes);
+                    SetParticleInput(particleVal);
+                    algoVisitor.Scopes = scopes_local;
+
+                    //Execute all the particles past the first one.
+                    for (int i = 1; i < particleContext.Length; i++)
+                    {
+                        visitor.VisitParticle(particleContext[i]);
+                        particleVal = GetParticleResult();
+                    }
+
+                    //Switch back to the original scope, reset the arg eval scope.
+                    ResetFunctionArgumentScopes();
+                    ResetParticleInput();
+                    algoVisitor.Scopes = oldScope;
+                }
 
                 return particleVal;
             }

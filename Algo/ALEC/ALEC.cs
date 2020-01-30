@@ -114,7 +114,8 @@ namespace Algo
             }
 
             //Do a sanity check to make sure it compiles as normal Algo.
-            SyntaxCheck(MainScript);
+            Log("Sanity checking the syntax of the provided script...");
+            SyntaxCheck(MainScript, MainScript.Replace("\r", "").Split('\n').Length - scriptLines.Length);
 
             //That's done, now convert it to a literal string.
             Log("Converting script into literal form for compilation...");
@@ -256,16 +257,13 @@ namespace Algo
         /// <summary>
         /// Performs a syntax check on a provided Algo script. Throws a compile error if failing.
         /// </summary>
-        private static void SyntaxCheck(string script)
+        private static void SyntaxCheck(string script, int dependencyLineCount)
         {
             //Read in the input.
             var chars = new AntlrInputStream(script);
             var lexer = new algoLexer(chars);
             var tokens = new CommonTokenStream(lexer);
-
-            //Print tokens.
-            ANTLRDebug.PrintTokens(lexer);
-
+            
             //Attempt to parse.
             var parser = new algoParser(tokens);
             parser.BuildParseTree = true;
@@ -284,9 +282,11 @@ namespace Algo
                 //Does this one have an exception?
                 if (child.exception != null && child.exception != default(RecognitionException))
                 {
-                    Error.FatalCompile("Syntax error in provided Algo script, 'Line " + tree.Start.Line + ": " + tree.exception.Message + "'.");
+                    Error.FatalCompile("Syntax error in provided Algo script, at original file line " + (child.Start.Line - dependencyLineCount + 1) + ".");
                 }
             }
+
+            Log("Script statement syntax check passed successfully.", ALECEvent.Success);
         }
 
         //Turns a normal string input into a literal output string (eg. \n becomes \\n)
@@ -484,7 +484,7 @@ namespace Algo
             Console.WriteLine("  " + Events.Where(x => x.Item1 == ALECEvent.Fatal).Count() + " fatal errors.");
             Console.WriteLine("    " + Events.Where(x => x.Item1 == ALECEvent.Warning).Count() + " warnings.");
             Console.WriteLine("    " + Events.Where(x => x.Item1 == ALECEvent.Notice).Count() + " notices.");
-            Console.WriteLine("  --------------");
+            Console.WriteLine("  --------------\n");
         }
 
         //Logs an event to the current ALEC runtime.
