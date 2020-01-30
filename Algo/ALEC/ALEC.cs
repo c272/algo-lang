@@ -113,6 +113,9 @@ namespace Algo
                 return;
             }
 
+            //Do a sanity check to make sure it compiles as normal Algo.
+            SyntaxCheck(MainScript);
+
             //That's done, now convert it to a literal string.
             Log("Converting script into literal form for compilation...");
             MainScript = MainScript.Replace("\"", "\"\"");
@@ -248,6 +251,42 @@ namespace Algo
             //Print the compile footer.
             PrintCompileFooter();
             return;
+        }
+
+        /// <summary>
+        /// Performs a syntax check on a provided Algo script. Throws a compile error if failing.
+        /// </summary>
+        private static void SyntaxCheck(string script)
+        {
+            //Read in the input.
+            var chars = new AntlrInputStream(script);
+            var lexer = new algoLexer(chars);
+            var tokens = new CommonTokenStream(lexer);
+
+            //Print tokens.
+            ANTLRDebug.PrintTokens(lexer);
+
+            //Attempt to parse.
+            var parser = new algoParser(tokens);
+            parser.BuildParseTree = true;
+            var tree = parser.compileUnit();
+
+            //Walk the tree, check if there are any compile exceptions.
+            //Is there any content?
+            if (tree.block() == null)
+            {
+                Error.FatalCompile("No valid content was found to compile in the provided Algo script.");
+            }
+
+            //Walk all children.
+            foreach (var child in tree.block().statement())
+            {
+                //Does this one have an exception?
+                if (child.exception != null && child.exception != default(RecognitionException))
+                {
+                    Error.FatalCompile("Syntax error in provided Algo script, 'Line " + tree.Start.Line + ": " + tree.exception.Message + "'.");
+                }
+            }
         }
 
         //Turns a normal string input into a literal output string (eg. \n becomes \\n)
