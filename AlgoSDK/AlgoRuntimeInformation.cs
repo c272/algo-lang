@@ -19,6 +19,9 @@ namespace Algo
 
         //Whether the current runtime should catch fatal errors and return up the heirarchy.
         public static bool CatchExceptions = false;
+        
+        //Whether the current run time should suppress termination because of unit tests, and "throw" instead.
+        public static bool UnitTestMode = false;
 
         //The caught exception message.
         private static string ExceptionMessage = "";

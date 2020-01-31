@@ -44,6 +44,12 @@ namespace Algo
                 ANTLRDebug.PrintScopes();
             }
 
+            //Test mode? Throw instead of exit.
+            if (AlgoRuntimeInformation.UnitTestMode)
+            {
+                throw new Exception(errMessage);
+            }
+
             //Check if we're in continuous mode. If so, just restart (no header).
             if (AlgoRuntimeInformation.ContinuousMode)
             {
@@ -88,6 +94,12 @@ namespace Algo
                 return;
             }
 
+            //Test mode? Throw instead of exit.
+            if (AlgoRuntimeInformation.UnitTestMode)
+            {
+                throw new Exception(errMessage);
+            }
+
             Environment.Exit(-1);
         }
 
@@ -122,6 +134,13 @@ namespace Algo
 
             //Print the compile footer.
             ALEC.PrintCompileFooter();
+
+            //Test mode? Throw instead of exit.
+            if (AlgoRuntimeInformation.UnitTestMode)
+            {
+                throw new Exception(msg);
+            }
+
             Environment.Exit(-1);
         }
 
