@@ -142,6 +142,17 @@ public interface IalgoListener : IParseTreeListener {
 	void ExitStat_functionCall([NotNull] algoParser.Stat_functionCallContext context);
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.stat_asyncFunctionCall"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterStat_asyncFunctionCall([NotNull] algoParser.Stat_asyncFunctionCallContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.stat_asyncFunctionCall"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitStat_asyncFunctionCall([NotNull] algoParser.Stat_asyncFunctionCallContext context);
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.functionCall_particle"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

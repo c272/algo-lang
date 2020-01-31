@@ -80,6 +80,7 @@
     <Compile Include="Evaluation\Data Structures\AlgoFunction.cs" />
     <Compile Include="Evaluation\Data Structures\AlgoObject.cs" />
     <Compile Include="Evaluation\Data Structures\AlgoParticleManager.cs" />
+    <Compile Include="Evaluation\Visitors\Code Flow\AlgoAsync.cs" />
     <Compile Include="Evaluation\Visitors\Particles\AlgoParticles.cs" />
     <Compile Include="Evaluation\Visitors\Type Manipulation\AlgoComparators.cs" />
     <Compile Include="Evaluation\Visitors\AlgoErrorHandling.cs" />

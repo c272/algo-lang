@@ -45,6 +45,7 @@ stat_setvar_postfix: (IDENTIFIER particle*) postfix_op;
 stat_deletevar: DISREGARD_SYM (IDENTIFIER particle* | MUL_OP);
 stat_enumDef: LET_SYM IDENTIFIER EQUALS ENUM_SYM LBRACE abstract_params? RBRACE;
 stat_functionCall: (IDENTIFIER particle* POINT)? functionCall_particle;
+stat_asyncFunctionCall: FIRE_SYM stat_functionCall STREAMING_SYM_RIGHT (IDENTIFIER particle*);
 functionCall_particle: IDENTIFIER LBRACKET literal_params? RBRACKET;
 stat_functionDef: LET_SYM (IDENTIFIER particle*) LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
 stat_loadFuncExt: EXTERNAL_SYM IDENTIFIER STREAMING_SYM (IDENTIFIER particle*);
@@ -183,6 +184,7 @@ EXTERNAL_SYM: 'external';
 TRY_SYM: 'try';
 CATCH_SYM: 'catch';
 THROW_SYM: 'throw';
+FIRE_SYM: 'fire';
 
 //NON-MATHEMATICAL SYMBOLS
 ENDLINE: ';';
@@ -194,6 +196,7 @@ LSQBR: '[';
 RSQBR: ']';
 INVERT_SYM: '!';
 STREAMING_SYM: '<-';
+STREAMING_SYM_RIGHT: '->';
 
 //MATHEMATICAL SYMBOLS
 LBRACKET: '(';

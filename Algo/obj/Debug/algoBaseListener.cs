@@ -166,6 +166,19 @@ public partial class algoBaseListener : IalgoListener {
 	public virtual void ExitStat_functionCall([NotNull] algoParser.Stat_functionCallContext context) { }
 
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="algoParser.stat_asyncFunctionCall"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterStat_asyncFunctionCall([NotNull] algoParser.Stat_asyncFunctionCallContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="algoParser.stat_asyncFunctionCall"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitStat_asyncFunctionCall([NotNull] algoParser.Stat_asyncFunctionCallContext context) { }
+
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="algoParser.functionCall_particle"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
