@@ -17,3 +17,5 @@ C:\Users\Larry\Files\Programming\c272\algo-lang\AlgoTests\obj\Debug\AlgoTests.cs
 C:\Users\Larry\Files\Programming\c272\algo-lang\AlgoTests\obj\Debug\AlgoTests.csproj.CopyComplete
 C:\Users\Larry\Files\Programming\c272\algo-lang\AlgoTests\obj\Debug\AlgoTests.dll
 C:\Users\Larry\Files\Programming\c272\algo-lang\AlgoTests\obj\Debug\AlgoTests.pdb
+C:\Users\Larry\Files\Programming\c272\algo-lang\AlgoTests\bin\Debug\CommandLine.dll
+C:\Users\Larry\Files\Programming\c272\algo-lang\AlgoTests\bin\Debug\CommandLine.xml

@@ -1,6 +1,6 @@
-Z:\VSProjects\algo\algo-lang\Algo\obj\Debug\algoLexer.cs
-Z:\VSProjects\algo\algo-lang\Algo\obj\Debug\algoParser.cs
-Z:\VSProjects\algo\algo-lang\Algo\obj\Debug\algoListener.cs
-Z:\VSProjects\algo\algo-lang\Algo\obj\Debug\algoBaseListener.cs
-Z:\VSProjects\algo\algo-lang\Algo\obj\Debug\algoVisitor.cs
-Z:\VSProjects\algo\algo-lang\Algo\obj\Debug\algoBaseVisitor.cs
+C:\Users\Larry\Files\Programming\c272\algo-lang\Algo\obj\Debug\algoLexer.cs
+C:\Users\Larry\Files\Programming\c272\algo-lang\Algo\obj\Debug\algoParser.cs
+C:\Users\Larry\Files\Programming\c272\algo-lang\Algo\obj\Debug\algoListener.cs
+C:\Users\Larry\Files\Programming\c272\algo-lang\Algo\obj\Debug\algoBaseListener.cs
+C:\Users\Larry\Files\Programming\c272\algo-lang\Algo\obj\Debug\algoVisitor.cs
+C:\Users\Larry\Files\Programming\c272\algo-lang\Algo\obj\Debug\algoBaseVisitor.cs

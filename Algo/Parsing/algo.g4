@@ -14,6 +14,7 @@ block: statement*;
 statement: (  stat_define
             | stat_enumDef
 			| stat_functionCall
+			| stat_asyncFunctionCall
 			| stat_print
 			| stat_setvar
 			| stat_setvar_op
@@ -45,7 +46,7 @@ stat_setvar_postfix: (IDENTIFIER particle*) postfix_op;
 stat_deletevar: DISREGARD_SYM (IDENTIFIER particle* | MUL_OP);
 stat_enumDef: LET_SYM IDENTIFIER EQUALS ENUM_SYM LBRACE abstract_params? RBRACE;
 stat_functionCall: (IDENTIFIER particle* POINT)? functionCall_particle;
-stat_asyncFunctionCall: FIRE_SYM stat_functionCall STREAMING_SYM_RIGHT (IDENTIFIER particle*);
+stat_asyncFunctionCall: FIRE_SYM stat_functionCall (STREAMING_SYM_RIGHT (IDENTIFIER particle*))?;
 functionCall_particle: IDENTIFIER LBRACKET literal_params? RBRACKET;
 stat_functionDef: LET_SYM (IDENTIFIER particle*) LBRACKET abstract_params? RBRACKET EQUALS LBRACE statement* RBRACE;
 stat_loadFuncExt: EXTERNAL_SYM IDENTIFIER STREAMING_SYM (IDENTIFIER particle*);
@@ -55,7 +56,7 @@ stat_whileLoop: WHILE_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE;
 stat_if: IF_SYM LBRACKET check RBRACKET LBRACE statement* RBRACE stat_elif* stat_else?;
 stat_print: PRINT_SYM expr rounding_expr?;
 stat_library: LIB_SYM IDENTIFIER LBRACE statement* RBRACE;
-stat_import: IMPORT_SYM expr (AS_SYM IDENTIFIER)?;
+stat_import: IMPORT_SYM literal_params (AS_SYM IDENTIFIER)?;
 stat_list_add: ADD_SYM expr TO_SYM (IDENTIFIER particle*) (AT_SYM expr)?;
 stat_list_remove: REMOVE_SYM expr (FROM_SYM | IN_SYM) (IDENTIFIER particle*);
 stat_try_catch: TRY_SYM LBRACE block RBRACE CATCH_SYM LBRACKET IDENTIFIER RBRACKET LBRACE block RBRACE;

@@ -55,90 +55,68 @@ namespace Algo
         //When a function is called.
         public override object VisitStat_functionCall([NotNull] algoParser.Stat_functionCallContext context)
         {
-            //DEFINING LOCALS
-            //The library scope (if applicable).
-            AlgoScopeCollection scopes_local = null, oldScope = null;
-            bool isVariable = false; //Defines whether the func being called is a library or not.
-            AlgoValue currentValue = null;
-
-            //Evaluate the first identifier, check if it's a library or a normal variable.
-            string initialIdentifier = null;
+            //If there are particles, get the last value.
+            AlgoValue currentVal = null; bool isLibraryTopLevelCall = false;
             if (context.IDENTIFIER() != null)
             {
-                //Nested properties/particles.
-                initialIdentifier = context.IDENTIFIER().GetText();
+                //Is the identifier a library and has no particles?
+                if (!Scopes.VariableExists(context.IDENTIFIER().GetText())
+                  && Scopes.LibraryExists(context.IDENTIFIER().GetText())
+                  && (context.particle() == null || context.particle().Length == 0))
+                {
+                    //Library top level call, so don't evaluate like normal particles.
+                    isLibraryTopLevelCall = true;
+
+                    //Just get the very last function like a normal variable, but from the library.
+                    string libName = context.IDENTIFIER().GetText();
+                    string name = context.functionCall_particle().IDENTIFIER().GetText();
+                    var lib = Scopes.GetLibrary(libName);
+
+                    if (!lib.VariableExists(name))
+                    {
+                        Error.Fatal(context, "No variable named '" + name + "' exists in library '" + libName + "'.");
+                        return null;
+                    }
+
+                    currentVal = lib.GetVariable(name);
+                }
+                else
+                {
+                    //Not a library top level call, so execute like a normal particle block.
+                    currentVal = Particles.ParseParticleBlock(this, context, context.IDENTIFIER(), context.particle());
+                }
             }
             else
             {
-                //Simple function call.
-                initialIdentifier = context.functionCall_particle().IDENTIFIER().GetText();
-            }
-            
-            //Normal variable?
-            if (Scopes.VariableExists(initialIdentifier))
-            {
-                //Normal variable for base.
-                isVariable = true;
-                currentValue = Scopes.GetVariable(initialIdentifier);
-            }
-            else if (Scopes.LibraryExists(initialIdentifier))
-            {
-                //Library, needs scope switching.
-                isVariable = false;
-                scopes_local = Scopes.GetLibrary(initialIdentifier);
-            }
-
-            //Switch scopes as necessary.
-            if (!isVariable)
-            {
-                Particles.SetFunctionArgumentScopes(Scopes); //Make sure arguments are still evaluated on this scope.
-                oldScope = Scopes;
-                Scopes = scopes_local;
-            }
-
-            //Loop through the particles (if any), and evaluate each, starting from the initial identifier.
-            Particles.SetParticleInput(currentValue);
-            if (context.particle() != null)
-            {
-                foreach (var particle in context.particle())
+                //No particles, just grab the value as an identifier.
+                string name = context.functionCall_particle().IDENTIFIER().GetText();
+                if (!Scopes.VariableExists(name))
                 {
-                    VisitParticle(particle);
+                    Error.Fatal(context, "No function exists with name '" + name + "'.");
+                    return null;
                 }
-            }
 
-            //Switch scopes back.
-            if (!isVariable)
-            {
-                Scopes = oldScope;
-                Particles.ResetFunctionArgumentScopes();
-            }
-
-            //Get the result back.
-            currentValue = Particles.GetParticleResult();
-            if (currentValue == null)
-            {
-                Error.Fatal(context, "No value returned to call final function on.");
-                return null;
+                currentVal = Scopes.GetVariable(name);
             }
 
             //Attempt to execute the final function on the result.
-            if (context.IDENTIFIER() == null)
+            if (context.IDENTIFIER() == null || isLibraryTopLevelCall)
             {
-                //Visit and execute THIS value, not a child value.
-                Particles.SetParticleInput(currentValue);
+                //Visit and execute THIS value, not a child value (this was a straight normal call).
+                Particles.SetParticleInput(currentVal);
                 return VisitFunctionCall_particle(context.functionCall_particle());
             }
             else
             {
                 //There were particles, visit and execute CHILD value.
-                if (currentValue.Type != AlgoValueType.Object)
+                if (currentVal.Type != AlgoValueType.Object)
                 {
                     Error.Fatal(context, "Cannot call a child function on a value with no children (given value was not an object).");
                     return null;
                 }
 
                 //Get the child, see if it's a function.
-                AlgoObject thisObj = currentValue.Value as AlgoObject;
+                AlgoObject thisObj = currentVal.Value as AlgoObject;
                 string funcName = context.IDENTIFIER().GetText();
                 AlgoValue childFunc = thisObj.ObjectScopes.GetVariable(funcName);
                 if (childFunc == null || (childFunc.Type != AlgoValueType.Function && childFunc.Type != AlgoValueType.EmulatedFunction))

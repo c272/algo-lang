@@ -31,6 +31,8 @@ namespace Algo
             Plugins.Add(new StandardLibrary.AlgoStd_Reflection());
             //random.* (maths)
             Plugins.Add(new StandardLibrary.AlgoStd_Maths());
+            //async.*
+            Plugins.Add(new StandardLibrary.AlgoStd_Async());
 
             //Are there any plugin files in the /packages/ directory?
             string[] files = null;

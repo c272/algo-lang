@@ -15,6 +15,9 @@ namespace Algo.CLI
         [Option("dev", Default = false, HelpText = "Enables developer mode, with more advanced language debugging features.")]
         public bool DeveloperMode { get; set; }
 
+        [Option("testmode", Default = false, HelpText = "Debugging option for language developers, to enable exceptions. Do not use.")]
+        public bool TestMode { get; set; }
+
         [Option("nohead", Default = false, HelpText = "Disables the default header on the Algo interpreter.")]
         public bool NoHeader { get; set; }
 

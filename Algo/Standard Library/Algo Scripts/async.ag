@@ -1,1 +1,8 @@
-﻿
+﻿// The "async" Standard Library, provided by Algo.
+// Contains thread manipulation, multithreading and event functionality.
+
+library async
+{
+	//Sleeps for a given amount of milliseconds.
+	external sleep <- std_async.sleep;
+}

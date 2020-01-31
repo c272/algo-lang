@@ -20,33 +20,38 @@ namespace Algo
         /// </summary>
         public override object VisitStat_asyncFunctionCall([NotNull] algoParser.Stat_asyncFunctionCallContext context)
         {
-            //Evaluate the value to use as the exit function.
-            AlgoValue exitFunc = Particles.ParseParticleBlock(this, context, context.IDENTIFIER(), context.particle());
-
-            //Valid function?
-            if (exitFunc.Type != AlgoValueType.EmulatedFunction || exitFunc.Type != AlgoValueType.Function)
+            //If there's an exit function, grab it.
+            AlgoValue exitFunc = null;
+            if (context.IDENTIFIER() != null)
             {
-                Error.Fatal(context, "Invalid value specified as exit function, value was not a function.");
-                return null;
-            }
+                //Evaluate the value to use as the exit function.
+                exitFunc = Particles.ParseParticleBlock(this, context, context.IDENTIFIER(), context.particle());
 
-            //Valid amount of parameters?
-            if (exitFunc.Type == AlgoValueType.EmulatedFunction)
-            {
-                var func = (AlgoPluginFunction)exitFunc.Value;
-                if (func.ParameterCount > 1)
+                //Valid function?
+                if (exitFunc.Type != AlgoValueType.EmulatedFunction && exitFunc.Type != AlgoValueType.Function)
                 {
-                    Error.Fatal(context, "Invalid parameter count, async exit functions can only have one or zero parameters.");
+                    Error.Fatal(context, "Invalid value specified as exit function, value was not a function.");
                     return null;
                 }
-            }
-            else
-            {
-                var func = (AlgoFunction)exitFunc.Value;
-                if (func.Parameters.Count > 1)
+
+                //Valid amount of parameters?
+                if (exitFunc.Type == AlgoValueType.EmulatedFunction)
                 {
-                    Error.Fatal(context, "Invalid parameter count, async exit functions can only have one or zero parameters.");
-                    return null;
+                    var func = (AlgoPluginFunction)exitFunc.Value;
+                    if (func.ParameterCount > 1)
+                    {
+                        Error.Fatal(context, "Invalid parameter count, async exit functions can only have one or zero parameters.");
+                        return null;
+                    }
+                }
+                else
+                {
+                    var func = (AlgoFunction)exitFunc.Value;
+                    if (func.Parameters.Count > 1)
+                    {
+                        Error.Fatal(context, "Invalid parameter count, async exit functions can only have one or zero parameters.");
+                        return null;
+                    }
                 }
             }
 
@@ -61,6 +66,9 @@ namespace Algo
                 FuncCall = context.stat_functionCall(),
                 FunctionCtx = context
             });
+
+            //Return.
+            return null;
         }
 
         /// <summary>
@@ -73,7 +81,7 @@ namespace Algo
             //Visit and execute.
             var result = VisitStat_functionCall(args.FuncCall);
 
-            //Return result.
+            //Get result to pass to exit function.
             if (result == null)
             {
                 args.AsyncValue = null;
@@ -82,22 +90,51 @@ namespace Algo
             {
                 args.AsyncValue = (AlgoValue)result;
             }
+
+            //Set the result.
+            e.Result = args;
         }
 
         /// <summary>
-        /// Executes when an async function is completed, 
+        /// Executes when an async function is completed, triggering any existing exit function.
         /// </summary>
         private void executeAsyncExitFunc(object sender, RunWorkerCompletedEventArgs e)
         {
             //Call exit function from e.Result.
             var args = (AsyncCallWrapper)e.Result;
-            
-            //Attempt to call exit function.
+
+            //If it exists, attempt to call the exit function.
+            if (args.ExitFunction == null) { return; }
             if (args.ExitFunction.Type == AlgoValueType.EmulatedFunction)
             {
                 var func = (AlgoPluginFunction)args.ExitFunction.Value;
+
+                //If no params, can call straight away.
                 if (func.ParameterCount == 0) { func.Function(args.FunctionCtx); }
-                //todo
+
+                //Call with results.
+                func.Function(args.FunctionCtx, args.AsyncValue);
+            }
+            else
+            {
+                //Normal function, execute as normal.
+                var func = (AlgoFunction)args.ExitFunction.Value;
+
+                //Create a new scope, add the parameter to it (if required)
+                Scopes.AddScope();
+                if (func.Parameters.Count > 0)
+                {
+                    Scopes.AddVariable(func.Parameters[0], args.AsyncValue, args.FunctionCtx);
+                }
+
+                //Running the function's body.
+                foreach (var statement in func.Body)
+                {
+                    VisitStatement(statement);
+                }
+
+                //Remove the scope.
+                Scopes.RemoveScope();
             }
         }
         

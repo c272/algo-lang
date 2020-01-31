@@ -34,7 +34,7 @@ namespace Algo
             CLIParser = new CommandLine.Parser(with => with.AutoVersion = false);
 
             //Based on the given command line flags, execute.
-            if (args[0] == "pkg")
+            if (args.Length > 0 && args[0] == "pkg")
             {
                 return CLIParser.ParseArguments<PackageManagerCLIOptions>(args)
                     .MapResult(
@@ -61,6 +61,10 @@ namespace Algo
             if (opts.DeveloperMode)
             {
                 AlgoRuntimeInformation.DeveloperMode = true;
+            }
+            if (opts.TestMode)
+            {
+                AlgoRuntimeInformation.UnitTestMode = true;
             }
 
             //Displaying any generic info and then shutting off?
@@ -126,7 +130,14 @@ namespace Algo
                     catch (Exception e)
                     {
                         //Internal exception.
-                        Error.Internal(e.Message);
+                        if (!AlgoRuntimeInformation.UnitTestMode)
+                        {
+                            Error.Internal(e.Message);
+                        }
+                        else
+                        {
+                            throw e;
+                        }
                     }
                 }
 

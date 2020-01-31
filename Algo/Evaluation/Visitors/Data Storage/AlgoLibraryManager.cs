@@ -47,74 +47,86 @@ namespace Algo
             //2. Packages directory for Algo.
             //3. Standard libraries.
 
-            //Getting directory tree text.
-            string importLoc = "";
-            
-            //Evaluating the statement to get dir text.
-            AlgoValue locVal = (AlgoValue)VisitExpr(context.expr());
-            if (locVal.Type != AlgoValueType.String) 
+            //Make sure they're not trying to import multiple as a single identifier.
+            if (context.literal_params().expr().Length > 1 && context.AS_SYM() != null)
             {
-                Error.Fatal(context, "Given file path to import was not a string.");
-                return null;
-            }
-            importLoc = (string)locVal.Value;
-
-            List<string> fileParts = importLoc.Split('/').ToList();
-
-            //Append the extension to the end (imports don't require an extension).
-            if (!fileParts[fileParts.Count - 1].EndsWith(".ag"))
-            {
-                fileParts[fileParts.Count - 1] = fileParts.Last() + ".ag";
-            }
-
-            //Is the import being placed into a different scope?
-            string importScope = "";
-            if (context.AS_SYM() != null) 
-            {
-                //Yes, get the name of the scope.
-                importScope = context.IDENTIFIER().GetText();
-            }
-
-            //Test 1: Executing directory of the script.
-            string[] dirParts = new string[] { Environment.CurrentDirectory }.Concat(fileParts).ToArray();
-            string dirToCheck = CPFilePath.GetPlatformFilePath(dirParts);
-
-            //Is it there?
-            if (File.Exists(dirToCheck))
-            {
-                //Yes! Run the load function.
-                RunAlgoScript(dirToCheck, importScope);
+                Error.Warning(context, "Failed to import scripts, cannot import multiple scripts as a single identifier.");
                 return null;
             }
 
-            //Nope.
-            //Test 2: Packages directory for Algo.
-            dirParts = DefaultDirectories.PackagesDirectory.Concat(fileParts).ToArray();
-            dirToCheck = CPFilePath.GetPlatformFilePath(dirParts);
-
-            //Is it there?
-            if (File.Exists(dirToCheck))
+            //Import each.
+            foreach (var item in context.literal_params().expr())
             {
-                //Yep, load it.
-                RunAlgoScript(dirToCheck, importScope);
-                return null;
+                //Getting directory tree text.
+                string importLoc = "";
+
+                //Evaluating the statement to get dir text.
+                AlgoValue locVal = (AlgoValue)VisitExpr(item);
+                if (locVal.Type != AlgoValueType.String)
+                {
+                    Error.Fatal(context, "Given file path to import was not a string.");
+                    return null;
+                }
+                importLoc = (string)locVal.Value;
+
+                List<string> fileParts = importLoc.Split('/').ToList();
+
+                //Append the extension to the end (imports don't require an extension).
+                if (!fileParts[fileParts.Count - 1].EndsWith(".ag"))
+                {
+                    fileParts[fileParts.Count - 1] = fileParts.Last() + ".ag";
+                }
+
+                //Is the import being placed into a different scope?
+                string importScope = "";
+                if (context.AS_SYM() != null)
+                {
+                    //Yes, get the name of the scope.
+                    importScope = context.IDENTIFIER().GetText();
+                }
+
+                //Test 1: Executing directory of the script.
+                string[] dirParts = new string[] { Environment.CurrentDirectory }.Concat(fileParts).ToArray();
+                string dirToCheck = CPFilePath.GetPlatformFilePath(dirParts);
+
+                //Is it there?
+                if (File.Exists(dirToCheck))
+                {
+                    //Yes! Run the load function.
+                    RunAlgoScript(dirToCheck, importScope);
+                    continue;
+                }
+
+                //Nope.
+                //Test 2: Packages directory for Algo.
+                dirParts = DefaultDirectories.PackagesDirectory.Concat(fileParts).ToArray();
+                dirToCheck = CPFilePath.GetPlatformFilePath(dirParts);
+
+                //Is it there?
+                if (File.Exists(dirToCheck))
+                {
+                    //Yep, load it.
+                    RunAlgoScript(dirToCheck, importScope);
+                    continue;
+                }
+
+                //Nope.
+                //Test 3: Standard libraries.
+                dirParts = DefaultDirectories.StandardLibDirectory.Concat(fileParts).ToArray();
+                dirToCheck = CPFilePath.GetPlatformFilePath(dirParts);
+
+                //Is it there?
+                if (File.Exists(dirToCheck))
+                {
+                    //Yep, load it.
+                    RunAlgoScript(dirToCheck, importScope);
+                    continue;
+                }
+
+                //No, nowhere else to check from, so throw a linking warning.
+                Error.Warning(context, "Failed to link the Algo script '" + importLoc + "'. It has not been loaded.");
             }
 
-            //Nope.
-            //Test 3: Standard libraries.
-            dirParts = DefaultDirectories.StandardLibDirectory.Concat(fileParts).ToArray();
-            dirToCheck = CPFilePath.GetPlatformFilePath(dirParts);
-
-            //Is it there?
-            if (File.Exists(dirToCheck))
-            {
-                //Yep, load it.
-                RunAlgoScript(dirToCheck, importScope);
-                return null;
-            }
-
-            //No, nowhere else to check from, so throw a linking warning.
-            Error.Warning(context, "Failed to link the Algo script '" + importLoc + "'. It has not been loaded.");
             return null;
         }
 

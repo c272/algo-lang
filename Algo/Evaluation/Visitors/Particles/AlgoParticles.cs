@@ -179,7 +179,7 @@ namespace Algo
                 int paramNum = func.ParameterCount;
                 if (givenNumParams != paramNum)
                 {
-                    Error.Fatal(context, "Invalid number of parameters for function '" + func.Name + "' (Expected " + func.ParameterCount + ", got " + paramCtx.expr().Length + ").");
+                    Error.Fatal(context, "Invalid number of parameters for function '" + func.Name + "' (Expected " + func.ParameterCount + ", got " + givenNumParams + ").");
                     return null;
                 }
             }
@@ -189,7 +189,7 @@ namespace Algo
                 int paramNum = func.Parameters.Count;
                 if (givenNumParams != paramNum)
                 {
-                    Error.Fatal(context, "Invalid number of parameters for function '" + func.Name + "' (Expected " + func.Parameters.Count + ", got " + paramCtx.expr().Length + ").");
+                    Error.Fatal(context, "Invalid number of parameters for function '" + func.Name + "' (Expected " + func.Parameters.Count + ", got " + givenNumParams + ").");
                     return null;
                 }
             }
