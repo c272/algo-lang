@@ -60,7 +60,7 @@ namespace Algo.StandardLibrary
             }
 
             //Create the variable.
-            Program.visitor.Scopes.AddVariable((string)args[0].Value, args[1], context);
+            algoVisitor.Scopes.AddVariable((string)args[0].Value, args[1], context);
             return null;
         }
 
@@ -75,7 +75,7 @@ namespace Algo.StandardLibrary
             }
 
             //Set the variable.
-            Program.visitor.Scopes.SetVariable((string)args[0].Value, args[1], context);
+            algoVisitor.Scopes.SetVariable((string)args[0].Value, args[1], context);
             return null;
         }
 
@@ -90,14 +90,14 @@ namespace Algo.StandardLibrary
             }
 
             //Check it exists.
-            if (!Program.visitor.Scopes.VariableExists((string)args[0].Value))
+            if (!algoVisitor.Scopes.VariableExists((string)args[0].Value))
             {
                 //It doesn't, return null.
                 return AlgoValue.Null;
             }
 
             //It does, return the variable.
-            return Program.visitor.Scopes.GetVariable((string)args[0].Value);
+            return algoVisitor.Scopes.GetVariable((string)args[0].Value);
         }
 
         //Delete a variable with a given string name.
@@ -111,7 +111,7 @@ namespace Algo.StandardLibrary
             }
 
             //Check it exists.
-            if (!Program.visitor.Scopes.VariableExists((string)args[0].Value))
+            if (!algoVisitor.Scopes.VariableExists((string)args[0].Value))
             {
                 //It doesn't, error.
                 Error.Fatal(context, "The variable '" + args[0].Value.ToString() + "' does not exist to delete.");
@@ -119,7 +119,7 @@ namespace Algo.StandardLibrary
             }
 
             //Delete variable.
-            Program.visitor.Scopes.RemoveVariable((string)args[0].Value);
+            algoVisitor.Scopes.RemoveVariable((string)args[0].Value);
             return null;
         }
     }

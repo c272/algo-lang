@@ -11,7 +11,7 @@ namespace Algo
     public partial class algoVisitor : algoBaseVisitor<object>
     {
         //Scopes collection for this instance.
-        public AlgoScopeCollection Scopes = new AlgoScopeCollection();
+        public static AlgoScopeCollection Scopes = new AlgoScopeCollection();
 
         //Plugins collection for this instance.
         public static AlgoFunctionPlugins Plugins = new AlgoFunctionPlugins();

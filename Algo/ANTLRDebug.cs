@@ -44,7 +44,7 @@ namespace Algo
             //Printing variable scopes.
             Console.WriteLine("\nGlobal Namespace");
             Console.WriteLine("SCOPES:");
-            var scopes = Program.visitor.Scopes.GetScopes();
+            var scopes = algoVisitor.Scopes.GetScopes();
             for (int i = 0; i < scopes.Count; i++)
             {
                 //Check variable isn't null.
@@ -70,7 +70,7 @@ namespace Algo
             }
 
             //Printing library scopes.
-            var libs = Program.visitor.Scopes.GetLibraries();
+            var libs = algoVisitor.Scopes.GetLibraries();
             foreach (var lib in libs)
             {
                 Console.WriteLine("LIBRARY '" + lib.Key + "'");

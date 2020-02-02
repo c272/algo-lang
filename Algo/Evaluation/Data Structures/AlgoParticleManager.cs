@@ -69,10 +69,10 @@ namespace Algo
         public static AlgoValue ParseParticleBlock(algoVisitor visitor, ParserRuleContext ctx, ITerminalNode firstIdentifier, algoParser.ParticleContext[] particleContext)
         {
             //Is it a user created variable?
-            if (visitor.Scopes.VariableExists(firstIdentifier.GetText()))
+            if (algoVisitor.Scopes.VariableExists(firstIdentifier.GetText()))
             {
                 //Yes, get the value and evaluate the particles.
-                var value = visitor.Scopes.GetVariable(firstIdentifier.GetText());
+                var value = algoVisitor.Scopes.GetVariable(firstIdentifier.GetText());
                 if (particleContext != null)
                 {
                     //Set particle input as the current value.
@@ -91,7 +91,7 @@ namespace Algo
                 return value;
             }
             //Is it a library?
-            else if (visitor.Scopes.LibraryExists(firstIdentifier.GetText()))
+            else if (algoVisitor.Scopes.LibraryExists(firstIdentifier.GetText()))
             {
                 //If it's a library, you've got to have a particle access.
                 if (particleContext == null || particleContext.Length == 0)
@@ -101,8 +101,8 @@ namespace Algo
                 }
 
                 //It's a library, prepare for a scope switch.
-                var scopes_local = visitor.Scopes.GetLibrary(firstIdentifier.GetText());
-                AlgoScopeCollection oldScope = visitor.Scopes;
+                var scopes_local = algoVisitor.Scopes.GetLibrary(firstIdentifier.GetText());
+                AlgoScopeCollection oldScope = algoVisitor.Scopes;
                 
                 //First, get the first particle to set as the particle input.
                 var toEval = particleContext[0]; AlgoValue particleVal = null;
@@ -120,8 +120,8 @@ namespace Algo
                 else if (toEval.functionCall_particle() != null)
                 {
                     //Not an identifier, a function. Attempt to call with the correct scopes.
-                    SetFunctionArgumentScopes(visitor.Scopes);
-                    visitor.Scopes = scopes_local;
+                    SetFunctionArgumentScopes(algoVisitor.Scopes);
+                    algoVisitor.Scopes = scopes_local;
                     var funcParticle = toEval.functionCall_particle();
 
                     //Attempt to get the function from the library.
@@ -151,7 +151,7 @@ namespace Algo
                     }
 
                     //Reset scopes.
-                    visitor.Scopes = oldScope;
+                    algoVisitor.Scopes = oldScope;
                     ResetFunctionArgumentScopes();
                     ResetParticleInput();
                 }
@@ -173,9 +173,9 @@ namespace Algo
                     }
 
                     //Swap out the scopes, set the argument evaluation scope.
-                    SetFunctionArgumentScopes(visitor.Scopes);
+                    SetFunctionArgumentScopes(algoVisitor.Scopes);
                     SetParticleInput(particleVal);
-                    visitor.Scopes = scopes_local;
+                    algoVisitor.Scopes = scopes_local;
 
                     //Execute all the particles past the first one.
                     for (int i = 1; i < particleContext.Length; i++)
@@ -187,7 +187,7 @@ namespace Algo
                     //Switch back to the original scope, reset the arg eval scope.
                     ResetFunctionArgumentScopes();
                     ResetParticleInput();
-                    visitor.Scopes = oldScope;
+                    algoVisitor.Scopes = oldScope;
                 }
 
                 return particleVal;
