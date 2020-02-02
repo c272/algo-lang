@@ -94,12 +94,6 @@ namespace Algo
                 //This should NOT return, it's a top level single function call.
                 VisitStat_functionCall(context.stat_functionCall());
             }
-            else if (context.stat_asyncFunctionCall() != null)
-            {
-                //Asynchronous function call.
-                //Doesn't return a value, it fires onto another thread.
-                VisitStat_asyncFunctionCall(context.stat_asyncFunctionCall());
-            }
             else if (context.stat_functionDef() != null)
             {
                 //A function definition.
