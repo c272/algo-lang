@@ -114,7 +114,6 @@
     <Compile Include="Sharpie\SharpieSources.cs" />
     <Compile Include="Standard Library\FunctionPluginCore.cs" />
     <Compile Include="Standard Library\FunctionPluginInterface.cs" />
-    <Compile Include="Standard Library\Libraries\AlgoStd_Async.cs" />
     <Compile Include="Standard Library\Libraries\AlgoStd_Core.cs" />
     <Compile Include="Standard Library\Libraries\AlgoStd_Maths.cs" />
     <Compile Include="Standard Library\Libraries\AlgoStd_String.cs" />
@@ -133,7 +132,6 @@
     </Antlr4>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="Standard Library\Algo Scripts\async.ag" />
     <None Include="Standard Library\Algo Scripts\core.ag" />
     <None Include="Standard Library\Algo Scripts\maths.ag" />
     <None Include="Standard Library\Algo Scripts\string.ag" />
