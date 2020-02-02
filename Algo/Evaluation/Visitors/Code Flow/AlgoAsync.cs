@@ -55,16 +55,34 @@ namespace Algo
                 }
             }
 
-            //Use a backgroundWorker to call the normal function.
-            var bw = new BackgroundWorker();
-            bw.DoWork += executeAsyncFunction;
-            bw.RunWorkerCompleted += executeAsyncExitFunc;
-            bw.RunWorkerAsync(new AsyncCallWrapper()
+            //Get the function parameters for the called function, and pass in.
+            List<AlgoValue> args = new List<AlgoValue>();
+            if (context.stat_functionCall().functionCall_particle().literal_params() != null)
             {
-                ExitFunction = exitFunc,
-                AsyncValue = null,
-                FuncCall = context.stat_functionCall(),
-                FunctionCtx = context
+                foreach (var param in context.stat_functionCall().functionCall_particle().literal_params().expr())
+                {
+                    var result = VisitExpr(param);
+                    if (result == null)
+                    {
+                        Error.Fatal(context, "Failed to parse parameter of function, expression returned no value.");
+                        return null;
+                    }
+
+                    args.Add((AlgoValue)result);
+                }
+            }
+
+            //Run the async function.
+            Task.Run(() =>
+            {
+                executeAsyncFunction(new AsyncCallWrapper()
+                {
+                    ExitFunction = exitFunc,
+                    FuncCall = context.stat_functionCall(),
+                    FunctionCtx = context,
+                    Arguments = args,
+                    CurrentScopes = Scopes
+                });
             });
 
             //Return.
@@ -74,12 +92,16 @@ namespace Algo
         /// <summary>
         /// Executes the provided Algo asynchronous function.
         /// </summary>
-        private void executeAsyncFunction(object sender, DoWorkEventArgs e)
+        private void executeAsyncFunction(AsyncCallWrapper args)
         {
-            var args = (AsyncCallWrapper)e.Argument;
+            //Create the async function visitor.
+            algoVisitor asyncVisitor = new algoVisitor();
+
+            //Copy over the existing scope.
+            asyncVisitor.Scopes = args.CurrentScopes;
 
             //Visit and execute.
-            var result = VisitStat_functionCall(args.FuncCall);
+            var result = asyncVisitor.VisitStat_functionCall(args.FuncCall);
 
             //Get result to pass to exit function.
             if (result == null)
@@ -91,18 +113,7 @@ namespace Algo
                 args.AsyncValue = (AlgoValue)result;
             }
 
-            //Set the result.
-            e.Result = args;
-        }
-
-        /// <summary>
-        /// Executes when an async function is completed, triggering any existing exit function.
-        /// </summary>
-        private void executeAsyncExitFunc(object sender, RunWorkerCompletedEventArgs e)
-        {
-            //Call exit function from e.Result.
-            var args = (AsyncCallWrapper)e.Result;
-
+            //FUNCTION DONE!
             //If it exists, attempt to call the exit function.
             if (args.ExitFunction == null) { return; }
             if (args.ExitFunction.Type == AlgoValueType.EmulatedFunction)
@@ -137,7 +148,6 @@ namespace Algo
                 Scopes.RemoveScope();
             }
         }
-        
     }
 
     /// <summary>
@@ -149,5 +159,7 @@ namespace Algo
         public AlgoValue ExitFunction;
         public AlgoValue AsyncValue;
         public ParserRuleContext FunctionCtx;
+        public List<AlgoValue> Arguments;
+        public AlgoScopeCollection CurrentScopes;
     }
 }
