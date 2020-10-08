@@ -4,9 +4,9 @@
 
 *A programming language which aims to be simple, mathematical and easy to learn.*
 ## Introduction
-Algo is a programming language designed to look similar to mathematical notation that aims to make programming easy through a vast standard library.
+Algo is a programming language designed to look similar to mathematical notation that aims to provide a simple and stable set of tools.
 
-The language is currently not ready for general use. If, however, you want to contribute to the standard library or language itself, feel free to fork and make a pull request, which are considered on a case-by-case basis. Please remember to check the pull request templates beforehand.
+The language is not ready for general use. If, however, you want to contribute to the standard library or language itself, feel free to fork and make a pull request, just make sure that your branch passes the unit tests. Please remember to check the pull request templates beforehand.
 
 **Plugins for Popular Text Editors:**
 * [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=c272.Algo)
